@@ -19,7 +19,7 @@ export default function HomeScreen() {
 
   return (
     <ImageBackground
-      source={require('../../assets/main/background.png')}
+      source={require('../../assets/main/background2.png')}
       style={styles.background}
     >
 
