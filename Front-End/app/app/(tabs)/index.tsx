@@ -8,7 +8,8 @@ export default function HomeScreen() {
 
   const loadFonts = async () => {
     await Font.loadAsync({
-      'TenorSans': require('../../assets/fonts/TenorSans-Regular.ttf'),
+      'TenorSans': require('../../assets/fonts/Tenor_Sans/TenorSans-Regular.ttf'),
+      'Gloock': require('../'),
     });
     setFontsLoaded(true);
   };
