@@ -2,6 +2,8 @@ import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import HomeScreen from "../pages/Principal.tsx";
+import Login from "../pages/client/Login.tsx";
+import Singup from "../pages/client/Singup.tsx";
 
 const Stack = createStackNavigator();
 
@@ -11,6 +13,16 @@ export default function App() {
       <Stack.Screen
         name="Home"
         component={HomeScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Singup"
+        component={Singup}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

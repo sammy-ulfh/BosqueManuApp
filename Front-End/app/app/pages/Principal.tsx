@@ -9,6 +9,9 @@ import {
 import * as Font from "expo-font";
 import React, { useState } from "react";
 
+/* Components */
+import { MainButton } from "@/components/MainButton";
+
 export default function HomeScreen({ navigation }) {
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
@@ -91,13 +94,10 @@ export default function HomeScreen({ navigation }) {
                 },
               ]}
             >
-              <TouchableOpacity
-                style={[{ height: "80%", width: "80%" }, styles.button]}
-              >
-                <Text style={[styles.whiteText, { fontSize: 19 }]}>
-                  INICIAR SESION
-                </Text>
-              </TouchableOpacity>
+              <MainButton
+                text="INICIAR SESION"
+                onPress={() => navigation.navigate("Login")}
+              />
             </View>
           </View>
           <View
@@ -115,7 +115,10 @@ export default function HomeScreen({ navigation }) {
             <Text style={[styles.whiteText, { fontSize: 19 }]}>
               ¿Aún no tienes una cuenta?
             </Text>
-            <TouchableOpacity style={[{ paddingLeft: "6%" }]}>
+            <TouchableOpacity
+              style={[{ paddingLeft: "6%" }]}
+              onPress={() => navigation.navigate("Singup")}
+            >
               <Text
                 style={[
                   styles.whiteText,
@@ -137,6 +140,8 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
     resizeMode: "cover",
+    width: "100%",
+    height: "100%",
   },
   totalWidth: {
     width: "100%",
