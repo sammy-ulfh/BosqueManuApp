@@ -8,9 +8,8 @@ import {
 import * as Font from "expo-font";
 import React, { useState } from "react";
 import { MainButton } from "@/components/MainButton";
-import { Login } from "@/app/pages/client/Login";
 
-export default function Singup({ navigation }) {
+export default function Third({ navigation }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
 
@@ -60,7 +59,7 @@ export default function Singup({ navigation }) {
               },
             ]}
           >
-            Formulario de registro
+            UNETE A LA COMUNIDAD
           </Text>
         </View>
         {/* < = View para el texto principal */}
@@ -69,10 +68,10 @@ export default function Singup({ navigation }) {
           style={{
             width: "80%",
             height: "70%",
-            backgroundColor: "rgba(245, 73, 39, 1)",
+            backgroundColor: "rgba(100, 20, 15, 1)",
           }}
         >
-          <Text>dkjwedbkuwdbv</Text>
+          <Text>CAPACITATE</Text>
         </View>
         {/* View para el boton */}
         <View
@@ -86,8 +85,8 @@ export default function Singup({ navigation }) {
           ]}
         >
           <MainButton
-            text="REGISTRARSE"
-            onPress={() => navigation.navigate("Login")}
+            text="QUIERO CAPACITARME"
+            onPress={() => navigation.navigate("Fourth")}
             style={{
               width: "80%",
               minHeight: "10%",

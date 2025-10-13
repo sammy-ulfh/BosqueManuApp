@@ -8,9 +8,8 @@ import {
 import * as Font from "expo-font";
 import React, { useState } from "react";
 import { MainButton } from "@/components/MainButton";
-import { Login } from "@/app/pages/client/Login";
 
-export default function Singup({ navigation }) {
+export default function Eleventh({ navigation }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
 
@@ -50,19 +49,7 @@ export default function Singup({ navigation }) {
               alignItems: "center",
             },
           ]}
-        >
-          <Text
-            style={[
-              styles.whiteText,
-              {
-                fontSize: 40,
-                textAlign: "center",
-              },
-            ]}
-          >
-            Formulario de registro
-          </Text>
-        </View>
+        ></View>
         {/* < = View para el texto principal */}
         {/* View para el formulario */}
         <View
@@ -72,7 +59,27 @@ export default function Singup({ navigation }) {
             backgroundColor: "rgba(245, 73, 39, 1)",
           }}
         >
-          <Text>dkjwedbkuwdbv</Text>
+          <MainButton
+            text="Rutas faciles"
+            onPress={() => setIsRegister(true)}
+            style={{
+              width: "80%",
+              minHeight: "10%",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          />
+
+          <MainButton
+            text="Rutas intermedias"
+            onPress={() => setIsRegister(true)}
+            style={{
+              width: "80%",
+              minHeight: "10%",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          />
         </View>
         {/* View para el boton */}
         <View
@@ -86,7 +93,7 @@ export default function Singup({ navigation }) {
           ]}
         >
           <MainButton
-            text="REGISTRARSE"
+            text="Rutas dificiles - Login"
             onPress={() => navigation.navigate("Login")}
             style={{
               width: "80%",

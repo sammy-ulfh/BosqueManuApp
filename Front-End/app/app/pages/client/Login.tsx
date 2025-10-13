@@ -33,10 +33,6 @@ export default function Login({ navigation }) {
     loadFonts();
   }, []);
 
-  const data = {
-    username: "jose",
-  };
-
   return (
     <ImageBackground
       style={styles.background}
@@ -92,7 +88,7 @@ export default function Login({ navigation }) {
                   { fontFamily: "Gloock", fontSize: 40 },
                 ]}
               >
-                Hola, {data.username}
+                Bienvenido
               </Text>
             </View>
             <View
@@ -132,7 +128,7 @@ export default function Login({ navigation }) {
           >
             <MainButton
               text="INICIAR SESION"
-              onPress={() => navigation.navigate("Login")}
+              onPress={() => navigation.navigate("First")}
               style={{ height: "30%" }}
             />
 

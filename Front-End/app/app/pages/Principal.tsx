@@ -41,7 +41,7 @@ export default function HomeScreen({ navigation }) {
           styles.overlay,
         ]}
       >
-        <View style={[styles.totalWidth, styles.content]}>
+        <View style={[{ width: "95%" }, styles.content]}>
           <View style={[styles.totalWidth, styles.right, { height: "20%" }]}>
             <View style={[{ width: "80%", height: "100%" }]}>
               <Text
