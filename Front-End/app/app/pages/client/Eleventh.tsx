@@ -65,6 +65,7 @@ export default function Eleventh({ navigation }) {
             style={{
               width: "80%",
               minHeight: "10%",
+              height: "10%",
               alignItems: "center",
               justifyContent: "center",
             }}
@@ -76,6 +77,7 @@ export default function Eleventh({ navigation }) {
             style={{
               width: "80%",
               minHeight: "10%",
+              height: "10%",
               alignItems: "center",
               justifyContent: "center",
             }}
