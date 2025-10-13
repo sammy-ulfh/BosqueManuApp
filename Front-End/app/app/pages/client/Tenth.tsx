@@ -86,7 +86,7 @@ export default function Tenth({ navigation }) {
         >
           <MainButton
             text="QUIENES SOMOS?"
-            onPress={() => navigation.navigate("Eleventh"))}
+            onPress={() => navigation.navigate("Eleventh")}
             style={{
               width: "80%",
               minHeight: "10%",
