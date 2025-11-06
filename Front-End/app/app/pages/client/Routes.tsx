@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
+import { WebView } from 'react-native-webview';
 
 /* Components */
 import { Input } from "@/components/Input";
@@ -17,8 +18,10 @@ import Singup from "./Singup";
 
 export default function Routes({ navigation }) {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [mailInput, setMailInput] = useState("");
-  const [passwordInput, setPasswordInput] = useState("");
+  const [searchInput, setSearchInput] = useState("");
+  const latitude = -12.0464;
+  const longitude = -77.0428;
+  const url = `https://www.google.com/maps?q=${latitude},${longitude}&z=14&output=embed`;
 
   const Info = {
     name: "Jose"
@@ -56,102 +59,44 @@ export default function Routes({ navigation }) {
             styles.totalWidth,
             {
               height: "80%",
-              marginTop: "5%",
+              marginTop: "2%",
+              justifyContent: "center",
+              alignItems: "center"
             },
           ]}
         >
-          <View style={[styles.totalWidth, { height: "20%" }]}>
-            <Image
-              source={require("../../../assets/main/logo.png")}
-              style={[styles.imagen, { height: "100%" }]}
-            />
-          </View>
-          <View
-            style={[
-              styles.totalWidth,
-              {
-                height: "40%",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              },
-            ]}
-          >
-            <View
-              style={[
-                styles.totalWidth,
-                {
-                  height: "30%",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                },
-              ]}
-            >
-              <Text
-                style={[
-                  styles.whiteText,
-                  { fontFamily: "Gloock", fontSize: 40 },
-                ]}
-              >
-                Bienvenido, {Info.name}
-              </Text>
-            </View>
-            <View
-              style={[
-                styles.totalWidth,
-                {
-                  height: "60%",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginTop: "10%"
-                },
-              ]}
-            >
-            <MainButton
-              text="Contraseñas y seguridad"
-              onPress={() => navigation.navigate("Community")}
-              style={{ height: "35%", width: "70%" , borderRadius: 0, 
-                    borderTopLeftRadius: 30,
-                    borderTopRightRadius: 30,
-                    backgroundColor: "rgba(72, 65, 50, 0.8)"
-               }}
-            />
-            <MainButton
-              text="Datos personales"
-              onPress={() => navigation.navigate("Community")}
-              style={{ height: "35%", borderRadius: 0, width: "70%", backgroundColor: "rgba(72, 65, 50, 0.8)" }}
-            />
-            <MainButton
-              text="Tu información y permisos"
-              onPress={() => navigation.navigate("Community")}
-              style={{ height: "35%", borderRadius: 0, backgroundColor: "rgba(72, 65, 50, 0.8)", width: "70%" }}
-            />
-            <MainButton
-              text="Ayuda"
-              onPress={() => navigation.navigate("Community")}
-              style={{ height: "35%", borderRadius: 0,
-                    borderBottomLeftRadius: 30,
-                    borderBottomRightRadius: 30,
-                    backgroundColor: "rgba(72, 65, 50, 0.8)", 
-                    width: "70%"
-               }}
-            />
+          <View style={[styles.totalWidth, { height: "20%", justifyContent: "center", alignItems: "center" }]}>
+            <View style={{ width: "80%", height: "100%", justifyContent: "center", alignItems: "center" }}>
+              <Input
+                placeholder="Buscar ruta"
+                value={searchInput}
+                onChangeText={setSearchInput}
+                style={{ backgroundColor: "#FFFFFF", width: "80%", height: "40%", color: "black", marginTop: "-18%" }}
+                color="#000000"
+              />
             </View>
           </View>
-          <View
-            style={[
-              styles.totalWidth,
-              {
-                height: "40%",
-                justifyContent: "flex-start",
-                alignItems: "center",
-                marginTop: "15%",
-              },
-            ]}
-          >
+
+          {/* MAP VIEW */}
+          <View style={{ width: "80%", height: "40%", marginTop: "-10%" , justifyContent: "center", borderRadius: 15, alignItems: "center", backgroundColor: "rgba(93, 95, 57, 0.8)" }}>
+          </View>
+
+          {/* Buttons */}
+          <View style={{ width: "80%", height: "40%", justifyContent: "flex-start", alignItems: "center", marginTop: "3%" }}>
             <MainButton
-              text="CERRAR SESION"
-              onPress={() => navigation.navigate("Login")}
-              style={{ height: "30%", width: "70%" ,marginTop: "8%", backgroundColor: "rgba(152, 33, 33, 0.7)" }}
+              text="Rutas faciles"
+              onPress={() => navigation.navigate("Community")}
+              style={{ height: "20%", width: "80%", marginBottom: "5%" }}
+            />
+            <MainButton
+              text="Rutas intermedias"
+              onPress={() => navigation.navigate("Community")}
+              style={{ height: "20%", width: "80%", marginBottom: "5%" }}
+            />
+            <MainButton
+              text="Rutas dificiles"
+              onPress={() => navigation.navigate("Community")}
+              style={{ height: "20%", width: "80%", marginBottom: "5%" }}
             />
           </View>
         </View>
@@ -193,4 +138,5 @@ const styles = StyleSheet.create({
     color: "blue",
     textDecorationLine: "underline",
   },
+  map: { flex: 1 },
 });
