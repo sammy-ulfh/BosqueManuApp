@@ -13,7 +13,7 @@ import { Login } from "@/app/pages/client/Login";
 import { Input } from "@/components/Input";
 import { Background } from "@react-navigation/elements";
 
-export default function Donar({ navigation }) {
+export default function Capacitarme({ navigation }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
   const [name, setName] = useState('');
@@ -87,14 +87,14 @@ export default function Donar({ navigation }) {
               },
             ]}
           >
-            ¡Yo quiero donar!
+            ¡Yo quiero capacitarme!
           </Text>
         </View>
         <ScrollView
           style={{
             width: "80%",
             height: "70%",
-            backgroundColor: "rgba(133, 128, 95, 0.7)",
+            backgroundColor: "#0C8C63",
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
             borderBottomLeftRadius: 20,

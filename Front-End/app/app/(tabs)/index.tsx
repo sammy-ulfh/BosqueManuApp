@@ -6,8 +6,8 @@ import Login from "../pages/client/Login.tsx";
 import Singup from "../pages/client/Singup.tsx";
 import Community from '../pages/client/Community';
 import Donar from "../pages/client/Donar";
-import Third from "../pages/client/Third";
-import Fourth from "../pages/client/Fourth";
+import Capacitacion from "../pages/client/Capacitacion";
+import Capacitarme from "../pages/client/Capacitarme";
 import Fifth from "../pages/client/Fifth";
 import Sixth from "../pages/client/Sixth";
 import Seventh from "../pages/client/Seventh";
@@ -50,14 +50,14 @@ export default function App() {
       />
 
       <Stack.Screen
-        name="Third"
-        component={Third}
+        name="Capacitacion"
+        component={Capacitacion}
         options={{ headerShown: false }}
       />
 
       <Stack.Screen
-        name="Fourth"
-        component={Fourth}
+        name="Capacitarme"
+        component={Capacitarme}
         options={{ headerShown: false }}
       />
 
