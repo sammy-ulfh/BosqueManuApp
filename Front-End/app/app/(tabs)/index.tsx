@@ -11,11 +11,10 @@ import Capacitarme from "../pages/client/Capacitarme";
 import Voluntariado from "../pages/client/Voluntariado";
 import Voluntario from "../pages/client/Voluntario";
 import Configuration from "../pages/client/Configuration";
-import Eigth from "../pages/client/Eigth";
+import Routes from "../pages/client/Routes";
 import Nineth from "../pages/client/Nineth";
 import Tenth from "../pages/client/Tenth";
 import Eleventh from "../pages/client/Eleventh";
-import Configuration from "../pages/client/Configuration.js";
 
 const Stack = createStackNavigator();
 
@@ -81,8 +80,8 @@ export default function App() {
       />
 
       <Stack.Screen
-        name="Eigth"
-        component={Eigth}
+        name="Routes"
+        component={Routes}
         options={{ headerShown: false }}
       />
 

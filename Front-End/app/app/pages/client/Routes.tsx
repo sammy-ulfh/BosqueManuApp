@@ -15,7 +15,7 @@ import { Input } from "@/components/Input";
 import { MainButton } from "@/components/MainButton";
 import Singup from "./Singup";
 
-export default function Configuration({ navigation }) {
+export default function Routes({ navigation }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [mailInput, setMailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
@@ -150,7 +150,7 @@ export default function Configuration({ navigation }) {
           >
             <MainButton
               text="CERRAR SESION"
-              onPress={() => navigation.navigate("Routes")}
+              onPress={() => navigation.navigate("Login")}
               style={{ height: "30%", width: "70%" ,marginTop: "8%", backgroundColor: "rgba(152, 33, 33, 0.7)" }}
             />
           </View>
