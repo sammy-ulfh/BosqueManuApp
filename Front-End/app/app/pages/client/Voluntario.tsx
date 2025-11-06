@@ -13,7 +13,7 @@ import { Login } from "@/app/pages/client/Login";
 import { Input } from "@/components/Input";
 import { Background } from "@react-navigation/elements";
 
-export default function Capacitarme({ navigation }) {
+export default function Voluntario({ navigation }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
   const [name, setName] = useState('');
@@ -57,7 +57,7 @@ export default function Capacitarme({ navigation }) {
   }, []);
 
   return (
-    <View style={{ width: "100%", height: "100%", backgroundColor: "#9C9510" }}>
+    <View style={{ width: "100%", height: "100%", backgroundColor: "#5D3408" }}>
       <View
         style={[
           styles.totalWidth,
@@ -87,14 +87,14 @@ export default function Capacitarme({ navigation }) {
               },
             ]}
           >
-            ¡Yo quiero capacitarme!
+            ¡Yo quiero ser voluntario!
           </Text>
         </View>
         <ScrollView
           style={{
             width: "80%",
             height: "70%",
-            backgroundColor: "#0C8C63",
+            backgroundColor: "#006E94",
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
             borderBottomLeftRadius: 20,
@@ -186,8 +186,9 @@ export default function Capacitarme({ navigation }) {
               minHeight: "10%",
               alignItems: "center",
               justifyContent: "center",
-              backgroundColor: "#695D45"
+              backgroundColor: "#FDF9F9"
             }}
+            color="black"
           />
         </View>
       </View>

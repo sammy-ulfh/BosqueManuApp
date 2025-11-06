@@ -8,8 +8,8 @@ import Community from '../pages/client/Community';
 import Donar from "../pages/client/Donar";
 import Capacitacion from "../pages/client/Capacitacion";
 import Capacitarme from "../pages/client/Capacitarme";
-import Fifth from "../pages/client/Fifth";
-import Sixth from "../pages/client/Sixth";
+import Voluntariado from "../pages/client/Voluntariado";
+import Voluntario from "../pages/client/Voluntario";
 import Seventh from "../pages/client/Seventh";
 import Eigth from "../pages/client/Eigth";
 import Nineth from "../pages/client/Nineth";
@@ -62,14 +62,14 @@ export default function App() {
       />
 
       <Stack.Screen
-        name="Fifth"
-        component={Fifth}
+        name="Voluntariado"
+        component={Voluntariado}
         options={{ headerShown: false }}
       />
 
       <Stack.Screen
-        name="Sixth"
-        component={Sixth}
+        name="Voluntario"
+        component={Voluntario}
         options={{ headerShown: false }}
       />
 
