@@ -1,6 +1,6 @@
 import { TextInput, StyleSheet } from "react-native";
 
-export function Input({ placeholder, value, onChangeText, style }) {
+export function Input({ placeholder, value, onChangeText, style, color }) {
   return (
     <TextInput
       placeholder={placeholder}
@@ -12,7 +12,7 @@ export function Input({ placeholder, value, onChangeText, style }) {
         { color: "white", fontSize: 15 },
         style,
       ]}
-      placeholderTextColor="white"
+      placeholderTextColor={color}
     />
   );
 }

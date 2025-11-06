@@ -4,8 +4,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "../pages/Principal.tsx";
 import Login from "../pages/client/Login.tsx";
 import Singup from "../pages/client/Singup.tsx";
-import First from "../pages/client/First";
-import Second from "../pages/client/Second";
+import Community from '../pages/client/Community';
+import Donar from "../pages/client/Donar";
 import Third from "../pages/client/Third";
 import Fourth from "../pages/client/Fourth";
 import Fifth from "../pages/client/Fifth";
@@ -38,14 +38,14 @@ export default function App() {
       />
 
       <Stack.Screen
-        name="First"
-        component={First}
+        name="Community"
+        component={Community}
         options={{ headerShown: false }}
       />
 
       <Stack.Screen
-        name="Second"
-        component={Second}
+        name="Donar"
+        component={Donar}
         options={{ headerShown: false }}
       />
 

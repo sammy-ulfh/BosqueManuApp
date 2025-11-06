@@ -104,11 +104,13 @@ export default function Login({ navigation }) {
               <Input
                 placeholder="Correo electrónico"
                 value={mailInput}
+                color="white"
                 onChangeText={setMailInput}
                 style={{ height: "40%" }}
               />
               <Input
                 placeholder="Contraseña"
+                color="white"
                 value={passwordInput}
                 onChangeText={setPasswordInput}
                 style={{ marginTop: "5%", height: "40%" }}
@@ -128,7 +130,7 @@ export default function Login({ navigation }) {
           >
             <MainButton
               text="INICIAR SESION"
-              onPress={() => navigation.navigate("First")}
+              onPress={() => navigation.navigate("Community")}
               style={{ height: "30%" }}
             />
 

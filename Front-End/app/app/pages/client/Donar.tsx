@@ -11,8 +11,9 @@ import React, { useState } from "react";
 import { MainButton } from "@/components/MainButton";
 import { Login } from "@/app/pages/client/Login";
 import { Input } from "@/components/Input";
+import { Background } from "@react-navigation/elements";
 
-export default function Singup({ navigation }) {
+export default function Donar({ navigation }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
   const [name, setName] = useState('');
@@ -56,10 +57,7 @@ export default function Singup({ navigation }) {
   }, []);
 
   return (
-    <ImageBackground
-      style={styles.background}
-      source={require("../../../assets/main/background2.png")}
-    >
+    <View style={{ width: "100%", height: "100%", backgroundColor: "#9C9510" }}>
       <View
         style={[
           styles.totalWidth,
@@ -72,7 +70,7 @@ export default function Singup({ navigation }) {
         <View
           style={[
             {
-              width: "80%",
+              width: "100%",
               height: "16%",
               justifyContent: "flex-end",
               alignItems: "center",
@@ -85,18 +83,18 @@ export default function Singup({ navigation }) {
               {
                 fontSize: 40,
                 textAlign: "center",
+                paddingBottom: "5%"
               },
             ]}
           >
-            Crea tu cuenta
+            ¡Yo quiero donar!
           </Text>
         </View>
-
         <ScrollView
           style={{
             width: "80%",
             height: "70%",
-            backgroundColor: "rgba(38, 36, 36, 0.7)",
+            backgroundColor: "rgba(133, 128, 95, 0.7)",
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
             borderBottomLeftRadius: 20,
@@ -181,18 +179,19 @@ export default function Singup({ navigation }) {
           ]}
         >
           <MainButton
-            text="REGISTRARSE"
+            text="DONAR"
             onPress={() => navigation.navigate("Login")}
             style={{
               width: "80%",
               minHeight: "10%",
               alignItems: "center",
               justifyContent: "center",
+              backgroundColor: "#695D45"
             }}
           />
         </View>
       </View>
-    </ImageBackground>
+    </View>
   );
 }
 
