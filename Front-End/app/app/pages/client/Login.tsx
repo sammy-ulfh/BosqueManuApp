@@ -6,19 +6,44 @@ import {
   StyleSheet,
   ImageBackground,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
+import { supabase } from '../../../scripts/supabaseClient.js'
 
 /* Components */
 import { Input } from "@/components/Input";
 import { MainButton } from "@/components/MainButton";
 import Singup from "./Singup";
+import { loginUser } from "../../../scripts/auth.js";
 
 export default function Login({ navigation }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [mailInput, setMailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
+
+
+
+  const handleLogin = async () => {
+    const { data, error } = await loginUser(mailInput, passwordInput);
+
+    if (error) {
+      console.log('Error de login:', error.message);
+      Alert.alert('Error de login', error.message);
+      return;
+    }
+
+    if (!data.user) {
+      Alert.alert('Error de login', 'Usuario no encontrado.');
+      return;
+    }
+
+    console.log('Usuario logueado:', data.user);
+    Alert.alert('Éxito', `Bienvenido ${data.user.email}`);
+    navigation.replace('Community');
+  };
+
 
   const loadFonts = async () => {
     await Font.loadAsync({
@@ -111,6 +136,7 @@ export default function Login({ navigation }) {
               <Input
                 placeholder="Contraseña"
                 color="white"
+                secure={true}
                 value={passwordInput}
                 onChangeText={setPasswordInput}
                 style={{ marginTop: "5%", height: "40%" }}
@@ -130,7 +156,7 @@ export default function Login({ navigation }) {
           >
             <MainButton
               text="INICIAR SESION"
-              onPress={() => navigation.navigate("Community")}
+              onPress={() => handleLogin()}
               style={{ height: "30%" }}
             />
 
@@ -145,7 +171,7 @@ export default function Login({ navigation }) {
               <Text style={[styles.whiteText, { fontSize: 19 }]}>
                 ¿Aún no tienes una cuenta?
               </Text>
-              <TouchableOpacity onPress={() => navigation.navigate("Singup")}>
+              <TouchableOpacity onPress={() => navigation.navigate('Singup')}>
                 <Text
                   style={[
                     styles.whiteText,

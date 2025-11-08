@@ -12,6 +12,9 @@ import { MainButton } from "@/components/MainButton";
 import { Login } from "@/app/pages/client/Login";
 import { Input } from "@/components/Input";
 
+import { setUser } from "../../../scripts/setUser.js";
+
+
 export default function Singup({ navigation }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
@@ -28,19 +31,49 @@ export default function Singup({ navigation }) {
   const [emergencyContact, setEmergencyContact] = useState('');
 
   const cardInfo = {
-      name: [ name, setName, "Nombre"],
-      lastName: [ lastName, setLastName, "Apellido" ],
-      email: [ email, setEmail, "Correo electronico" ],
-      password: [ password, setPassword, "Contrasena"],
-      confirmedPassword: [ confirmedPassword, setConfirmedPassword, "Confirmar contrasena" ],
-      number: [ number, setNumber, "Telefono" ],
-      groupName: [ groupName, setGroupName, "Nombre de grupo (Opcional)" ],
-      bloodType: [ bloodType, setBloodType, "Grupo sanguineo" ],
-      allergies: [ allergies, setAllergies, "Alergias" ],
-      medicine: [ medicine, setMedicine, "Medicamentos" ],
-      emergencyContact: [ emergencyContact, setEmergencyContact, "Contacto de emergencia"]
+      name: [ name, setName, "Nombre", false],
+      lastName: [ lastName, setLastName, "Apellido", false],
+      email: [ email, setEmail, "Correo electronico", false],
+      password: [ password, setPassword, "Contrasena", true],
+      confirmedPassword: [ confirmedPassword, setConfirmedPassword, "Confirmar contrasena", true],
+      number: [ number, setNumber, "Telefono", false],
+      groupName: [ groupName, setGroupName, "Nombre de grupo (Opcional)", false],
+      bloodType: [ bloodType, setBloodType, "Grupo sanguineo", false],
+      allergies: [ allergies, setAllergies, "Alergias", false],
+      medicine: [ medicine, setMedicine, "Medicamentos", false],
+      emergencyContact: [ emergencyContact, setEmergencyContact, "Contacto de emergencia", false]
     }
 
+
+  const insertUser = async () => {
+    // Validación mínima
+    if (password !== confirmedPassword) {
+      alert("Las contraseñas no coinciden");
+      return;
+    }
+    
+    try {
+      const { data, error } = await setUser({
+        nombre: name,
+        apellido: lastName,
+        email,
+        password,
+        number,
+        group_name: groupName,
+        blood: bloodType,
+        allergies,
+        medicines: medicine,
+        contact: emergencyContact
+      });
+
+      if (error) throw error;
+
+      alert("¡Registro exitoso!");
+      navigation.navigate("Login");
+    } catch (err) {
+      alert("Error al registrar usuario: " + err.message);
+    }
+  };
 
   const loadFonts = async () => {
     await Font.loadAsync({
@@ -108,6 +141,7 @@ export default function Singup({ navigation }) {
             const fieldValue = value[0];
             const setField = value[1];
             const label = value[2];
+            const sec = value[3];
 
             return (
               <View style={{ width: "95%", height: "20%", justifyContent: "flex-start", alignItems: "center", marginTop: "1%" }}>
@@ -123,6 +157,7 @@ export default function Singup({ navigation }) {
                   key={key}
                   placeholder={label}
                   value={fieldValue}
+                  secure={sec}
                   onChangeText={(text) => setField(text)}
                   style={{ 
                     width: "95%", 
@@ -180,16 +215,27 @@ export default function Singup({ navigation }) {
             },
           ]}
         >
-          <MainButton
-            text="REGISTRARSE"
-            onPress={() => navigation.navigate("Login")}
-            style={{
-              width: "80%",
-              minHeight: "10%",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          />
+      <MainButton
+        text="REGISTRARSE"
+        onPress={() => insertUser({
+          name,
+          lastName,
+          email,
+          password,
+          number,
+          groupName,
+          bloodType,
+          allergies,
+          medicines: medicine,
+          emergencyContact
+        })}
+        style={{
+          width: "80%",
+          minHeight: "10%",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      />
         </View>
       </View>
     </ImageBackground>
