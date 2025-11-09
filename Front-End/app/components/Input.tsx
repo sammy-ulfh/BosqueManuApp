@@ -1,6 +1,6 @@
 import { TextInput, StyleSheet } from "react-native";
 
-export function Input({ placeholder, value, onChangeText, style, color, secure }) {
+export function Input({ placeholder, value, onChangeText, style, color, secure, testID }) {
   return (
     <TextInput
       placeholder={placeholder}
@@ -14,6 +14,7 @@ export function Input({ placeholder, value, onChangeText, style, color, secure }
       ]}
       secureTextEntry={!!secure}
       placeholderTextColor={color}
+      testID={testID}
     />
   );
 }

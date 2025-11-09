@@ -1,7 +1,6 @@
 import { Image } from "expo-image";
 import {
   View,
-  TextInput,
   Text,
   StyleSheet,
   ImageBackground,
@@ -10,7 +9,7 @@ import {
 } from "react-native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
-import { supabase } from '../../../scripts/supabaseClient.js'
+import { supabase } from "../../../scripts/supabaseClient.js";
 
 /* Components */
 import { Input } from "@/components/Input";
@@ -22,28 +21,33 @@ export default function Login({ navigation }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [mailInput, setMailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
-
-
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleLogin = async () => {
+    setErrorMessage("");
+    setSuccessMessage("");
+
     const { data, error } = await loginUser(mailInput, passwordInput);
 
     if (error) {
-      console.log('Error de login:', error.message);
-      Alert.alert('Error de login', error.message);
+      console.log("Error de login:", error.message);
+      setErrorMessage(error.message);
+      Alert.alert("Error de login", error.message);
       return;
     }
 
-    if (!data.user) {
-      Alert.alert('Error de login', 'Usuario no encontrado.');
+    if (!data?.user) {
+      setErrorMessage("Usuario no encontrado.");
+      Alert.alert("Error de login", "Usuario no encontrado.");
       return;
     }
 
-    console.log('Usuario logueado:', data.user);
-    Alert.alert('Éxito', `Bienvenido ${data.user.email}`);
-    navigation.replace('Community');
+    console.log("Usuario logueado:", data.user);
+    setSuccessMessage(`Bienvenido ${data.user.email}`);
+    Alert.alert("Éxito", `Bienvenido ${data.user.email}`);
+    navigation.replace("Community");
   };
-
 
   const loadFonts = async () => {
     await Font.loadAsync({
@@ -81,12 +85,15 @@ export default function Login({ navigation }) {
             },
           ]}
         >
+          {/* Logo */}
           <View style={[styles.totalWidth, { height: "20%" }]}>
             <Image
               source={require("../../../assets/main/logo.png")}
               style={[styles.imagen, { height: "100%" }]}
             />
           </View>
+
+          {/* Título y campos */}
           <View
             style={[
               styles.totalWidth,
@@ -116,6 +123,7 @@ export default function Login({ navigation }) {
                 Bienvenido
               </Text>
             </View>
+
             <View
               style={[
                 styles.totalWidth,
@@ -132,6 +140,7 @@ export default function Login({ navigation }) {
                 color="white"
                 onChangeText={setMailInput}
                 style={{ height: "40%" }}
+                testID="email-input"
               />
               <Input
                 placeholder="Contraseña"
@@ -140,9 +149,11 @@ export default function Login({ navigation }) {
                 value={passwordInput}
                 onChangeText={setPasswordInput}
                 style={{ marginTop: "5%", height: "40%" }}
+                testID="password-input"
               />
             </View>
           </View>
+
           <View
             style={[
               styles.totalWidth,
@@ -156,9 +167,28 @@ export default function Login({ navigation }) {
           >
             <MainButton
               text="INICIAR SESION"
-              onPress={() => handleLogin()}
+              onPress={handleLogin}
               style={{ height: "30%" }}
+              testID="login-button"
             />
+
+            {/* Mensajes visibles para Detox */}
+            {errorMessage !== "" && (
+              <Text
+                testID="login-error"
+                style={{ color: "red", marginTop: 10, fontSize: 16 }}
+              >
+                {errorMessage}
+              </Text>
+            )}
+            {successMessage !== "" && (
+              <Text
+                testID="login-success"
+                style={{ color: "green", marginTop: 10, fontSize: 16 }}
+              >
+                {successMessage}
+              </Text>
+            )}
 
             <View
               style={{
@@ -171,7 +201,10 @@ export default function Login({ navigation }) {
               <Text style={[styles.whiteText, { fontSize: 19 }]}>
                 ¿Aún no tienes una cuenta?
               </Text>
-              <TouchableOpacity onPress={() => navigation.navigate('Singup')}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Singup")}
+                testID="go-to-signup"
+              >
                 <Text
                   style={[
                     styles.whiteText,
@@ -216,14 +249,15 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   overlay: {
-    ...StyleSheet.absoluteFillObject, // llena toda la superficie
-    backgroundColor: "rgba(0, 0, 0, 0.5)", // negro con opacidad 50%
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   imagen: {
-    resizeMode: "contain", // 'contain', 'stretch', etc.
+    resizeMode: "contain",
   },
   link: {
     color: "blue",
     textDecorationLine: "underline",
   },
 });
+
