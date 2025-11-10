@@ -46,7 +46,7 @@ export default function Login({ navigation }) {
     console.log("Usuario logueado:", data.user);
     setSuccessMessage(`Bienvenido ${data.user.email}`);
     Alert.alert("Éxito", `Bienvenido ${data.user.email}`);
-    navigation.replace("Community");
+    navigation.replace("Info");
   };
 
   const loadFonts = async () => {

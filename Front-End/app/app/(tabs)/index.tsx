@@ -15,6 +15,7 @@ import Routes from "../pages/client/Routes";
 import Nineth from "../pages/client/Nineth";
 import Tenth from "../pages/client/Tenth";
 import Eleventh from "../pages/client/Eleventh";
+import Info from "../pages/client/Info";
 
 const Stack = createStackNavigator();
 
@@ -100,6 +101,12 @@ export default function App() {
       <Stack.Screen
         name="Eleventh"
         component={Eleventh}
+        options={{ headerShown: false }}
+      />
+
+    <Stack.Screen
+        name="Info"
+        component={Info}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
