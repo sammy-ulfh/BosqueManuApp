@@ -180,7 +180,7 @@ export default function Capacitarme({ navigation }) {
         >
           <MainButton
             text="FINALIZAR"
-            onPress={() => navigation.navigate("Voluntariado")}
+            onPress={() => navigation.navigate("ClientHome")}
             style={{
               width: "80%",
               minHeight: "10%",

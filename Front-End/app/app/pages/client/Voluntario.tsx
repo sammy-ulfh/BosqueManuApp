@@ -180,7 +180,7 @@ export default function Voluntario({ navigation }) {
         >
           <MainButton
             text="FINALIZAR"
-            onPress={() => navigation.navigate("Configuration")}
+            onPress={() => navigation.navigate("ClientHome")}
             style={{
               width: "80%",
               minHeight: "10%",

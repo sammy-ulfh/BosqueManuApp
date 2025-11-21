@@ -3,15 +3,17 @@ import {
   Text,
   StyleSheet,
   ImageBackground,
-  ScrollView,
+  Image,
+  Dimensions,
 } from "react-native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
 import { MainButton } from "@/components/MainButton";
 
+const { width } = Dimensions.get("window");
+
 export default function Capacitacion({ navigation }) {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isRegister, setIsRegister] = useState(false);
 
   const loadFonts = async () => {
     await Font.loadAsync({
@@ -26,67 +28,104 @@ export default function Capacitacion({ navigation }) {
     loadFonts();
   }, []);
 
+  if (!isLoaded) return null;
+
   return (
     <View style={styles.container}>
-      <ImageBackground
-        source={require("../../../assets/main/background2.png")}
-        style={styles.background}
-        resizeMode="cover"
-      >
+      
+      {/* Imagen superior */}
+      <View style={styles.imageContainer}>
+        <Image
+          source={require("../../../assets/main/background2.png")}
+          style={styles.image}
+          resizeMode="cover"
+        />
+      </View>
 
-        <View style={[styles.bottomBox, { justifyContent: "flex-start", alignItems: "center", paddingTop: "15%" }]}>
-          <Text style={{ color: "white", fontFamily: "Glook", fontSize: 36, textAlign: "center" }}>Únete a la comunidad</Text>
-          <Text style={{ color: "white", fontFamily: "Glook", fontSize: 20, marginTop: "5%", textAlign: "center", width: "90%" }}>
-            Tu participación dentro de los cursos y talleres de primeros auxilios es fundamental dentro del Bosque La Primavera.
-          </Text>
-          <MainButton
-            text="QUIERO CAPACITARME"
-            onPress={() => navigation.navigate("Capacitarme")}
-            style={{ height: "30%", marginTop: "8%", backgroundColor: "#FDF9F9" }}
-            color="black"
-          />
-        </View>
-      </ImageBackground>
+      {/* CARD inferior estilo JoinCommunityScreen */}
+      <View style={styles.card}>
+        <Text style={styles.title}>Únete a la comunidad</Text>
+
+        <Text style={styles.subtitle}>
+          Tu participación dentro de los cursos y talleres de primeros auxilios es
+          fundamental dentro del Bosque La Primavera.
+        </Text>
+
+        <MainButton
+          text="QUIERO CAPACITARME"
+          onPress={() => navigation.navigate("Capacitarme")}
+          style={styles.button}
+          textStyle={styles.buttonText}
+        />
+      </View>
+
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    resizeMode: "cover",
-    width: "100%",
-    height: "100%",
-  },
-  whiteText: {
-    color: "#ffffff",
-    fontSize: 20,
-    fontFamily: "TenorSans",
-  },
-  totalWidth: {
-    width: "100%",
-  },
-  totalHeight: {
-    height: "100%",
-  },
   container: {
     flex: 1,
-    justifyContent: "flex-end",
+    backgroundColor: "#fff",
   },
-  overlay: {
-    ...StyleSheet.absoluteFillObject, // llena toda la superficie
-    backgroundColor: "rgba(0, 0, 0, 0.5)", // negro con opacidad 50%
+
+  /* Imagen arriba */
+  imageContainer: {
+    width: width,
+    height: 590,
   },
-  contentContainer: {
-    flex: 1,
+  image: {
+    width: "100%",
+    height: "100%",
   },
-  bottomBox: {
-    height: "45%",
-    width: '100%',
-    backgroundColor: '#514C34',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    position: 'absolute',
+
+  /* CARD inferior */
+  card: {
+    backgroundColor: "#4B4A33",
+    position: "absolute",
     bottom: 0,
+    width: "100%",
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    paddingHorizontal: 25,
+    paddingVertical: 55,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: -2 },
+    shadowRadius: 6,
+    elevation: 8,
+  },
+
+  title: {
+    fontSize: 32,
+    fontFamily: "Gloock",
+    color: "#fff",
+    marginBottom: 12,
+    textAlign: "center",
+  },
+
+  subtitle: {
+    fontSize: 17,
+    fontFamily: "TenorSans",
+    color: "#ddd",
+    textAlign: "center",
+    lineHeight: 24,
+    marginBottom: 28,
+    width: "90%",
+  },
+
+  button: {
+    backgroundColor: "#828874ff",
+    borderRadius: 25,
+    width: "80%",
+    height: 55,
+    justifyContent: "center",
+  },
+
+  buttonText: {
+    color: "black",
+    fontFamily: "TenorSans",
+    fontSize: 18,
   },
 });

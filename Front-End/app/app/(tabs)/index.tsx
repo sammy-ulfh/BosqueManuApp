@@ -2,6 +2,7 @@ import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import HomeScreen from "../pages/Principal.tsx";
+import ClientHome from "../pages/client/Home";
 import Login from "../pages/client/Login.tsx";
 import Singup from "../pages/client/Singup.tsx";
 import Community from '../pages/client/Community';
@@ -25,6 +26,11 @@ export default function App() {
       <Stack.Screen
         name="Home"
         component={HomeScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ClientHome"
+        component={ClientHome}
         options={{ headerShown: false }}
       />
       <Stack.Screen

@@ -180,7 +180,7 @@ export default function Donar({ navigation }) {
         >
           <MainButton
             text="DONAR"
-            onPress={() => navigation.navigate("Capacitacion")}
+            onPress={() => navigation.navigate("ClientHome")}
             style={{
               width: "80%",
               minHeight: "10%",

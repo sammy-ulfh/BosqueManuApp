@@ -150,7 +150,7 @@ export default function Configuration({ navigation }) {
           >
             <MainButton
               text="CERRAR SESION"
-              onPress={() => navigation.navigate("Routes")}
+              onPress={() => navigation.navigate("Home")}
               style={{ height: "30%", width: "70%" ,marginTop: "8%", backgroundColor: "rgba(152, 33, 33, 0.7)" }}
             />
           </View>

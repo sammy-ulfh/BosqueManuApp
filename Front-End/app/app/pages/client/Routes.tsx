@@ -78,7 +78,12 @@ export default function Routes({ navigation }) {
           </View>
 
           {/* MAP VIEW */}
-          <View style={{ width: "80%", height: "40%", marginTop: "-10%" , justifyContent: "center", borderRadius: 15, alignItems: "center", backgroundColor: "rgba(93, 95, 57, 0.8)" }}>
+          <View style={styles.mapContainer}>
+            <Image
+              source={require("../../../assets/images/mapa.jpg")}
+              style={styles.mapImage}
+              contentFit="cover"
+            />
           </View>
 
           {/* Buttons */}
@@ -137,6 +142,20 @@ const styles = StyleSheet.create({
   link: {
     color: "blue",
     textDecorationLine: "underline",
+  },
+  mapContainer: {
+    width: "80%",
+    height: "40%",
+    marginTop: "-10%",
+    justifyContent: "center",
+    borderRadius: 15,
+    alignItems: "center",
+    backgroundColor: "rgba(93, 95, 57, 0.8)",
+    overflow: "hidden",
+  },
+  mapImage: {
+    width: "100%",
+    height: "100%",
   },
   map: { flex: 1 },
 });
