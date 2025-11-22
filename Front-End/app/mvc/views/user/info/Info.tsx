@@ -13,9 +13,9 @@ import React, { useState } from "react";
 import { obtenerUsuarios } from "../../../scripts/getUsers.js";
 
 /* Components */
-import { Input } from "@/components/Input";
-import { MainButton } from "@/components/MainButton";
-import Singup from "./Singup";
+import { Input } from "@/mvc/views/components/Input.js";
+import { MainButton } from "@/mvc/views/components/MainButton.js";
+import Singup from "../Singup.js";
 import { loginUser } from "../../../scripts/auth.js";
 
 export default function Info({ navigation }) {

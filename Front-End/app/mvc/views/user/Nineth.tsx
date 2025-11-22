@@ -7,9 +7,9 @@ import {
 } from "react-native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
-import { MainButton } from "@/components/MainButton";
+import { MainButton } from "@/mvc/views/components/MainButton";
 
-export default function Eleventh({ navigation }) {
+export default function Nineth({ navigation }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
 
@@ -49,7 +49,19 @@ export default function Eleventh({ navigation }) {
               alignItems: "center",
             },
           ]}
-        ></View>
+        >
+          <Text
+            style={[
+              styles.whiteText,
+              {
+                fontSize: 40,
+                textAlign: "center",
+              },
+            ]}
+          >
+            SOS
+          </Text>
+        </View>
         {/* < = View para el texto principal */}
         {/* View para el formulario */}
         <View
@@ -60,26 +72,14 @@ export default function Eleventh({ navigation }) {
           }}
         >
           <MainButton
-            text="Rutas faciles"
-            onPress={() => setIsRegister(true)}
+            text="SOS"
+            onPress={() => navigation.navigate("Tenth")}
             style={{
               width: "80%",
               minHeight: "10%",
-              height: "10%",
               alignItems: "center",
               justifyContent: "center",
-            }}
-          />
-
-          <MainButton
-            text="Rutas intermedias"
-            onPress={() => setIsRegister(true)}
-            style={{
-              width: "80%",
-              minHeight: "10%",
-              height: "10%",
-              alignItems: "center",
-              justifyContent: "center",
+              backgroundColor: "red",
             }}
           />
         </View>
@@ -95,8 +95,8 @@ export default function Eleventh({ navigation }) {
           ]}
         >
           <MainButton
-            text="Rutas dificiles - Login"
-            onPress={() => navigation.navigate("Login")}
+            text="CANCELAR"
+            onPress={() => navigation.navigate("Eigth")}
             style={{
               width: "80%",
               minHeight: "10%",

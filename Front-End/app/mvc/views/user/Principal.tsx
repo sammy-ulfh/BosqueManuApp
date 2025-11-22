@@ -10,7 +10,7 @@ import * as Font from "expo-font";
 import React, { useState } from "react";
 
 /* Components */
-import { MainButton } from "@/components/MainButton";
+import { MainButton } from "@/mvc/views/components/MainButton";
 
 export default function HomeScreen({ navigation }) {
   const [fontsLoaded, setFontsLoaded] = useState(false);

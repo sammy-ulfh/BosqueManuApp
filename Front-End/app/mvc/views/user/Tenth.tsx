@@ -7,9 +7,9 @@ import {
 } from "react-native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
-import { MainButton } from "@/components/MainButton";
+import { MainButton } from "@/mvc/views/components/MainButton";
 
-export default function Eleventh({ navigation }) {
+export default function Tenth({ navigation }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
 
@@ -49,7 +49,19 @@ export default function Eleventh({ navigation }) {
               alignItems: "center",
             },
           ]}
-        ></View>
+        >
+          <Text
+            style={[
+              styles.whiteText,
+              {
+                fontSize: 40,
+                textAlign: "center",
+              },
+            ]}
+          >
+            Formulario de registro
+          </Text>
+        </View>
         {/* < = View para el texto principal */}
         {/* View para el formulario */}
         <View
@@ -59,7 +71,7 @@ export default function Eleventh({ navigation }) {
             backgroundColor: "rgba(245, 73, 39, 1)",
           }}
         >
-          <Text>QUIENES SOMOS?</Text>
+          <Text>HOLA, JOSE</Text>
         </View>
         {/* View para el boton */}
         <View
@@ -71,7 +83,18 @@ export default function Eleventh({ navigation }) {
               alignItems: "center",
             },
           ]}
-        ></View>
+        >
+          <MainButton
+            text="QUIENES SOMOS?"
+            onPress={() => navigation.navigate("Eleventh")}
+            style={{
+              width: "80%",
+              minHeight: "10%",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          />
+        </View>
       </View>
     </ImageBackground>
   );

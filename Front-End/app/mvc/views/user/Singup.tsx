@@ -8,12 +8,14 @@ import {
 } from "react-native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
-import { MainButton } from "@/components/MainButton";
-import { Login } from "@/app/pages/client/Login";
-import { Input } from "@/components/Input";
-import { Background } from "@react-navigation/elements";
+import { MainButton } from "@/mvc/views/components/MainButton.js";
+import { Login } from "@/mvc/views/user/Login.js";
+import { Input } from "@/mvc/views/components/Input.js";
 
-export default function Voluntario({ navigation }) {
+import { setUser } from "../../../scripts/setUser.js";
+
+
+export default function Singup({ navigation }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
   const [name, setName] = useState('');
@@ -29,19 +31,49 @@ export default function Voluntario({ navigation }) {
   const [emergencyContact, setEmergencyContact] = useState('');
 
   const cardInfo = {
-      name: [ name, setName, "Nombre"],
-      lastName: [ lastName, setLastName, "Apellido" ],
-      email: [ email, setEmail, "Correo electronico" ],
-      password: [ password, setPassword, "Contrasena"],
-      confirmedPassword: [ confirmedPassword, setConfirmedPassword, "Confirmar contrasena" ],
-      number: [ number, setNumber, "Telefono" ],
-      groupName: [ groupName, setGroupName, "Nombre de grupo (Opcional)" ],
-      bloodType: [ bloodType, setBloodType, "Grupo sanguineo" ],
-      allergies: [ allergies, setAllergies, "Alergias" ],
-      medicine: [ medicine, setMedicine, "Medicamentos" ],
-      emergencyContact: [ emergencyContact, setEmergencyContact, "Contacto de emergencia"]
+      name: [ name, setName, "Nombre", false],
+      lastName: [ lastName, setLastName, "Apellido", false],
+      email: [ email, setEmail, "Correo electronico", false],
+      password: [ password, setPassword, "Contrasena", true],
+      confirmedPassword: [ confirmedPassword, setConfirmedPassword, "Confirmar contrasena", true],
+      number: [ number, setNumber, "Telefono", false],
+      groupName: [ groupName, setGroupName, "Nombre de grupo (Opcional)", false],
+      bloodType: [ bloodType, setBloodType, "Grupo sanguineo", false],
+      allergies: [ allergies, setAllergies, "Alergias", false],
+      medicine: [ medicine, setMedicine, "Medicamentos", false],
+      emergencyContact: [ emergencyContact, setEmergencyContact, "Contacto de emergencia", false]
     }
 
+
+  const insertUser = async () => {
+    // Validación mínima
+    if (password !== confirmedPassword) {
+      alert("Las contraseñas no coinciden");
+      return;
+    }
+    
+    try {
+      const { data, error } = await setUser({
+        nombre: name,
+        apellido: lastName,
+        email,
+        password,
+        number,
+        group_name: groupName,
+        blood: bloodType,
+        allergies,
+        medicines: medicine,
+        contact: emergencyContact
+      });
+
+      if (error) throw error;
+
+      alert("¡Registro exitoso!");
+      navigation.navigate("Login");
+    } catch (err) {
+      alert("Error al registrar usuario: " + err.message);
+    }
+  };
 
   const loadFonts = async () => {
     await Font.loadAsync({
@@ -57,7 +89,10 @@ export default function Voluntario({ navigation }) {
   }, []);
 
   return (
-    <View style={{ width: "100%", height: "100%", backgroundColor: "#5D3408" }}>
+    <ImageBackground
+      style={styles.background}
+      source={require("../../../assets/main/background2.png")}
+    >
       <View
         style={[
           styles.totalWidth,
@@ -70,7 +105,7 @@ export default function Voluntario({ navigation }) {
         <View
           style={[
             {
-              width: "100%",
+              width: "80%",
               height: "16%",
               justifyContent: "flex-end",
               alignItems: "center",
@@ -83,18 +118,18 @@ export default function Voluntario({ navigation }) {
               {
                 fontSize: 40,
                 textAlign: "center",
-                paddingBottom: "5%"
               },
             ]}
           >
-            ¡Yo quiero ser voluntario!
+            Crea tu cuenta
           </Text>
         </View>
+
         <ScrollView
           style={{
             width: "80%",
             height: "70%",
-            backgroundColor: "#006E94",
+            backgroundColor: "rgba(38, 36, 36, 0.7)",
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
             borderBottomLeftRadius: 20,
@@ -106,6 +141,7 @@ export default function Voluntario({ navigation }) {
             const fieldValue = value[0];
             const setField = value[1];
             const label = value[2];
+            const sec = value[3];
 
             return (
               <View style={{ width: "95%", height: "20%", justifyContent: "flex-start", alignItems: "center", marginTop: "1%" }}>
@@ -121,6 +157,7 @@ export default function Voluntario({ navigation }) {
                   key={key}
                   placeholder={label}
                   value={fieldValue}
+                  secure={sec}
                   onChangeText={(text) => setField(text)}
                   style={{ 
                     width: "95%", 
@@ -178,21 +215,30 @@ export default function Voluntario({ navigation }) {
             },
           ]}
         >
-          <MainButton
-            text="FINALIZAR"
-            onPress={() => navigation.navigate("ClientHome")}
-            style={{
-              width: "80%",
-              minHeight: "10%",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "#FDF9F9"
-            }}
-            color="black"
-          />
+      <MainButton
+        text="REGISTRARSE"
+        onPress={() => insertUser({
+          name,
+          lastName,
+          email,
+          password,
+          number,
+          groupName,
+          bloodType,
+          allergies,
+          medicines: medicine,
+          emergencyContact
+        })}
+        style={{
+          width: "80%",
+          minHeight: "10%",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      />
         </View>
       </View>
-    </View>
+    </ImageBackground>
   );
 }
 

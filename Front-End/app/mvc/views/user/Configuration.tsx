@@ -11,9 +11,9 @@ import * as Font from "expo-font";
 import React, { useState } from "react";
 
 /* Components */
-import { Input } from "@/components/Input";
-import { MainButton } from "@/components/MainButton";
-import Singup from "./Singup";
+import { Input } from "@/mvc/views/components/Input";
+import { MainButton } from "@/mvc/views/components/MainButton";
+import Singup from "../../../mvc/views/user/Singup";
 
 export default function Configuration({ navigation }) {
   const [isLoaded, setIsLoaded] = useState(false);

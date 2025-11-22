@@ -12,9 +12,9 @@ import React, { useState } from "react";
 import { WebView } from 'react-native-webview';
 
 /* Components */
-import { Input } from "@/components/Input";
-import { MainButton } from "@/components/MainButton";
-import Singup from "./Singup";
+import { Input } from "@/mvc/views/components/Input";
+import { MainButton } from "@/mvc/views/components/MainButton";
+import Singup from "../Singup";
 
 export default function Routes({ navigation }) {
   const [isLoaded, setIsLoaded] = useState(false);

@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
-import { MainButton } from "@/components/MainButton";
+import { MainButton } from "@/mvc/views/components/MainButton";
 
 const { width } = Dimensions.get("window");
 

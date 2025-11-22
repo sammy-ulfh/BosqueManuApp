@@ -7,9 +7,9 @@ import {
 } from "react-native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
-import { MainButton } from "@/components/MainButton";
+import { MainButton } from "@/mvc/views/components/MainButton";
 
-export default function Nineth({ navigation }) {
+export default function Eleventh({ navigation }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
 
@@ -49,19 +49,7 @@ export default function Nineth({ navigation }) {
               alignItems: "center",
             },
           ]}
-        >
-          <Text
-            style={[
-              styles.whiteText,
-              {
-                fontSize: 40,
-                textAlign: "center",
-              },
-            ]}
-          >
-            SOS
-          </Text>
-        </View>
+        ></View>
         {/* < = View para el texto principal */}
         {/* View para el formulario */}
         <View
@@ -71,17 +59,7 @@ export default function Nineth({ navigation }) {
             backgroundColor: "rgba(245, 73, 39, 1)",
           }}
         >
-          <MainButton
-            text="SOS"
-            onPress={() => navigation.navigate("Tenth")}
-            style={{
-              width: "80%",
-              minHeight: "10%",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: "red",
-            }}
-          />
+          <Text>QUIENES SOMOS?</Text>
         </View>
         {/* View para el boton */}
         <View
@@ -93,18 +71,7 @@ export default function Nineth({ navigation }) {
               alignItems: "center",
             },
           ]}
-        >
-          <MainButton
-            text="CANCELAR"
-            onPress={() => navigation.navigate("Eigth")}
-            style={{
-              width: "80%",
-              minHeight: "10%",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          />
-        </View>
+        ></View>
       </View>
     </ImageBackground>
   );

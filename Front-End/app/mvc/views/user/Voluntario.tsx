@@ -8,12 +8,12 @@ import {
 } from "react-native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
-import { MainButton } from "@/components/MainButton";
-import { Login } from "@/app/pages/client/Login";
-import { Input } from "@/components/Input";
+import { MainButton } from "@/mvc/views/components/MainButton";
+import { Login } from "@/mvc/views/user/Login";
+import { Input } from "@/mvc/views/components/Input";
 import { Background } from "@react-navigation/elements";
 
-export default function Donar({ navigation }) {
+export default function Voluntario({ navigation }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
   const [name, setName] = useState('');
@@ -57,7 +57,7 @@ export default function Donar({ navigation }) {
   }, []);
 
   return (
-    <View style={{ width: "100%", height: "100%", backgroundColor: "#9C9510" }}>
+    <View style={{ width: "100%", height: "100%", backgroundColor: "#5D3408" }}>
       <View
         style={[
           styles.totalWidth,
@@ -87,14 +87,14 @@ export default function Donar({ navigation }) {
               },
             ]}
           >
-            ¡Yo quiero donar!
+            ¡Yo quiero ser voluntario!
           </Text>
         </View>
         <ScrollView
           style={{
             width: "80%",
             height: "70%",
-            backgroundColor: "rgba(133, 128, 95, 0.7)",
+            backgroundColor: "#006E94",
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
             borderBottomLeftRadius: 20,
@@ -179,15 +179,16 @@ export default function Donar({ navigation }) {
           ]}
         >
           <MainButton
-            text="DONAR"
+            text="FINALIZAR"
             onPress={() => navigation.navigate("ClientHome")}
             style={{
               width: "80%",
               minHeight: "10%",
               alignItems: "center",
               justifyContent: "center",
-              backgroundColor: "#695D45"
+              backgroundColor: "#FDF9F9"
             }}
+            color="black"
           />
         </View>
       </View>

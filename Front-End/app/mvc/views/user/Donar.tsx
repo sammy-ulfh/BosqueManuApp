@@ -8,12 +8,12 @@ import {
 } from "react-native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
-import { MainButton } from "@/components/MainButton";
-import { Login } from "@/app/pages/client/Login";
-import { Input } from "@/components/Input";
+import { MainButton } from "@/mvc/views/components/MainButton";
+import { Login } from "@/mvc/views/user/Login";
+import { Input } from "@/mvc/views/components/Input";
 import { Background } from "@react-navigation/elements";
 
-export default function Capacitarme({ navigation }) {
+export default function Donar({ navigation }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
   const [name, setName] = useState('');
@@ -87,14 +87,14 @@ export default function Capacitarme({ navigation }) {
               },
             ]}
           >
-            ¡Yo quiero capacitarme!
+            ¡Yo quiero donar!
           </Text>
         </View>
         <ScrollView
           style={{
             width: "80%",
             height: "70%",
-            backgroundColor: "#0C8C63",
+            backgroundColor: "rgba(133, 128, 95, 0.7)",
             borderTopLeftRadius: 20,
             borderTopRightRadius: 20,
             borderBottomLeftRadius: 20,
@@ -179,7 +179,7 @@ export default function Capacitarme({ navigation }) {
           ]}
         >
           <MainButton
-            text="FINALIZAR"
+            text="DONAR"
             onPress={() => navigation.navigate("ClientHome")}
             style={{
               width: "80%",

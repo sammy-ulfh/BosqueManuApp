@@ -9,12 +9,12 @@ import {
 } from "react-native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
-import { supabase } from "../../../scripts/supabaseClient.js";
+import { supabase } from "../../models/supabase/supabaseClient.js";
 
 /* Components */
-import { Input } from "@/components/Input";
-import { MainButton } from "@/components/MainButton";
-import Singup from "./Singup";
+import { Input } from "@/mvc/views/components/Input.js";
+import { MainButton } from "@/mvc/views/components/MainButton.js";
+import Singup from "./Singup.js";
 import { loginUser } from "../../../scripts/auth.js";
 
 export default function Login({ navigation }) {
