@@ -3,6 +3,10 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import HomeScreen from "../pages/Principal.tsx";
 import ClientHome from "../pages/client/Home";
+import HomeAdmin from "../pages/admin/HomeAdmin";
+import CapacitacionesAdmin from "../pages/admin/CapacitacionesAdmin";
+import VoluntariosAdmin from "../pages/admin/VoluntariosAdmin";
+import DonativosAdmin from "../pages/admin/DonativosAdmin";
 import Login from "../pages/client/Login.tsx";
 import Singup from "../pages/client/Singup.tsx";
 import Community from '../pages/client/Community';
@@ -31,6 +35,26 @@ export default function App() {
       <Stack.Screen
         name="ClientHome"
         component={ClientHome}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="HomeAdmin"
+        component={HomeAdmin}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="CapacitacionesAdmin"
+        component={CapacitacionesAdmin}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="VoluntariosAdmin"
+        component={VoluntariosAdmin}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="DonativosAdmin"
+        component={DonativosAdmin}
         options={{ headerShown: false }}
       />
       <Stack.Screen
