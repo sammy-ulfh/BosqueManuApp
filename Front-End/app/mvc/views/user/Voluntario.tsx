@@ -10,7 +10,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { Input } from "@/mvc/views/components/Input";
 import { MainButton } from "@/mvc/views/components/MainButton";
 import * as Font from "expo-font";
-import { getCurrentUser } from "@/app/auth";
+import { getCurrentUser } from "@/mvc/models/auth/auth.js";
 
 export default function VoluntariosForm({ navigation }) {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -24,8 +24,8 @@ export default function VoluntariosForm({ navigation }) {
 
   const loadFonts = async () => {
     await Font.loadAsync({
-      TenorSans: require("../../../assets/fonts/Tenor_Sans/TenorSans-Regular.ttf"),
-      Gloock: require("../../../assets/fonts/Gloock/Gloock-Regular.ttf"),
+      TenorSans: require("@/assets/fonts/Tenor_Sans/TenorSans-Regular.ttf"),
+      Gloock: require("@/assets/fonts/Gloock/Gloock-Regular.ttf"),
     });
     setIsLoaded(true);
   };
@@ -139,5 +139,29 @@ export default function VoluntariosForm({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  ... SAME_STYLES AS ABOVE, solo cambia `title` y colores si quieres :)
+  background: {
+    flex: 1,
+    resizeMode: "cover",
+    width: "100%",
+    height: "100%",
+  },
+  whiteText: {
+    color: "#ffffff",
+    fontSize: 20,
+    fontFamily: "TenorSans",
+  },
+  totalWidth: {
+    width: "100%",
+  },
+  totalHeight: {
+    height: "100%",
+  },
+  container: {
+    flex: 1,
+    justifyContent: "flex-end",
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject, // llena toda la superficie
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // negro con opacidad 50%
+  },
 });

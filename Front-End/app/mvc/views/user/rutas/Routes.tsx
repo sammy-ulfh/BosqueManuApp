@@ -29,9 +29,9 @@ export default function Routes({ navigation }) {
 
   const loadFonts = async () => {
     await Font.loadAsync({
-      TenorSans: require("../../../assets/fonts/Tenor_Sans/TenorSans-Regular.ttf"),
-      Gloock: require("../../../assets/fonts/Gloock/Gloock-Regular.ttf"),
-      Raleway: require("../../../assets/fonts/Raleway/static/Raleway-Black.ttf"),
+      TenorSans: require("@/assets/fonts/Tenor_Sans/TenorSans-Regular.ttf"),
+      Gloock: require("@/assets/fonts/Gloock/Gloock-Regular.ttf"),
+      Raleway: require("@/assets/fonts/Raleway/static/Raleway-Black.ttf"),
     });
     setIsLoaded(true);
   };
@@ -43,7 +43,7 @@ export default function Routes({ navigation }) {
   return (
     <ImageBackground
       style={styles.background}
-      source={require("../../../assets/main/background2.png")}
+      source={require("@/assets/main/background2.png")}
     >
       <View
         style={[
@@ -80,7 +80,7 @@ export default function Routes({ navigation }) {
           {/* MAP VIEW */}
           <View style={styles.mapContainer}>
             <Image
-              source={require("../../../assets/images/mapa.jpg")}
+              source={require("@/assets/images/mapa.jpg")}
               style={styles.mapImage}
               contentFit="cover"
             />

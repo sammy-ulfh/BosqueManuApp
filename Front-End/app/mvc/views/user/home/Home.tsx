@@ -9,8 +9,8 @@ import {
   Image,
   ScrollView,
 } from "react-native";
-import SOSModal from "../../components/SOSModal";
-import CustomDrawer from "../../components/CustomDrawer";
+import SOSModal from "@/components/SOSModal";
+import CustomDrawer from "@/components/CustomDrawer";
 
 export default function Home({ navigation }: any) {
   const [sosVisible, setSosVisible] = useState(false);
@@ -18,13 +18,13 @@ export default function Home({ navigation }: any) {
 
   return (
     <SafeAreaView style={styles.container}>
-      
+
       {/* CONTENIDO SCROLLEABLE */}
       <ScrollView showsVerticalScrollIndicator={false}>
 
         {/* HERO COMPLETO */}
         <ImageBackground
-          source={require("../../../assets/images/bosquehome.png")}
+          source={require("@/assets/images/bosquehome.png")}
           style={styles.hero}
           imageStyle={{ resizeMode: "cover" }}
         >
@@ -58,7 +58,7 @@ export default function Home({ navigation }: any) {
           style={styles.cardWrapper}
         >
           <Image
-            source={require("../../../assets/images/montañashome.png")}
+            source={require("@/assets/images/montañashome.png")}
             style={styles.cardImage}
           />
           <View style={styles.cardButtonContainer}>
@@ -74,7 +74,7 @@ export default function Home({ navigation }: any) {
           style={styles.cardWrapper}
         >
           <Image
-            source={require("../../../assets/images/voluntarioshome.png")}
+            source={require("@/assets/images/voluntarioshome.png")}
             style={styles.cardImage}
           />
           <View style={styles.cardButtonContainer}>
@@ -91,7 +91,7 @@ export default function Home({ navigation }: any) {
         <View style={styles.sosLine} />
         <TouchableOpacity onPress={() => setSosVisible(true)} accessibilityLabel="Abrir SOS">
           <Image
-            source={require("../../../assets/images/sos.png")}
+            source={require("@/assets/images/sos.png")}
             style={styles.sosImage}
           />
         </TouchableOpacity>
@@ -100,7 +100,7 @@ export default function Home({ navigation }: any) {
       <SOSModal
         visible={sosVisible}
         onClose={() => setSosVisible(false)}
-        imageSource={require("../../../assets/images/SOSboton.png")}
+        imageSource={require("@/assets/images/SOSboton.png")}
       />
 
       {/* Custom drawer overlay */}

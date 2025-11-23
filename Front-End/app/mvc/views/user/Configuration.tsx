@@ -13,7 +13,7 @@ import React, { useState } from "react";
 /* Components */
 import { Input } from "@/mvc/views/components/Input";
 import { MainButton } from "@/mvc/views/components/MainButton";
-import Singup from "../../../mvc/views/user/Singup";
+import Singup from "@/mvc/views/user/Singup";
 
 export default function Configuration({ navigation }) {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -26,9 +26,9 @@ export default function Configuration({ navigation }) {
 
   const loadFonts = async () => {
     await Font.loadAsync({
-      TenorSans: require("../../../assets/fonts/Tenor_Sans/TenorSans-Regular.ttf"),
-      Gloock: require("../../../assets/fonts/Gloock/Gloock-Regular.ttf"),
-      Raleway: require("../../../assets/fonts/Raleway/static/Raleway-Black.ttf"),
+      TenorSans: require("@/assets/fonts/Tenor_Sans/TenorSans-Regular.ttf"),
+      Gloock: require("@/assets/fonts/Gloock/Gloock-Regular.ttf"),
+      Raleway: require("@/assets/fonts/Raleway/static/Raleway-Black.ttf"),
     });
     setIsLoaded(true);
   };
@@ -40,7 +40,7 @@ export default function Configuration({ navigation }) {
   return (
     <ImageBackground
       style={styles.background}
-      source={require("../../../assets/main/background2.png")}
+      source={require("@/assets/main/background2.png")}
     >
       <View
         style={[
@@ -106,35 +106,37 @@ export default function Configuration({ navigation }) {
                 },
               ]}
             >
-            <MainButton
-              text="Contraseñas y seguridad"
-              onPress={() => navigation.navigate("Community")}
-              style={{ height: "35%", width: "70%" , borderRadius: 0, 
-                    borderTopLeftRadius: 30,
-                    borderTopRightRadius: 30,
-                    backgroundColor: "rgba(72, 65, 50, 0.8)"
-               }}
-            />
-            <MainButton
-              text="Datos personales"
-              onPress={() => navigation.navigate("Community")}
-              style={{ height: "35%", borderRadius: 0, width: "70%", backgroundColor: "rgba(72, 65, 50, 0.8)" }}
-            />
-            <MainButton
-              text="Tu información y permisos"
-              onPress={() => navigation.navigate("Community")}
-              style={{ height: "35%", borderRadius: 0, backgroundColor: "rgba(72, 65, 50, 0.8)", width: "70%" }}
-            />
-            <MainButton
-              text="Ayuda"
-              onPress={() => navigation.navigate("Community")}
-              style={{ height: "35%", borderRadius: 0,
-                    borderBottomLeftRadius: 30,
-                    borderBottomRightRadius: 30,
-                    backgroundColor: "rgba(72, 65, 50, 0.8)", 
-                    width: "70%"
-               }}
-            />
+              <MainButton
+                text="Contraseñas y seguridad"
+                onPress={() => navigation.navigate("Community")}
+                style={{
+                  height: "35%", width: "70%", borderRadius: 0,
+                  borderTopLeftRadius: 30,
+                  borderTopRightRadius: 30,
+                  backgroundColor: "rgba(72, 65, 50, 0.8)"
+                }}
+              />
+              <MainButton
+                text="Datos personales"
+                onPress={() => navigation.navigate("Community")}
+                style={{ height: "35%", borderRadius: 0, width: "70%", backgroundColor: "rgba(72, 65, 50, 0.8)" }}
+              />
+              <MainButton
+                text="Tu información y permisos"
+                onPress={() => navigation.navigate("Community")}
+                style={{ height: "35%", borderRadius: 0, backgroundColor: "rgba(72, 65, 50, 0.8)", width: "70%" }}
+              />
+              <MainButton
+                text="Ayuda"
+                onPress={() => navigation.navigate("Community")}
+                style={{
+                  height: "35%", borderRadius: 0,
+                  borderBottomLeftRadius: 30,
+                  borderBottomRightRadius: 30,
+                  backgroundColor: "rgba(72, 65, 50, 0.8)",
+                  width: "70%"
+                }}
+              />
             </View>
           </View>
           <View
@@ -151,7 +153,7 @@ export default function Configuration({ navigation }) {
             <MainButton
               text="CERRAR SESION"
               onPress={() => navigation.navigate("Home")}
-              style={{ height: "30%", width: "70%" ,marginTop: "8%", backgroundColor: "rgba(152, 33, 33, 0.7)" }}
+              style={{ height: "30%", width: "70%", marginTop: "8%", backgroundColor: "rgba(152, 33, 33, 0.7)" }}
             />
           </View>
         </View>

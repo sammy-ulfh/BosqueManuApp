@@ -11,7 +11,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { Input } from "@/mvc/views/components/Input";
 import { MainButton } from "@/mvc/views/components/MainButton";
 import * as Font from "expo-font";
-import { getCurrentUser } from "@/app/auth";
+import { getCurrentUser } from "@/mvc/models/auth/auth";
 
 export default function CapacitacionesForm({ navigation }) {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -25,8 +25,8 @@ export default function CapacitacionesForm({ navigation }) {
 
   const loadFonts = async () => {
     await Font.loadAsync({
-      TenorSans: require("../../../assets/fonts/Tenor_Sans/TenorSans-Regular.ttf"),
-      Gloock: require("../../../assets/fonts/Gloock/Gloock-Regular.ttf"),
+      TenorSans: require("@/assets/fonts/Tenor_Sans/TenorSans-Regular.ttf"),
+      Gloock: require("@/assets/fonts/Gloock/Gloock-Regular.ttf"),
     });
     setIsLoaded(true);
   };

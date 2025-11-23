@@ -17,7 +17,7 @@ type Props = {
 };
 
 export default function SOSModal({ visible, onClose, imageSource, size = 180 }: Props) {
-  const img = imageSource ?? require("../../assets/images/SOSboton.png");
+  const img = imageSource ?? require("@/assets/images/SOSboton.png");
 
   return (
     <Modal
@@ -27,7 +27,7 @@ export default function SOSModal({ visible, onClose, imageSource, size = 180 }: 
       onRequestClose={onClose}
     >
       <View style={styles.overlay}>
-        <View style={[styles.modalContainer, { width: size + 40 }]}> 
+        <View style={[styles.modalContainer, { width: size + 40 }]}>
           <Image
             source={img}
             style={[styles.sosImage, { width: size, height: size, borderRadius: size / 2 }]}

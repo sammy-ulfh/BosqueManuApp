@@ -17,9 +17,9 @@ export default function HomeScreen({ navigation }) {
 
   const loadFonts = async () => {
     await Font.loadAsync({
-      TenorSans: require("../../assets/fonts/Tenor_Sans/TenorSans-Regular.ttf"),
-      Gloock: require("../../assets/fonts/Gloock/Gloock-Regular.ttf"),
-      Raleway: require("../../assets/fonts/Raleway/static/Raleway-Black.ttf"),
+      TenorSans: require("@/assets/fonts/Tenor_Sans/TenorSans-Regular.ttf"),
+      Gloock: require("@/assets/fonts/Gloock/Gloock-Regular.ttf"),
+      Raleway: require("@/assets/fonts/Raleway/static/Raleway-Black.ttf"),
     });
     setFontsLoaded(true);
   };
@@ -30,7 +30,7 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <ImageBackground
-      source={require("../../assets/main/background2.png")}
+      source={require("@/assets/main/background2.png")}
       style={styles.background}
     >
       <View

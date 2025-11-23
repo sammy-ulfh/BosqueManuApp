@@ -15,9 +15,9 @@ export default function Comunnity({ navigation }) {
 
   const loadFonts = async () => {
     await Font.loadAsync({
-      TenorSans: require("../../../assets/fonts/Tenor_Sans/TenorSans-Regular.ttf"),
-      Gloock: require("../../../assets/fonts/Gloock/Gloock-Regular.ttf"),
-      Raleway: require("../../../assets/fonts/Raleway/static/Raleway-Black.ttf"),
+      TenorSans: require("@/assets/fonts/Tenor_Sans/TenorSans-Regular.ttf"),
+      Gloock: require("@/assets/fonts/Gloock/Gloock-Regular.ttf"),
+      Raleway: require("@/assets/fonts/Raleway/static/Raleway-Black.ttf"),
     });
     setIsLoaded(true);
   };
@@ -29,7 +29,7 @@ export default function Comunnity({ navigation }) {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require("../../../assets/main/background2.png")}
+        source={require("@/assets/main/background2.png")}
         style={styles.background}
         resizeMode="cover"
       >
@@ -38,7 +38,7 @@ export default function Comunnity({ navigation }) {
           <Text style={{ color: "white", fontFamily: "Glook", fontSize: 36, textAlign: "center" }}>Únete a la comunidad</Text>
           <Text style={{ color: "white", fontFamily: "Glook", fontSize: 20, marginTop: "5%", textAlign: "center" }}>
             Tu donación fortalece nuestros programas de primeros auxilios, rescate y conservación en el Bosque La Primavera.
-Cada aporte cuenta para seguir cuidando vidas y naturaleza.
+            Cada aporte cuenta para seguir cuidando vidas y naturaleza.
           </Text>
           <MainButton
             text="QUIERO DONAR"

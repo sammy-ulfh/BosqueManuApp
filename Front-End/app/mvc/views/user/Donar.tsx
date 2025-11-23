@@ -29,25 +29,25 @@ export default function Donar({ navigation }) {
   const [emergencyContact, setEmergencyContact] = useState('');
 
   const cardInfo = {
-      name: [ name, setName, "Nombre"],
-      lastName: [ lastName, setLastName, "Apellido" ],
-      email: [ email, setEmail, "Correo electronico" ],
-      password: [ password, setPassword, "Contrasena"],
-      confirmedPassword: [ confirmedPassword, setConfirmedPassword, "Confirmar contrasena" ],
-      number: [ number, setNumber, "Telefono" ],
-      groupName: [ groupName, setGroupName, "Nombre de grupo (Opcional)" ],
-      bloodType: [ bloodType, setBloodType, "Grupo sanguineo" ],
-      allergies: [ allergies, setAllergies, "Alergias" ],
-      medicine: [ medicine, setMedicine, "Medicamentos" ],
-      emergencyContact: [ emergencyContact, setEmergencyContact, "Contacto de emergencia"]
-    }
+    name: [name, setName, "Nombre"],
+    lastName: [lastName, setLastName, "Apellido"],
+    email: [email, setEmail, "Correo electronico"],
+    password: [password, setPassword, "Contrasena"],
+    confirmedPassword: [confirmedPassword, setConfirmedPassword, "Confirmar contrasena"],
+    number: [number, setNumber, "Telefono"],
+    groupName: [groupName, setGroupName, "Nombre de grupo (Opcional)"],
+    bloodType: [bloodType, setBloodType, "Grupo sanguineo"],
+    allergies: [allergies, setAllergies, "Alergias"],
+    medicine: [medicine, setMedicine, "Medicamentos"],
+    emergencyContact: [emergencyContact, setEmergencyContact, "Contacto de emergencia"]
+  }
 
 
   const loadFonts = async () => {
     await Font.loadAsync({
-      TenorSans: require("../../../assets/fonts/Tenor_Sans/TenorSans-Regular.ttf"),
-      Gloock: require("../../../assets/fonts/Gloock/Gloock-Regular.ttf"),
-      Raleway: require("../../../assets/fonts/Raleway/static/Raleway-Black.ttf"),
+      TenorSans: require("@/assets/fonts/Tenor_Sans/TenorSans-Regular.ttf"),
+      Gloock: require("@/assets/fonts/Gloock/Gloock-Regular.ttf"),
+      Raleway: require("@/assets/fonts/Raleway/static/Raleway-Black.ttf"),
     });
     setIsLoaded(true);
   };
@@ -101,71 +101,72 @@ export default function Donar({ navigation }) {
             borderBottomRightRadius: 20,
           }}
         >
-        {
-          Object.entries(cardInfo).map(([key, value]) => {
-            const fieldValue = value[0];
-            const setField = value[1];
-            const label = value[2];
+          {
+            Object.entries(cardInfo).map(([key, value]) => {
+              const fieldValue = value[0];
+              const setField = value[1];
+              const label = value[2];
 
-            return (
-              <View style={{ width: "95%", height: "20%", justifyContent: "flex-start", alignItems: "center", marginTop: "1%" }}>
-                <Text style={{ height: "20%", 
-                  width: "100%", 
-                  color: "white",
-                  paddingLeft: "8%", 
-                  padingTop: "3%",
-                  marginBottom: "3%", 
-                   }}>{label}</Text>
-                <Input
-                  color="black"
-                  key={key}
-                  placeholder={label}
-                  value={fieldValue}
-                  onChangeText={(text) => setField(text)}
-                  style={{ 
-                    width: "95%", 
-                    minHeight: "10%", 
-                    height: "50%", 
-                    paddingLeft: 0, 
-                    backgroundColor: '#D9D9D9', 
-                    color: "black" , 
-                    borderWidth: 0,
-                    paddingLeft: "5%",
-                  }}
-                />
-              </View>
-            );
-          })
-        }
+              return (
+                <View style={{ width: "95%", height: "20%", justifyContent: "flex-start", alignItems: "center", marginTop: "1%" }}>
+                  <Text style={{
+                    height: "20%",
+                    width: "100%",
+                    color: "white",
+                    paddingLeft: "8%",
+                    padingTop: "3%",
+                    marginBottom: "3%",
+                  }}>{label}</Text>
+                  <Input
+                    color="black"
+                    key={key}
+                    placeholder={label}
+                    value={fieldValue}
+                    onChangeText={(text) => setField(text)}
+                    style={{
+                      width: "95%",
+                      minHeight: "10%",
+                      height: "50%",
+                      paddingLeft: 0,
+                      backgroundColor: '#D9D9D9',
+                      color: "black",
+                      borderWidth: 0,
+                      paddingLeft: "5%",
+                    }}
+                  />
+                </View>
+              );
+            })
+          }
 
-              <View
-                style={{
-                  marginTop: "3%",
-                  width: "90%",
-                  justifyContent: "center",
-                  alignItems: "flex-start",
-                  paddingLeft: "3%",
-                  marginBottom: "5%"
-                }}
-                >
-              <Text style={[styles.whiteText, { fontSize: 19 }]}>
-                ¿Ya tienes una cuenta?
+          <View
+            style={{
+              marginTop: "3%",
+              width: "90%",
+              justifyContent: "center",
+              alignItems: "flex-start",
+              paddingLeft: "3%",
+              marginBottom: "5%"
+            }}
+          >
+            <Text style={[styles.whiteText, { fontSize: 19 }]}>
+              ¿Ya tienes una cuenta?
+            </Text>
+            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+              <Text
+                style={[
+                  styles.whiteText,
+                  styles.link,
+                  {
+                    fontSize: 18,
+                    color: "white",
+                  },
+                ]}
+              >
+                Iniciar Sesión
               </Text>
-              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-                <Text
-                  style={[
-                    styles.whiteText,
-                    styles.link,
-                    {
-                      fontSize: 18,
-                      color: "white",
-                      },
-                    ]}
-                  >
-                    Iniciar Sesión
-                </Text>
-              </TouchableOpacity>
-            </View>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
 
         <View

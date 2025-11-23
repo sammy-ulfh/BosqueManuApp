@@ -1,4 +1,4 @@
-import { supabase } from '../user/supabaseClient';
+import { supabase } from '@/mvc/models/supabase/supabaseClient';
 import { AuthError } from '@supabase/supabase-js';
 
 export async function loginUser(email: string, password: string) {

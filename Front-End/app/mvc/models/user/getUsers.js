@@ -1,4 +1,4 @@
-import { supabase } from './supabaseClient';
+import { supabase } from '@/mvc/models/supabase/supabaseClient';
 
 export async function obtenerUsuarios() {
   try {

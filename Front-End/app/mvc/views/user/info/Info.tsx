@@ -10,13 +10,13 @@ import {
 } from "react-native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
-import { obtenerUsuarios } from "../../../scripts/getUsers.js";
+import { obtenerUsuarios } from "@/mvc/models/user/getUsers.js";
 
 /* Components */
 import { Input } from "@/mvc/views/components/Input.js";
 import { MainButton } from "@/mvc/views/components/MainButton.js";
 import Singup from "../Singup.js";
-import { loginUser } from "../../../scripts/auth.js";
+import { loginUser } from "@/scripts/auth.js";
 
 export default function Info({ navigation }) {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -24,9 +24,9 @@ export default function Info({ navigation }) {
 
   const loadFonts = async () => {
     await Font.loadAsync({
-      TenorSans: require("../../../assets/fonts/Tenor_Sans/TenorSans-Regular.ttf"),
-      Gloock: require("../../../assets/fonts/Gloock/Gloock-Regular.ttf"),
-      Raleway: require("../../../assets/fonts/Raleway/static/Raleway-Black.ttf"),
+      TenorSans: require("@/assets/fonts/Tenor_Sans/TenorSans-Regular.ttf"),
+      Gloock: require("@/assets/fonts/Gloock/Gloock-Regular.ttf"),
+      Raleway: require("@/assets/fonts/Raleway/static/Raleway-Black.ttf"),
     });
     setIsLoaded(true);
   };
@@ -51,7 +51,7 @@ export default function Info({ navigation }) {
   return (
     <ImageBackground
       style={styles.background}
-      source={require("../../../assets/main/background2.png")}
+      source={require("@/assets/main/background2.png")}
     >
       <View
         style={[
@@ -74,7 +74,7 @@ export default function Info({ navigation }) {
           {/* Logo */}
           <View style={[styles.totalWidth, { height: "20%" }]}>
             <Image
-              source={require("../../../assets/main/logo.png")}
+              source={require("@/assets/main/logo.png")}
               style={[styles.imagen, { height: "100%" }]}
             />
           </View>
@@ -99,7 +99,7 @@ export default function Info({ navigation }) {
               DB DATA
             </Text>
 
-            
+
             <View style={{ flex: 1, width: "100%", marginTop: 20 }}>
               <ScrollView contentContainerStyle={{ alignItems: "center", paddingBottom: 40 }}>
                 {users.length > 0 ? (
@@ -165,29 +165,29 @@ const styles = StyleSheet.create({
     backgroundColor: "#000",
   },
   card: {
-  width: "90%",
-  backgroundColor: "rgba(255, 255, 255, 0.1)",
-  borderRadius: 15,
-  padding: 20,
-  marginBottom: 15,
-  borderWidth: 1,
-  borderColor: "rgba(255, 255, 255, 0.3)",
-  shadowColor: "#000",
-  shadowOffset: { width: 0, height: 2 },
-  shadowOpacity: 0.4,
-  shadowRadius: 4,
-},
-cardTitle: {
-  color: "#fff",
-  fontSize: 22,
-  fontFamily: "Gloock",
-  marginBottom: 10,
-},
-cardText: {
-  color: "#ddd",
-  fontSize: 16,
-  fontFamily: "TenorSans",
-  marginBottom: 4,
-},
+    width: "90%",
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    borderRadius: 15,
+    padding: 20,
+    marginBottom: 15,
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.3)",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.4,
+    shadowRadius: 4,
+  },
+  cardTitle: {
+    color: "#fff",
+    fontSize: 22,
+    fontFamily: "Gloock",
+    marginBottom: 10,
+  },
+  cardText: {
+    color: "#ddd",
+    fontSize: 16,
+    fontFamily: "TenorSans",
+    marginBottom: 4,
+  },
 });
 
