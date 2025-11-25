@@ -9,13 +9,12 @@ import {
 import * as Font from "expo-font";
 import React, { useState } from "react";
 import { MainButton } from "@/mvc/views/components/MainButton";
-import { Login } from "@/mvc/views/user/Login";
 import { Input } from "@/mvc/views/components/Input";
 
 import { setUser } from "@/mvc/models/user/setUser.js";
 
 
-export default function Singup({ navigation }) {
+export default function Singup({ navigation }: any) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
   const [name, setName] = useState('');
@@ -30,19 +29,27 @@ export default function Singup({ navigation }) {
   const [medicine, setMedicine] = useState('');
   const [emergencyContact, setEmergencyContact] = useState('');
 
-  const cardInfo = {
-    name: [name, setName, "Nombre", false],
-    lastName: [lastName, setLastName, "Apellido", false],
-    email: [email, setEmail, "Correo electronico", false],
-    password: [password, setPassword, "Contrasena", true],
-    confirmedPassword: [confirmedPassword, setConfirmedPassword, "Confirmar contrasena", true],
-    number: [number, setNumber, "Telefono", false],
-    groupName: [groupName, setGroupName, "Nombre de grupo (Opcional)", false],
-    bloodType: [bloodType, setBloodType, "Grupo sanguineo", false],
-    allergies: [allergies, setAllergies, "Alergias", false],
-    medicine: [medicine, setMedicine, "Medicamentos", false],
-    emergencyContact: [emergencyContact, setEmergencyContact, "Contacto de emergencia", false]
-  }
+  type CardField = {
+    key: string;
+    value: string;
+    setter: (v: string) => void;
+    label: string;
+    secure?: boolean;
+  };
+
+  const cardInfo: CardField[] = [
+    { key: "name", value: name, setter: setName, label: "Nombre" },
+    { key: "lastName", value: lastName, setter: setLastName, label: "Apellido" },
+    { key: "email", value: email, setter: setEmail, label: "Correo electronico" },
+    { key: "password", value: password, setter: setPassword, label: "Contrasena", secure: true },
+    { key: "confirmedPassword", value: confirmedPassword, setter: setConfirmedPassword, label: "Confirmar contrasena", secure: true },
+    { key: "number", value: number, setter: setNumber, label: "Telefono" },
+    { key: "groupName", value: groupName, setter: setGroupName, label: "Nombre de grupo (Opcional)" },
+    { key: "bloodType", value: bloodType, setter: setBloodType, label: "Grupo sanguineo" },
+    { key: "allergies", value: allergies, setter: setAllergies, label: "Alergias" },
+    { key: "medicine", value: medicine, setter: setMedicine, label: "Medicamentos" },
+    { key: "emergencyContact", value: emergencyContact, setter: setEmergencyContact, label: "Contacto de emergencia" },
+  ];
 
 
   const insertUser = async () => {
@@ -70,8 +77,8 @@ export default function Singup({ navigation }) {
 
       alert("¡Registro exitoso!");
       navigation.navigate("Login");
-    } catch (err) {
-      alert("Error al registrar usuario: " + err.message);
+    } catch (err: any) {
+      alert("Error al registrar usuario: " + (err?.message ?? String(err)));
     }
   };
 
@@ -137,34 +144,27 @@ export default function Singup({ navigation }) {
           }}
         >
           {
-            Object.entries(cardInfo).map(([key, value]) => {
-              const fieldValue = value[0];
-              const setField = value[1];
-              const label = value[2];
-              const sec = value[3];
-
+            cardInfo.map(({ key, value: fieldValue, setter: setField, label, secure: sec }) => {
               return (
-                <View style={{ width: "95%", height: "20%", justifyContent: "flex-start", alignItems: "center", marginTop: "1%" }}>
+                <View key={key} style={{ width: "95%", height: 80, justifyContent: "flex-start", alignItems: "center", marginTop: "1%" }}>
                   <Text style={{
-                    height: "20%",
+                    height: 20,
                     width: "100%",
                     color: "white",
                     paddingLeft: "8%",
-                    padingTop: "3%",
+                    paddingTop: "3%",
                     marginBottom: "3%",
                   }}>{label}</Text>
                   <Input
                     color="black"
-                    key={key}
                     placeholder={label}
                     value={fieldValue}
-                    secure={sec}
+                    secure={!!sec}
                     onChangeText={(text) => setField(text)}
                     style={{
                       width: "95%",
-                      minHeight: "10%",
-                      height: "50%",
-                      paddingLeft: 0,
+                      minHeight: 40,
+                      height: 40,
                       backgroundColor: '#D9D9D9',
                       color: "black",
                       borderWidth: 0,
@@ -189,20 +189,20 @@ export default function Singup({ navigation }) {
             <Text style={[styles.whiteText, { fontSize: 19 }]}>
               ¿Ya tienes una cuenta?
             </Text>
-            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-              <Text
-                style={[
-                  styles.whiteText,
-                  styles.link,
-                  {
-                    fontSize: 18,
-                    color: "white",
-                  },
-                ]}
-              >
-                Iniciar Sesión
-              </Text>
-            </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                <Text
+                  style={[
+                    styles.whiteText,
+                    styles.link,
+                    {
+                      fontSize: 18,
+                      color: "white",
+                    },
+                  ]}
+                >
+                  Iniciar Sesión
+                </Text>
+              </TouchableOpacity>
           </View>
         </ScrollView>
 
@@ -218,18 +218,7 @@ export default function Singup({ navigation }) {
         >
           <MainButton
             text="REGISTRARSE"
-            onPress={() => insertUser({
-              name,
-              lastName,
-              email,
-              password,
-              number,
-              groupName,
-              bloodType,
-              allergies,
-              medicines: medicine,
-              emergencyContact
-            })}
+            onPress={insertUser}
             style={{
               width: "80%",
               minHeight: "10%",
@@ -268,5 +257,9 @@ const styles = StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject, // llena toda la superficie
     backgroundColor: "rgba(0, 0, 0, 0.5)", // negro con opacidad 50%
+  },
+  link: {
+    color: "blue",
+    textDecorationLine: "underline",
   },
 });

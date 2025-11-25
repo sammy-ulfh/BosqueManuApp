@@ -15,7 +15,7 @@ import { Input } from "@/mvc/views/components/Input";
 import { MainButton } from "@/mvc/views/components/MainButton";
 import Singup from "@/mvc/views/user/Singup";
 
-export default function Configuration({ navigation }) {
+export default function Configuration({ navigation }:any) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [mailInput, setMailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");

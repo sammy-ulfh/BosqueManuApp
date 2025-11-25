@@ -12,7 +12,7 @@ import React, { useState } from "react";
 /* Components */
 import { MainButton } from "@/mvc/views/components/MainButton";
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen({ navigation }:any) {
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
   const loadFonts = async () => {

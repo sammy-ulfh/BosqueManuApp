@@ -9,7 +9,7 @@ import * as Font from "expo-font";
 import React, { useState } from "react";
 import { MainButton } from "@/mvc/views/components/MainButton";
 
-export default function Tenth({ navigation }) {
+export default function Tenth({ navigation }: any) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
 

@@ -17,7 +17,7 @@ import { MainButton } from "@/mvc/views/components/MainButton";
 import Singup from "./Singup.js";
 import { loginUser } from "@/mvc/models/auth/auth.js";
 
-export default function Login({ navigation }) {
+export default function Login({ navigation }: any) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [mailInput, setMailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
