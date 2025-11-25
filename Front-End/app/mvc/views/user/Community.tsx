@@ -2,16 +2,17 @@ import {
   View,
   Text,
   StyleSheet,
-  ImageBackground,
-  ScrollView,
+  Image,
+  Dimensions,
 } from "react-native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
-import { MainButton } from "@/mvc/views/components/MainButton";
+import { MainButton } from "../components/MainButton";
 
-export default function Comunnity({ navigation }) {
+const { width } = Dimensions.get("window");
+
+export default function Community({ navigation }) {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isRegister, setIsRegister] = useState(false);
 
   const loadFonts = async () => {
     await Font.loadAsync({
@@ -26,68 +27,105 @@ export default function Comunnity({ navigation }) {
     loadFonts();
   }, []);
 
+  if (!isLoaded) return null;
+
   return (
     <View style={styles.container}>
-      <ImageBackground
-        source={require("@/assets/main/background2.png")}
-        style={styles.background}
-        resizeMode="cover"
-      >
 
-        <View style={[styles.bottomBox, { justifyContent: "flex-start", alignItems: "center", paddingTop: "15%" }]}>
-          <Text style={{ color: "white", fontFamily: "Glook", fontSize: 36, textAlign: "center" }}>Únete a la comunidad</Text>
-          <Text style={{ color: "white", fontFamily: "Glook", fontSize: 20, marginTop: "5%", textAlign: "center" }}>
-            Tu donación fortalece nuestros programas de primeros auxilios, rescate y conservación en el Bosque La Primavera.
-            Cada aporte cuenta para seguir cuidando vidas y naturaleza.
-          </Text>
-          <MainButton
-            text="QUIERO DONAR"
-            onPress={() => navigation.navigate("Donar")}
-            style={{ height: "30%", marginTop: "8%", backgroundColor: "#FDF9F9" }}
-            color="black"
-          />
-        </View>
-      </ImageBackground>
+      {/* Imagen superior */}
+      <View style={styles.imageContainer}>
+        <Image
+          source={require("../../../assets/images/Donaciones.png")}
+          style={styles.image}
+          resizeMode="cover"
+        />
+      </View>
+
+      {/* Card inferior ― estilo Capacitaciones */}
+      <View style={styles.card}>
+        <Text style={styles.title}>Únete a la comunidad</Text>
+
+        <Text style={styles.subtitle}>
+          Tu donación fortalece nuestros programas de primeros auxilios,
+          rescate y conservación en el Bosque La Primavera.
+          Cada aporte cuenta para seguir cuidando vidas y naturaleza.
+        </Text>
+
+        <MainButton
+          text="QUIERO DONAR"
+          onPress={() => navigation.navigate("Donar")}
+          style={styles.button}
+          textStyle={styles.buttonText}
+        />
+      </View>
+
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    resizeMode: "cover",
-    width: "100%",
-    height: "100%",
-  },
-  whiteText: {
-    color: "#ffffff",
-    fontSize: 20,
-    fontFamily: "TenorSans",
-  },
-  totalWidth: {
-    width: "100%",
-  },
-  totalHeight: {
-    height: "100%",
-  },
   container: {
     flex: 1,
-    justifyContent: "flex-end",
+    backgroundColor: "#fff",
   },
-  overlay: {
-    ...StyleSheet.absoluteFillObject, // llena toda la superficie
-    backgroundColor: "rgba(0, 0, 0, 0.5)", // negro con opacidad 50%
+
+  /* Imagen arriba */
+  imageContainer: {
+    width: width,
+    height: 590,
   },
-  contentContainer: {
-    flex: 1,
+  image: {
+    width: "100%",
+    height: "100%",
   },
-  bottomBox: {
-    height: "45%",
-    width: '100%',
-    backgroundColor: '#9C9510',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    position: 'absolute',
+
+  /* Card inferior */
+  card: {
+    backgroundColor: "#9C9510",
+    position: "absolute",
     bottom: 0,
+    width: "100%",
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    paddingHorizontal: 25,
+    paddingVertical: 55,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: -2 },
+    shadowRadius: 6,
+    elevation: 8,
+  },
+
+  title: {
+    fontSize: 32,
+    fontFamily: "Gloock",
+    color: "#fff",
+    marginBottom: 12,
+    textAlign: "center",
+  },
+
+  subtitle: {
+    fontSize: 17,
+    fontFamily: "TenorSans",
+    color: "#f3f3f3",
+    textAlign: "center",
+    lineHeight: 24,
+    marginBottom: 28,
+    width: "90%",
+  },
+
+  button: {
+    backgroundColor: "#716d1994",
+    borderRadius: 25,
+    width: "80%",
+    height: 55,
+    justifyContent: "center",
+  },
+
+  buttonText: {
+    color: "black",
+    fontFamily: "TenorSans",
+    fontSize: 18,
   },
 });

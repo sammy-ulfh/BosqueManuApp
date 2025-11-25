@@ -36,12 +36,11 @@ export default function Capacitacion({ navigation }) {
       {/* Imagen superior */}
       <View style={styles.imageContainer}>
         <Image
-          source={require("@/assets/main/background2.png")}
+          source={require("@/assets/images/botiquin.png")}
           style={styles.image}
           resizeMode="cover"
         />
       </View>
-
       {/* CARD inferior estilo JoinCommunityScreen */}
       <View style={styles.card}>
         <Text style={styles.title}>Únete a la comunidad</Text>
