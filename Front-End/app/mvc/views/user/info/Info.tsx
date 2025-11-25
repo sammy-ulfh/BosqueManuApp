@@ -16,11 +16,23 @@ import { obtenerUsuarios } from "@/mvc/models/user/getUsers.js";
 import { Input } from "@/mvc/views/components/Input.js";
 import { MainButton } from "@/mvc/views/components/MainButton.js";
 import Singup from "../Singup.js";
-import { loginUser } from "@/scripts/auth.js";
 
-export default function Info({ navigation }) {
+type User = {
+  id: number | string;
+  nombre?: string | null;
+  apellido?: string | null;
+  email?: string | null;
+  group_name?: string | null;
+  blood?: string | null;
+  allergies?: string | null;
+  medicines?: string | null;
+  contact?: string | null;
+  number?: string | null;
+};
+
+export default function Info({ navigation }: any) {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<User[]>([]);
 
   const loadFonts = async () => {
     await Font.loadAsync({
