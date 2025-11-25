@@ -1,7 +1,6 @@
 import { supabase } from '@/mvc/models/supabase/supabaseClient';
-import { AuthError } from '@supabase/supabase-js';
 
-export async function loginUser(email: string, password: string) {
+export async function loginUser(email, password) {
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
@@ -14,7 +13,7 @@ export async function loginUser(email: string, password: string) {
 /**
  * Sign out
  */
-export async function signOut(): Promise<{ error: AuthError | null }> {
+export async function signOut() {
   const { error } = await supabase.auth.signOut();
   return { error };
 }
@@ -38,7 +37,7 @@ export async function getCurrentUser() {
 /**
  * Actualizar contraseña con el código de recuperación
  */
-export async function updatePassword(password: string) {
+export async function updatePassword(password) {
   const { data, error } = await supabase.auth.updateUser({
     password: password,
   });
