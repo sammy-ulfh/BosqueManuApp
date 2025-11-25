@@ -11,8 +11,8 @@ import { Input } from "@/mvc/views/components/Input";
 import { MainButton } from "@/mvc/views/components/MainButton";
 import * as Font from "expo-font";
 import { getCurrentUser } from "@/mvc/models/auth/auth";
-
-export default function CapacitacionesForm({ navigation }) {
+  
+export default function CapacitacionesForm({ navigation }: any) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const [userName, setUserName] = useState("");
@@ -167,6 +167,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#2E8B57", // Verde igual a la imagen
     padding: 20,
     borderRadius: 20,
+    paddingBottom: 50,
+    minHeight: 500,  // 🔥 más alto
+    marginBottom: 50,
   },
 
   label: {
@@ -209,7 +212,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#D9D9D9",
     padding: 12,
     borderRadius: 15,
-    marginTop: 10,
+    marginTop: 20,
   },
 
   infoText: {
@@ -232,10 +235,11 @@ const styles = StyleSheet.create({
   },
 
   finishButton: {
-    width: "70%",
-    backgroundColor: "#EDE9E4",
-    marginTop: 30,
-    alignSelf: "center",
-    borderRadius: 30,
+    width: "80%",
+    backgroundColor: "#655f4c8d",
+    height: 60,
+    borderRadius: 25,
+    marginTop: -10,
+    alignSelf: "center", 
   },
 });

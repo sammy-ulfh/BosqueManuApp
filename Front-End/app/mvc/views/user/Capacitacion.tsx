@@ -12,7 +12,7 @@ import { MainButton } from "@/mvc/views/components/MainButton";
 
 const { width } = Dimensions.get("window");
 
-export default function Capacitacion({ navigation }) {
+export default function Capacitacion({ navigation }: any) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const loadFonts = async () => {

@@ -11,7 +11,7 @@ import { MainButton } from "../components/MainButton";
 
 const { width } = Dimensions.get("window");
 
-export default function Community({ navigation }) {
+export default function Community({ navigation } : any) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const loadFonts = async () => {

@@ -12,7 +12,7 @@ import { MainButton } from "@/mvc/views/components/MainButton";
 import * as Font from "expo-font";
 import { getCurrentUser } from "@/mvc/models/auth/auth.js";
 
-export default function VoluntariosForm({ navigation }) {
+export default function VoluntariosForm({ navigation } : any) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const [userName, setUserName] = useState("");
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 20,
     paddingBottom: 50,
-    minHeight: 500,  // 🔥 más alto
+    minHeight: 500, 
     marginBottom: 50,
   },
 

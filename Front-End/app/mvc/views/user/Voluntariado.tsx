@@ -11,7 +11,7 @@ import { MainButton } from "@/mvc/views/components/MainButton";
 
 const { width } = Dimensions.get("window");
 
-export default function Voluntariado({ navigation }) {
+export default function Voluntariado({ navigation }: any) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const loadFonts = async () => {
