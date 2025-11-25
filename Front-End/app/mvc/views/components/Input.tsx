@@ -1,6 +1,17 @@
-import { TextInput, StyleSheet } from "react-native";
+import React from "react";
+import { TextInput, StyleSheet, TextInputProps } from "react-native";
 
-export function Input({ placeholder, value, onChangeText, style, color, secure, testID }) {
+type Props = {
+  placeholder?: string;
+  value?: string;
+  onChangeText?: (text: string) => void;
+  style?: any;
+  color?: string;
+  secure?: boolean;
+  testID?: string;
+} & Partial<TextInputProps>;
+
+export function Input({ placeholder, value, onChangeText, style, color, secure, testID }: Props) {
   return (
     <TextInput
       placeholder={placeholder}

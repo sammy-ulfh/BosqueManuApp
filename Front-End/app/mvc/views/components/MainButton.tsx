@@ -1,13 +1,27 @@
+import React from "react";
 import { TouchableOpacity, StyleSheet, Text } from "react-native";
 
-export function MainButton({ onPress, style, text, color, testID }) {
+type Props = {
+  onPress?: () => void;
+  style?: any;
+  text?: string;
+  color?: string;
+  testID?: string;
+  children?: React.ReactNode;
+};
+
+export function MainButton({ onPress, style, text, color, testID, children }: Props) {
   return (
     <TouchableOpacity
       style={[{ height: "80%", width: "80%" }, styles.button, style]}
       onPress={onPress}
       testID={testID}
     >
-      <Text style={[{ color: color ? color : 'white' }, styles, { fontSize: 19 }]}>{text}</Text>
+      {children ? (
+        children
+      ) : (
+        <Text style={[{ color: color ? color : "white" }, styles.Text, { fontSize: 19 }]}>{text}</Text>
+      )}
     </TouchableOpacity>
   );
 }

@@ -16,16 +16,17 @@ import { Input } from "@/mvc/views/components/Input";
 import { MainButton } from "@/mvc/views/components/MainButton";
 import Singup from "../Singup";
 
-export default function Routes({ navigation }) {
+/* Importar imágenes */
+const biciVerde = require("@/assets/main/biciVerde.png");
+const biciAmarilla = require("@/assets/main/biciAmarilla.png");
+const biciRoja = require("@/assets/main/biciRoja.png");
+
+export default function Routes({ navigation }: any) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const latitude = -12.0464;
   const longitude = -77.0428;
   const url = `https://www.google.com/maps?q=${latitude},${longitude}&z=14&output=embed`;
-
-  const Info = {
-    name: "Jose"
-  }
 
   const loadFonts = async () => {
     await Font.loadAsync({
@@ -65,6 +66,7 @@ export default function Routes({ navigation }) {
             },
           ]}
         >
+          {/* BUSCADOR */}
           <View style={[styles.totalWidth, { height: "20%", justifyContent: "center", alignItems: "center" }]}>
             <View style={{ width: "80%", height: "100%", justifyContent: "center", alignItems: "center" }}>
               <Input
@@ -77,7 +79,7 @@ export default function Routes({ navigation }) {
             </View>
           </View>
 
-          {/* MAP VIEW */}
+          {/* MAPA */}
           <View style={styles.mapContainer}>
             <Image
               source={require("@/assets/images/mapa.jpg")}
@@ -86,23 +88,48 @@ export default function Routes({ navigation }) {
             />
           </View>
 
-          {/* Buttons */}
+          {/* BOTONES */}
           <View style={{ width: "80%", height: "40%", justifyContent: "flex-start", alignItems: "center", marginTop: "3%" }}>
+
+            {/* RUTAS FÁCILES */}
             <MainButton
-              text="Rutas faciles"
               onPress={() => navigation.navigate("Community")}
-              style={{ height: "20%", width: "80%", marginBottom: "5%" }}
-            />
+              style={styles.routeButton}
+            >
+              <Image 
+                source={biciVerde} 
+                style={styles.bikeIcon} 
+                contentFit="contain"
+              />
+              <Text style={styles.buttonText}>Rutas fáciles</Text>
+            </MainButton>
+
+            {/* RUTAS INTERMEDIAS */}
             <MainButton
-              text="Rutas intermedias"
               onPress={() => navigation.navigate("Community")}
-              style={{ height: "20%", width: "80%", marginBottom: "5%" }}
-            />
+              style={styles.routeButton}
+            >
+              <Image 
+                source={biciAmarilla} 
+                style={styles.bikeIcon} 
+                contentFit="contain"
+              />
+              <Text style={styles.buttonText}>Rutas intermedias</Text>
+            </MainButton>
+
+            {/* RUTAS DIFÍCILES */}
             <MainButton
-              text="Rutas dificiles"
               onPress={() => navigation.navigate("Community")}
-              style={{ height: "20%", width: "80%", marginBottom: "5%" }}
-            />
+              style={styles.routeButton}
+            >
+              <Image 
+                source={biciRoja} 
+                style={styles.bikeIcon} 
+                contentFit="contain"
+              />
+              <Text style={styles.buttonText}>Rutas difíciles</Text>
+            </MainButton>
+
           </View>
         </View>
       </View>
@@ -133,11 +160,11 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   overlay: {
-    ...StyleSheet.absoluteFillObject, // llena toda la superficie
-    backgroundColor: "rgba(0, 0, 0, 0.5)", // negro con opacidad 50%
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   imagen: {
-    resizeMode: "contain", // 'contain', 'stretch', etc.
+    resizeMode: "contain",
   },
   link: {
     color: "blue",
@@ -157,5 +184,22 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  map: { flex: 1 },
+    routeButton: {
+    height: "20%",
+    width: "80%",
+    marginBottom: "5%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    paddingLeft: 20,
+  },
+  bikeIcon: {
+    width: 35,
+    height: 35,
+    marginRight: 15,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 18,
+  },
 });
