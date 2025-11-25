@@ -152,8 +152,8 @@ export default function Singup({ navigation }: any) {
                     width: "100%",
                     color: "white",
                     paddingLeft: "8%",
-                    paddingTop: "3%",
-                    marginBottom: "3%",
+                    paddingTop: "0%",
+                    marginBottom: "2%",
                   }}>{label}</Text>
                   <Input
                     color="black"
@@ -186,7 +186,7 @@ export default function Singup({ navigation }: any) {
               marginBottom: "5%"
             }}
           >
-            <Text style={[styles.whiteText, { fontSize: 19 }]}>
+            <Text style={[styles.whiteText, { fontSize: 17 }]}>
               ¿Ya tienes una cuenta?
             </Text>
               <TouchableOpacity onPress={() => navigation.navigate("Login")}>
@@ -195,7 +195,7 @@ export default function Singup({ navigation }: any) {
                     styles.whiteText,
                     styles.link,
                     {
-                      fontSize: 18,
+                      fontSize: 15,
                       color: "white",
                     },
                   ]}
