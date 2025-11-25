@@ -1,22 +1,22 @@
 import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import HomeScreen from "../../mvc/views/user/Principal";
-import ClientHome from "../../mvc/views/user/home/Home";
-import Login from "../../mvc/views/user/Login";
-import Singup from "../../mvc/views/user/Singup";
-import Community from '../../mvc/views/user/Community';
-import Donar from "../../mvc/views/user/Donar";
-import Capacitacion from "../../mvc/views/user/Capacitacion";
-import Capacitarme from "../../mvc/views/user/Capacitarme";
-import Voluntariado from "../../mvc/views/user/Voluntariado";
-import Voluntario from "../../mvc/views/user/Voluntario";
-import Configuration from "../../mvc/views/user/Configuration";
-import Routes from "../../mvc/views/user/rutas/Routes";
-import Nineth from "../../mvc/views/user/Nineth";
-import Tenth from "../../mvc/views/user/Tenth";
-import Eleventh from "../../mvc/views/user/Eleventh";
-import Info from "../../mvc/views/user/info/Info";
+import HomeScreen from "@/mvc/views/user/Principal";
+import ClientHome from "@/mvc/views/user/home/Home";
+import Login from "@/mvc/views/user/Login";
+import Singup from "@/mvc/views/user/Singup";
+import Community from "@/mvc/views/user/Community";
+import Donar from "@/mvc/views/user/Donar";
+import Capacitacion from "@/mvc/views/user/Capacitacion";
+import Capacitarme from "@/mvc/views/user/Capacitarme";
+import Voluntariado from "@/mvc/views/user/Voluntariado";
+import Voluntario from "@/mvc/views/user/Voluntario";
+import Configuration from "@/mvc/views/user/Configuration";
+import Routes from "@/mvc/views/user/rutas/Routes";
+import Nineth from "@/mvc/views/user/Nineth";
+import Tenth from "@/mvc/views/user/Tenth";
+import Eleventh from "@/mvc/views/user/Eleventh";
+import Info from "@/mvc/views/user/info/Info";
 
 const Stack = createStackNavigator();
 
