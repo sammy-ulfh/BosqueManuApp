@@ -13,10 +13,10 @@ import { Input } from "@/mvc/views/components/Input";
 
 import { setUser } from "@/mvc/models/user/setUser.js";
 
-
 export default function Singup({ navigation }: any) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
+
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -51,9 +51,7 @@ export default function Singup({ navigation }: any) {
     { key: "emergencyContact", value: emergencyContact, setter: setEmergencyContact, label: "Contacto de emergencia" },
   ];
 
-
   const insertUser = async () => {
-    // Validación mínima
     if (password !== confirmedPassword) {
       alert("Las contraseñas no coinciden");
       return;
@@ -109,13 +107,15 @@ export default function Singup({ navigation }: any) {
           { justifyContent: "center", alignItems: "center" },
         ]}
       >
+        {/* TÍTULO MÁS ARRIBA */}
         <View
           style={[
             {
               width: "80%",
-              height: "16%",
-              justifyContent: "flex-end",
+              height: "15%", 
+              justifyContent: "flex-start", 
               alignItems: "center",
+              paddingTop: 60, 
             },
           ]}
         >
@@ -132,50 +132,60 @@ export default function Singup({ navigation }: any) {
           </Text>
         </View>
 
+        {/* FORMULARIO */}
         <ScrollView
           style={{
             width: "80%",
             height: "70%",
             backgroundColor: "rgba(38, 36, 36, 0.7)",
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
-            borderBottomLeftRadius: 20,
-            borderBottomRightRadius: 20,
+            borderRadius: 20,
           }}
         >
-          {
-            cardInfo.map(({ key, value: fieldValue, setter: setField, label, secure: sec }) => {
-              return (
-                <View key={key} style={{ width: "95%", height: 80, justifyContent: "flex-start", alignItems: "center", marginTop: "1%" }}>
-                  <Text style={{
+          {cardInfo.map(({ key, value: fieldValue, setter: setField, label, secure: sec }) => {
+            return (
+              <View
+                key={key}
+                style={{
+                  width: "95%",
+                  height: 80,
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  marginTop: "1%"
+                }}
+              >
+                <Text
+                  style={{
                     height: 20,
                     width: "100%",
                     color: "white",
                     paddingLeft: "8%",
-                    paddingTop: "0%",
                     marginBottom: "2%",
-                  }}>{label}</Text>
-                  <Input
-                    color="black"
-                    placeholder={label}
-                    value={fieldValue}
-                    secure={!!sec}
-                    onChangeText={(text) => setField(text)}
-                    style={{
-                      width: "95%",
-                      minHeight: 40,
-                      height: 40,
-                      backgroundColor: '#D9D9D9',
-                      color: "black",
-                      borderWidth: 0,
-                      paddingLeft: "5%",
-                    }}
-                  />
-                </View>
-              );
-            })
-          }
+                  }}
+                >
+                  {label}
+                </Text>
 
+                <Input
+                  color="black"
+                  placeholder={label}
+                  value={fieldValue}
+                  secure={!!sec}
+                  onChangeText={(text) => setField(text)}
+                  style={{
+                    width: "95%",
+                    minHeight: 40,
+                    height: 40,
+                    backgroundColor: '#D9D9D9',
+                    color: "black",
+                    borderWidth: 0,
+                    paddingLeft: "5%",
+                  }}
+                />
+              </View>
+            );
+          })}
+
+          {/* Enlace login */}
           <View
             style={{
               marginTop: "3%",
@@ -189,23 +199,24 @@ export default function Singup({ navigation }: any) {
             <Text style={[styles.whiteText, { fontSize: 17 }]}>
               ¿Ya tienes una cuenta?
             </Text>
-              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-                <Text
-                  style={[
-                    styles.whiteText,
-                    styles.link,
-                    {
-                      fontSize: 15,
-                      color: "white",
-                    },
-                  ]}
-                >
-                  Iniciar Sesión
-                </Text>
-              </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+              <Text
+                style={[
+                  styles.whiteText,
+                  styles.link,
+                  {
+                    fontSize: 15,
+                    color: "white",
+                  },
+                ]}
+              >
+                Iniciar Sesión
+              </Text>
+            </TouchableOpacity>
           </View>
         </ScrollView>
 
+        {/* BOTÓN */}
         <View
           style={[
             {
@@ -221,7 +232,7 @@ export default function Singup({ navigation }: any) {
             onPress={insertUser}
             style={{
               width: "80%",
-              minHeight: "10%",
+              height: 65,
               alignItems: "center",
               justifyContent: "center",
             }}
@@ -255,8 +266,8 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   overlay: {
-    ...StyleSheet.absoluteFillObject, // llena toda la superficie
-    backgroundColor: "rgba(0, 0, 0, 0.5)", // negro con opacidad 50%
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   link: {
     color: "blue",
