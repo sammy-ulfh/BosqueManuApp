@@ -1,3 +1,4 @@
+// boton para ir a la pantalla Nineth "Quienes somos"
 import {
   View,
   Text,

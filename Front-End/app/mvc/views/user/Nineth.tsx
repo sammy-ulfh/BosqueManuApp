@@ -1,3 +1,4 @@
+// Pagina con informacion sobre mas bosque MANU
 import {
   View,
   Text,
