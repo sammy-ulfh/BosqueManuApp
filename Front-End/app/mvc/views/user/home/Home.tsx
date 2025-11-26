@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import * as Font from "expo-font";
 import {
   SafeAreaView,
   View,
@@ -15,6 +16,20 @@ import CustomDrawer from "@/components/CustomDrawer";
 export default function Home({ navigation }: any) {
   const [sosVisible, setSosVisible] = useState(false);
   const [drawerVisible, setDrawerVisible] = useState(false);
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+
+  const loadFonts = async () => {
+    await Font.loadAsync({
+      TenorSans: require("@/assets/fonts/Tenor_Sans/TenorSans-Regular.ttf"),
+      Gloock: require("@/assets/fonts/Gloock/Gloock-Regular.ttf"),
+      Raleway: require("@/assets/fonts/Raleway/static/Raleway-Black.ttf"),
+    });
+    setFontsLoaded(true);
+  };
+
+  React.useEffect(() => {
+    loadFonts();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -138,6 +153,7 @@ const styles = StyleSheet.create({
     fontSize: 34,
     color: "#fff",
     fontWeight: "600",
+    fontFamily: "TenorSans",
   },
 
   heroContent: {
@@ -147,23 +163,27 @@ const styles = StyleSheet.create({
 
   heroTitle: {
     color: "#fff",
-    fontSize: 40,
+    fontSize: 55,
     fontWeight: "800",
+    fontFamily: "Gloock",
   },
 
   startButton: {
-    backgroundColor: "rgba(255,255,255,0.8)",
+    backgroundColor: "#5d5f39c5",
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 30,
     marginTop: 20,
     alignSelf: "flex-start",
+    borderWidth: 1,
+    borderColor: "#ffffff",
   },
 
   startButtonText: {
-    color: "#4A433F",
+    color: "#ffffff",
     fontSize: 16,
     fontWeight: "700",
+    fontFamily: "TenorSans",
   },
 
   /* TITULOS */
@@ -174,6 +194,7 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     marginBottom: 8,
     color: "#222",
+    fontFamily: "TenorSans",
   },
 
   /* CARDS */
@@ -205,6 +226,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "700",
     color: "#333",
+    fontFamily: "TenorSans",
   },
 
   /* BARRA SOS FIJA */

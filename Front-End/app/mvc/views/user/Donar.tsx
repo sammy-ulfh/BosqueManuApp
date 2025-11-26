@@ -13,7 +13,7 @@ import { Login } from "@/mvc/views/user/Login";
 import { Input } from "@/mvc/views/components/Input";
 import { Background } from "@react-navigation/elements";
 
-export default function Donar({ navigation }) {
+export default function Donar({ navigation }: any) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
   const [name, setName] = useState('');
