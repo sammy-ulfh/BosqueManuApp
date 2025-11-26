@@ -17,6 +17,10 @@ import Nineth from "@/mvc/views/user/Nineth";
 import Tenth from "@/mvc/views/user/Tenth";
 import Eleventh from "@/mvc/views/user/Eleventh";
 import Info from "@/mvc/views/user/info/Info";
+import Security from "@/mvc/views/user/configuracion/cambiarContrasena";
+import PersonalData from "@/mvc/views/user/configuracion/PersonalData";
+import Permissions from "@/mvc/views/user/configuracion/Permissions";
+import Help from "@/mvc/views/user/configuracion/Help";
 
 const Stack = createStackNavigator();
 
@@ -113,6 +117,30 @@ export default function App() {
       <Stack.Screen
         name="Info"
         component={Info}
+        options={{ headerShown: false }}
+      />
+
+            <Stack.Screen
+        name="Security"
+        component={Security}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="PersonalData"
+        component={PersonalData}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="Permissions"
+        component={Permissions}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="Help"
+        component={Help}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

@@ -108,7 +108,7 @@ export default function Configuration({ navigation }: any) {
             >
               <MainButton
                 text="Contraseñas y seguridad"
-                onPress={() => navigation.navigate("Community")}
+                onPress={() => navigation.navigate("Security")}
                 style={{
                   height: "35%", width: "70%", borderRadius: 0,
                   borderTopLeftRadius: 30,
@@ -118,17 +118,17 @@ export default function Configuration({ navigation }: any) {
               />
               <MainButton
                 text="Datos personales"
-                onPress={() => navigation.navigate("Community")}
+                onPress={() => navigation.navigate("PersonalData")}
                 style={{ height: "35%", borderRadius: 0, width: "70%", backgroundColor: "rgba(72, 65, 50, 0.8)" }}
               />
               <MainButton
                 text="Tu información y permisos"
-                onPress={() => navigation.navigate("Community")}
+                onPress={() => navigation.navigate("Permissions")}
                 style={{ height: "35%", borderRadius: 0, backgroundColor: "rgba(72, 65, 50, 0.8)", width: "70%" }}
               />
               <MainButton
                 text="Ayuda"
-                onPress={() => navigation.navigate("Community")}
+                onPress={() => navigation.navigate("Help")}
                 style={{
                   height: "35%", borderRadius: 0,
                   borderBottomLeftRadius: 30,
