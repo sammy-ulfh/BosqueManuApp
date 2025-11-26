@@ -5,69 +5,140 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Modal,
+  FlatList,
+  ActivityIndicator
 } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { Input } from "@/mvc/views/components/Input";
 import { MainButton } from "@/mvc/views/components/MainButton";
 import * as Font from "expo-font";
 import { getCurrentUser } from "@/mvc/models/auth/auth.js";
+import { supabase } from "@/mvc/models/supabase/supabaseClient.js";
 
-export default function VoluntariosForm({ navigation } : any) {
+export default function VoluntariosForm({ navigation }) {
   const [isLoaded, setIsLoaded] = useState(false);
-
   const [userName, setUserName] = useState("");
-  const [lastName, setLastName] = useState("");
-
   const [phone, setPhone] = useState("");
-  const [date, setDate] = useState(new Date());
-  const [showPicker, setShowPicker] = useState(false);
+  
+  const [availableEvents, setAvailableEvents] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState(null);``
+  const [showModal, setShowModal] = useState(false);
+  const [loadingEvents, setLoadingEvents] = useState(false);
 
-  const loadFonts = async () => {
+  const loadInitialData = async () => {
     await Font.loadAsync({
       TenorSans: require("@/assets/fonts/Tenor_Sans/TenorSans-Regular.ttf"),
       Gloock: require("@/assets/fonts/Gloock/Gloock-Regular.ttf"),
     });
-    setIsLoaded(true);
-  };
-
-  const loadUserData = async () => {
+    
     const { user } = await getCurrentUser();
     if (user) {
       const fullName = user.user_metadata.full_name || "";
-      const [first, last] = fullName.split(" ");
+      const [first] = fullName.split(" ");
       setUserName(first || "");
-      setLastName(last || "");
+    }
+    
+    fetchAvailableEvents();
+    setIsLoaded(true);
+  };
+
+  const fetchAvailableEvents = async () => {
+    setLoadingEvents(true);
+    const now = new Date().toISOString();
+
+    try {
+      const { data, error } = await supabase
+        .from('events')
+        .select('id, date, description, registros')
+        .gt('date', now)
+        .lt('registros', 14)
+        .order('date', { ascending: true });
+
+        console.log("\n\n[+] Datos obtenidos...\n")
+        console.log(data)
+
+      if (error) throw error;
+      setAvailableEvents(data || []);
+    } catch (error) {
+      console.error("Error cargando eventos:", error.message);
+    } finally {
+      setLoadingEvents(false);
     }
   };
 
   useEffect(() => {
-    loadFonts();
-    loadUserData();
+    loadInitialData();
   }, []);
 
   if (!isLoaded) return null;
 
   const validatePhone = () => /^\d{10}$/.test(phone);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!validatePhone()) {
       alert("El número telefónico debe tener 10 dígitos.");
       return;
     }
+    if (!selectedEvent) {
+      alert("Por favor selecciona una fecha disponible.");
+      return;
+    }
 
-    alert("Registro enviado correctamente");
-    navigation.navigate("ClientHome");
+    try {
+      const { user: authUser } = await getCurrentUser();
+      const { data: userData } = await supabase
+        .from('users')
+        .select('id')
+        .eq('auth_id', authUser.id)
+        .single();
+
+      if (!userData) throw new Error("Usuario no encontrado");
+
+      await supabase
+        .from('users')
+        .update({ number: phone, nombre: userName })
+        .eq('id', userData.id);
+
+      const { error: joinError } = await supabase
+        .from('user_events')
+        .insert({
+          user_id: userData.id,
+          event_id: selectedEvent.id 
+        });
+
+      if (joinError) throw joinError;
+
+      const { error: rpcError } = await supabase.rpc('increment_event_registros', { 
+        event_id: selectedEvent.id 
+      });
+
+      if (rpcError) {
+        console.error("Error incrementando contador:", rpcError);
+      }
+
+      alert("Registro exitoso");
+      navigation.navigate("ClientHome");
+
+    } catch (error) {
+      if (error.code === '23505') {
+        alert("Ya estás registrado en este evento.");
+      } else {
+        alert("Error: " + error.message);
+      }
+    }
+  };
+
+  const formatDate = (dateString) => {
+    const d = new Date(dateString);
+    return d.toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute:'2-digit' });
   };
 
   return (
     <View style={styles.mainContainer}>
-      {/* Título */}
       <Text style={styles.header}>¡Yo quiero ser voluntario!</Text>
 
-      {/* Contenedor azul */}
       <View style={styles.formCard}>
         <ScrollView>
-
           <Text style={styles.label}>Nombre</Text>
           <Input
             placeholder="Tu nombre"
@@ -76,7 +147,7 @@ export default function VoluntariosForm({ navigation } : any) {
             style={styles.input}
           />
 
-          <Text style={styles.label}>Telefono</Text>
+          <Text style={styles.label}>Teléfono</Text>
           <Input
             placeholder="10 dígitos"
             value={phone}
@@ -89,38 +160,74 @@ export default function VoluntariosForm({ navigation } : any) {
 
           <TouchableOpacity
             style={styles.dateButton}
-            onPress={() => setShowPicker(true)}
+            onPress={() => setShowModal(true)}
           >
-            <Text style={styles.dateText}>{date.toLocaleDateString()}</Text>
+            <Text style={styles.dateText}>
+              {selectedEvent ? formatDate(selectedEvent.date) : "Seleccionar fecha disponible"}
+            </Text>
             <Text style={styles.calendarIcon}>📅</Text>
           </TouchableOpacity>
+          
+          <Text style={{color: 'white', fontSize: 12, marginTop: 5, marginLeft: 10, fontStyle: 'italic'}}>
+             * Solo mostramos fechas con cupo disponible.
+          </Text>
 
-          {showPicker && (
-            <DateTimePicker
-              value={date}
-              mode="date"
-              display="calendar"
-              onChange={(event, selectedDate) => {
-                setShowPicker(false);
-                if (selectedDate) setDate(selectedDate);
-              }}
-            />
-          )}
+          <Modal
+            visible={showModal}
+            animationType="slide"
+            transparent={true}
+            onRequestClose={() => setShowModal(false)}
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalContent}>
+                <Text style={styles.modalTitle}>Fechas Disponibles</Text>
+                
+                {loadingEvents ? (
+                  <ActivityIndicator size="large" color="#0A6A8C" />
+                ) : availableEvents.length === 0 ? (
+                  <Text style={styles.noEventsText}>No hay fechas disponibles por el momento.</Text>
+                ) : (
+                  <FlatList
+                    data={availableEvents}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={({ item }) => (
+                      <TouchableOpacity 
+                        style={styles.eventItem}
+                        onPress={() => {
+                          setSelectedEvent(item);
+                          setShowModal(false);
+                        }}
+                      >
+                        <Text style={styles.eventDateText}>{formatDate(item.date)}</Text>
+                        <Text style={styles.eventSlotsText}>
+                          Cupos: {14 - (item.registros || 0)} disponibles
+                        </Text>
+                      </TouchableOpacity>
+                    )}
+                  />
+                )}
+                
+                <TouchableOpacity 
+                  style={styles.closeButton} 
+                  onPress={() => setShowModal(false)}
+                >
+                  <Text style={styles.closeButtonText}>Cancelar</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
 
           <View style={styles.infoBox}>
             <Text style={styles.infoText}>
               Para más información acerca de las capacitaciones haz click aquí
             </Text>
-
             <TouchableOpacity onPress={() => navigation.navigate("Capacitacion")}>
               <Text style={styles.infoLink}>Términos de uso | Política de privacidad</Text>
             </TouchableOpacity>
           </View>
-
         </ScrollView>
       </View>
 
-      {/* Botón FINALIZAR */}
       <MainButton
         text="FINALIZAR"
         onPress={handleSubmit}
@@ -138,7 +245,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: 50,
   },
-
   header: {
     fontSize: 28,
     fontFamily: "Gloock",
@@ -179,7 +285,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     justifyContent: "space-between",
   },
-
   dateText: {
     fontFamily: "TenorSans",
     
@@ -196,7 +301,6 @@ const styles = StyleSheet.create({
     padding: 12,
     marginTop: 20,
   },
-
   infoText: {
     fontSize: 14,
     color: "#333",
@@ -209,7 +313,6 @@ const styles = StyleSheet.create({
     color: "#333",
     textDecorationLine: "underline",
   },
-
   finishButton: {
     width: "80%",
     backgroundColor: "#655f4c8d",
@@ -218,4 +321,128 @@ const styles = StyleSheet.create({
     marginTop: -10,
     alignSelf: "center", 
   },
+  mainContainer: {
+    flex: 1,
+    backgroundColor: "#5F3714", 
+    alignItems: "center",
+    paddingTop: 50,
+  },
+  header: {
+    fontSize: 28,
+    fontFamily: "Gloock",
+    color: "white",
+    textAlign: "center",
+    marginBottom: 20,
+  },
+  formCard: {
+    width: "80%",
+    backgroundColor: "#0A6A8C", 
+    borderRadius: 20,
+    padding: 20,
+    paddingBottom: 50,
+    minHeight: 500, 
+    marginBottom: 50,
+  },
+  label: {
+    color: "white",
+    fontFamily: "TenorSans",
+    marginBottom: 5,
+    marginTop: 10,
+  },
+  input: {
+    backgroundColor: "white",
+    borderRadius: 20,
+    paddingHorizontal: 15,
+  },
+  dateButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "white",
+    borderRadius: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+    justifyContent: "space-between",
+  },
+  dateText: {
+    fontFamily: "TenorSans",
+    fontSize: 16,
+    color: "#333",
+  },
+  calendarIcon: {
+    fontSize: 20,
+  },
+  infoBox: {
+    backgroundColor: "white",
+    borderRadius: 15,
+    padding: 12,
+    marginTop: 20,
+  },
+  infoText: {
+    fontSize: 14,
+    color: "#333",
+    fontFamily: "TenorSans",
+  },
+  infoLink: {
+    fontSize: 12,
+    marginTop: 10,
+    color: "#333",
+    textDecorationLine: "underline",
+  },
+  finishButton: {
+    width: "80%",
+    backgroundColor: "#655f4c8d",
+    height: 60,
+    borderRadius: 25,
+    marginTop: -10,
+    alignSelf: "center", 
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  modalContent: {
+    width: "85%",
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 20,
+    maxHeight: "60%",
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontFamily: "Gloock",
+    marginBottom: 15,
+    textAlign: "center",
+    color: "#0A6A8C",
+  },
+  eventItem: {
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: "#eee",
+  },
+  eventDateText: {
+    fontSize: 16,
+    fontFamily: "TenorSans",
+    color: "#333",
+  },
+  eventSlotsText: {
+    fontSize: 12,
+    color: "green",
+    marginTop: 4,
+  },
+  noEventsText: {
+    textAlign: 'center',
+    marginVertical: 20,
+    color: '#666'
+  },
+  closeButton: {
+    marginTop: 15,
+    alignItems: "center",
+    padding: 10,
+  },
+  closeButtonText: {
+    color: "red",
+    fontWeight: "bold",
+  }
 });
