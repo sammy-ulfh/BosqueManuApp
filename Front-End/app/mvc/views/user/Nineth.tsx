@@ -65,14 +65,6 @@ export default function Nineth({ navigation }: any) {
 
   return (
     <View style={styles.container}>
-      {/* BOTÓN FLOTANTE DE REGRESO */}
-      <TouchableOpacity
-        onPress={() => navigation.goBack()}
-        style={styles.backButton}
-      >
-        <Text style={{ fontSize: 30, color: "white" }}>←</Text>
-      </TouchableOpacity>
-
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {/* IMAGEN "SEÑOR" */}
         <Image source={senor} style={styles.senorImage} resizeMode="cover" />
