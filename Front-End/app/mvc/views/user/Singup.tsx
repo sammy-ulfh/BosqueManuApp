@@ -51,7 +51,33 @@ export default function Singup({ navigation }: any) {
     { key: "emergencyContact", value: emergencyContact, setter: setEmergencyContact, label: "Contacto de emergencia" },
   ];
 
+  // added password validation function
+  const validatePassword = (pwd: string) => {
+    const minLength = /.{8,}/;
+    const upper = /[A-Z]/;
+    const lower = /[a-z]/;
+    const number = /[0-9]/;
+    const special = /[^A-Za-z0-9]/;
+
+    return (
+      minLength.test(pwd) &&
+      upper.test(pwd) &&
+      lower.test(pwd) &&
+      number.test(pwd) &&
+      special.test(pwd)
+    );
+  };
+  // end added section
+
   const insertUser = async () => {
+
+    // added call to password validation function
+    if (!validatePassword(password)) {
+      alert("La contraseña debe tener al menos 8 caracteres e incluir una letra mayúscula, una letra minúscula, un número y un carácter especial.");
+      return;
+    }
+    // end added section
+
     if (password !== confirmedPassword) {
       alert("Las contraseñas no coinciden");
       return;
@@ -107,15 +133,14 @@ export default function Singup({ navigation }: any) {
           { justifyContent: "center", alignItems: "center" },
         ]}
       >
-        {/* TÍTULO MÁS ARRIBA */}
         <View
           style={[
             {
               width: "80%",
-              height: "15%", 
-              justifyContent: "flex-start", 
+              height: "15%",
+              justifyContent: "flex-start",
               alignItems: "center",
-              paddingTop: 60, 
+              paddingTop: 60,
             },
           ]}
         >
@@ -132,7 +157,6 @@ export default function Singup({ navigation }: any) {
           </Text>
         </View>
 
-        {/* FORMULARIO */}
         <ScrollView
           style={{
             width: "80%",
@@ -185,7 +209,6 @@ export default function Singup({ navigation }: any) {
             );
           })}
 
-          {/* Enlace login */}
           <View
             style={{
               marginTop: "3%",
@@ -216,7 +239,6 @@ export default function Singup({ navigation }: any) {
           </View>
         </ScrollView>
 
-        {/* BOTÓN */}
         <View
           style={[
             {
