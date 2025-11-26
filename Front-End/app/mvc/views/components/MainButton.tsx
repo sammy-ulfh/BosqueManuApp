@@ -8,13 +8,15 @@ type Props = {
   color?: string;
   testID?: string;
   children?: React.ReactNode;
+  disabled?: boolean;
 };
 
-export function MainButton({ onPress, style, text, color, testID, children }: Props) {
+export function MainButton({ onPress, style, text, color, testID, children, disabled }: Props) {
   return (
     <TouchableOpacity
-      style={[{ height: "80%", width: "80%" }, styles.button, style]}
+      style={[{ height: "80%", width: "80%" }, styles.button, style, disabled ? { opacity: 0.6 } : null]}
       onPress={onPress}
+      disabled={disabled}
       testID={testID}
     >
       {children ? (

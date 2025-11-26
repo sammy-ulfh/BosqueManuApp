@@ -18,6 +18,7 @@ import Tenth from "@/mvc/views/user/Tenth";
 import Eleventh from "@/mvc/views/user/Eleventh";
 import Info from "@/mvc/views/user/info/Info";
 import Security from "@/mvc/views/user/configuracion/cambiarContrasena";
+import ChangePassword from "@/mvc/views/user/configuracion/ChangePassword";
 import PersonalData from "@/mvc/views/user/configuracion/PersonalData";
 import Permissions from "@/mvc/views/user/configuracion/Permissions";
 import Help from "@/mvc/views/user/configuracion/Help";
@@ -125,6 +126,12 @@ export default function App() {
         component={Security}
         options={{ headerShown: false }}
       />
+
+            <Stack.Screen
+              name="ChangePassword"
+              component={ChangePassword}
+              options={{ headerShown: false }}
+            />
 
       <Stack.Screen
         name="PersonalData"
