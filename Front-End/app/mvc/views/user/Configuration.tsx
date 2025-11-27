@@ -1,28 +1,18 @@
 import { Image } from "expo-image";
 import {
   View,
-  TextInput,
   Text,
   StyleSheet,
   ImageBackground,
-  TouchableOpacity,
 } from "react-native";
 import * as Font from "expo-font";
-import React, { useState } from "react";
-
-/* Components */
-import { Input } from "@/mvc/views/components/Input";
+import React, { useState, useEffect } from "react";
 import { MainButton } from "@/mvc/views/components/MainButton";
-import Singup from "@/mvc/views/user/Singup";
+import { supabase } from "@/mvc/models/supabase/supabaseClient";
 
 export default function Configuration({ navigation }: any) {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [mailInput, setMailInput] = useState("");
-  const [passwordInput, setPasswordInput] = useState("");
-
-  const Info = {
-    name: "Jose"
-  }
+  const [userName, setUserName] = useState("");
 
   const loadFonts = async () => {
     await Font.loadAsync({
@@ -33,9 +23,42 @@ export default function Configuration({ navigation }: any) {
     setIsLoaded(true);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     loadFonts();
+    obtenerNombreUsuario();
   }, []);
+
+  async function obtenerNombreUsuario() {
+    try {
+      const { data: sessionData } = await supabase.auth.getUser();
+      const user = sessionData?.user;
+
+      if (!user) return;
+
+      const { data, error } = await supabase
+        .from("users")
+        .select("nombre")
+        .eq("auth_id", user.id)
+        .single();
+
+      if (error) {
+        console.log("Error:", error);
+        return;
+      }
+
+      setUserName(data?.nombre || "Usuario");
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  if (!isLoaded) {
+    return (
+      <Text style={{ marginTop: 80, textAlign: "center", color: "#FFF" }}>
+        Cargando...
+      </Text>
+    );
+  }
 
   return (
     <ImageBackground
@@ -60,18 +83,21 @@ export default function Configuration({ navigation }: any) {
             },
           ]}
         >
+          {/* Logo */}
           <View style={[styles.totalWidth, { height: "20%" }]}>
             <Image
               source={require("../../../assets/main/logo.png")}
               style={[styles.imagen, { height: "100%" }]}
             />
           </View>
+
+          {/* Texto Bienvenida */}
           <View
             style={[
               styles.totalWidth,
               {
                 height: "40%",
-                justifyContent: "flex-start",
+                justifyContent: "center",
                 alignItems: "center",
               },
             ]}
@@ -81,7 +107,7 @@ export default function Configuration({ navigation }: any) {
                 styles.totalWidth,
                 {
                   height: "30%",
-                  justifyContent: "flex-start",
+                  justifyContent: "center",
                   alignItems: "center",
                 },
               ]}
@@ -89,12 +115,18 @@ export default function Configuration({ navigation }: any) {
               <Text
                 style={[
                   styles.whiteText,
-                  { fontFamily: "Gloock", fontSize: 40 },
+                  {
+                    fontFamily: "Gloock",
+                    fontSize: 40,
+                    textAlign: "center",   // <-- CENTRAR TEXTO
+                  },
                 ]}
               >
-                Bienvenido, {Info.name}
+                Bienvenido, {userName}
               </Text>
             </View>
+
+            {/* Botones */}
             <View
               style={[
                 styles.totalWidth,
@@ -102,7 +134,7 @@ export default function Configuration({ navigation }: any) {
                   height: "60%",
                   justifyContent: "center",
                   alignItems: "center",
-                  marginTop: "10%"
+                  marginTop: "10%",
                 },
               ]}
             >
@@ -110,35 +142,53 @@ export default function Configuration({ navigation }: any) {
                 text="Contraseñas y seguridad"
                 onPress={() => navigation.navigate("Security")}
                 style={{
-                  height: "35%", width: "70%", borderRadius: 0,
+                  height: "35%",
+                  width: "70%",
+                  borderRadius: 0,
                   borderTopLeftRadius: 30,
                   borderTopRightRadius: 30,
-                  backgroundColor: "rgba(72, 65, 50, 0.8)"
+                  backgroundColor: "rgba(72, 65, 50, 0.8)",
                 }}
               />
+
               <MainButton
                 text="Datos personales"
                 onPress={() => navigation.navigate("PersonalData")}
-                style={{ height: "35%", borderRadius: 0, width: "70%", backgroundColor: "rgba(72, 65, 50, 0.8)" }}
+                style={{
+                  height: "35%",
+                  width: "70%",
+                  borderRadius: 0,
+                  backgroundColor: "rgba(72, 65, 50, 0.8)",
+                }}
               />
+
               <MainButton
                 text="Tu información y permisos"
                 onPress={() => navigation.navigate("Permissions")}
-                style={{ height: "35%", borderRadius: 0, backgroundColor: "rgba(72, 65, 50, 0.8)", width: "70%" }}
+                style={{
+                  height: "35%",
+                  width: "70%",
+                  borderRadius: 0,
+                  backgroundColor: "rgba(72, 65, 50, 0.8)",
+                }}
               />
+
               <MainButton
                 text="Ayuda"
                 onPress={() => navigation.navigate("Help")}
                 style={{
-                  height: "35%", borderRadius: 0,
+                  height: "35%",
+                  width: "70%",
+                  borderRadius: 0,
                   borderBottomLeftRadius: 30,
                   borderBottomRightRadius: 30,
                   backgroundColor: "rgba(72, 65, 50, 0.8)",
-                  width: "70%"
                 }}
               />
             </View>
           </View>
+
+          {/* Cerrar Sesión */}
           <View
             style={[
               styles.totalWidth,
@@ -153,7 +203,12 @@ export default function Configuration({ navigation }: any) {
             <MainButton
               text="CERRAR SESION"
               onPress={() => navigation.navigate("Home")}
-              style={{ height: "30%", width: "70%", marginTop: "8%", backgroundColor: "rgba(152, 33, 33, 0.7)" }}
+              style={{
+                height: "30%",
+                width: "70%",
+                marginTop: "8%",
+                backgroundColor: "rgba(152, 33, 33, 0.7)",
+              }}
             />
           </View>
         </View>
@@ -185,14 +240,10 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   overlay: {
-    ...StyleSheet.absoluteFillObject, // llena toda la superficie
-    backgroundColor: "rgba(0, 0, 0, 0.5)", // negro con opacidad 50%
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   imagen: {
-    resizeMode: "contain", // 'contain', 'stretch', etc.
-  },
-  link: {
-    color: "blue",
-    textDecorationLine: "underline",
+    resizeMode: "contain",
   },
 });

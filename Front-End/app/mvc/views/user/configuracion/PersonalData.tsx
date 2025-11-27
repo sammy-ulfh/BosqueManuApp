@@ -10,11 +10,13 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { supabase } from "@/mvc/models/supabase/supabaseClient";
+import { actualizarUsuario } from "@/mvc/models/auth/configuracion/authDatos";
 import { MainButton } from "@/mvc/views/components/MainButton";
 import * as Font from "expo-font";
 
 type UserData = {
   id?: number | string;
+  auth_id?: string;
   nombre?: string | null;
   apellido?: string | null;
   email?: string | null;
@@ -32,7 +34,6 @@ export default function PersonalData({ navigation }: any) {
   const [editMode, setEditMode] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
 
-  // Campos editables
   const [nombre, setNombre] = useState("");
   const [apellido, setApellido] = useState("");
   const [number, setNumber] = useState("");
@@ -56,29 +57,24 @@ export default function PersonalData({ navigation }: any) {
 
   async function cargarDatos() {
     try {
-      const { data: sessionData, error: sessionError } = await supabase.auth.getUser();
-      if (sessionError) return console.error(sessionError);
-
+      const { data: sessionData } = await supabase.auth.getUser();
       const user = sessionData?.user;
       if (!user) return;
 
-      const { data: fetchedData, error: fetchError } = await supabase
+      const { data } = await supabase
         .from("users")
         .select("*")
         .eq("auth_id", user.id)
         .single();
 
-      if (fetchError) return console.error(fetchError);
+      setUserData(data);
+      setNombre(data?.nombre ?? "");
+      setApellido(data?.apellido ?? "");
+      setNumber(data?.number ?? "");
+      setBlood(data?.blood ?? "");
+      setContact(data?.contact ?? "");
+      setGroupName(data?.group_name ?? "");
 
-      setUserData(fetchedData || null);
-
-      // Inicializar campos editables
-      setNombre(fetchedData?.nombre ?? "");
-      setApellido(fetchedData?.apellido ?? "");
-      setNumber(fetchedData?.number ?? "");
-      setBlood(fetchedData?.blood ?? "");
-      setContact(fetchedData?.contact ?? "");
-      setGroupName(fetchedData?.group_name ?? "");
       setHasChanges(false);
       setEditMode(false);
     } catch (err) {
@@ -87,23 +83,24 @@ export default function PersonalData({ navigation }: any) {
   }
 
   async function guardarCambios() {
-    if (!userData) return;
+    if (!userData?.auth_id) return;
 
     const updates = { nombre, apellido, number, blood, contact, group_name };
 
-    const { error } = await supabase
-      .from("users")
-      .update(updates)
-      .eq("auth_id", userData.id);
+    const { success, error } = await actualizarUsuario(userData.auth_id, updates);
 
-    if (error) return Alert.alert("Error", "No se pudo actualizar tus datos");
+    if (!success) {
+      Alert.alert("Error", "Hubo un problema actualizando tus datos.");
+      return;
+    }
 
-    Alert.alert("Éxito", "Datos actualizados correctamente");
+    Alert.alert("Éxito", "Tus datos han sido actualizados correctamente");
     cargarDatos();
   }
 
   function handleChange(field: string, value: string) {
     setHasChanges(true);
+
     switch (field) {
       case "nombre":
         setNombre(value);
@@ -136,7 +133,6 @@ export default function PersonalData({ navigation }: any) {
     >
       <ScrollView contentContainerStyle={styles.overlay}>
         <View style={styles.card}>
-          {/* Contenedor de título y botón */}
           <View style={styles.titleContainer}>
             <Text style={[styles.title, { fontFamily: "Gloock" }]}>Mis datos</Text>
 
@@ -150,75 +146,106 @@ export default function PersonalData({ navigation }: any) {
             )}
           </View>
 
-          {/* Campos editables */}
+          {/* Inputs editables */}
           <TextInput
             style={styles.input}
             placeholder="Nombre"
             placeholderTextColor="#ccc"
             value={nombre}
-            onChangeText={(val) => handleChange("nombre", val)}
             editable={editMode}
+            onChangeText={(v) => handleChange("nombre", v)}
           />
+
           <TextInput
             style={styles.input}
             placeholder="Apellido"
             placeholderTextColor="#ccc"
             value={apellido}
-            onChangeText={(val) => handleChange("apellido", val)}
             editable={editMode}
+            onChangeText={(v) => handleChange("apellido", v)}
           />
+
           <TextInput
             style={styles.input}
             placeholder="Teléfono"
             placeholderTextColor="#ccc"
             value={number}
-            onChangeText={(val) => handleChange("number", val)}
             editable={editMode}
             keyboardType="phone-pad"
+            onChangeText={(v) => handleChange("number", v)}
           />
+
           <TextInput
             style={styles.input}
             placeholder="Grupo sanguíneo"
             placeholderTextColor="#ccc"
             value={blood}
-            onChangeText={(val) => handleChange("blood", val)}
             editable={editMode}
+            onChangeText={(v) => handleChange("blood", v)}
           />
+
           <TextInput
             style={styles.input}
             placeholder="Contacto de emergencia"
             placeholderTextColor="#ccc"
             value={contact}
-            onChangeText={(val) => handleChange("contact", val)}
             editable={editMode}
+            onChangeText={(v) => handleChange("contact", v)}
           />
+
           <TextInput
             style={styles.input}
             placeholder="Nombre de grupo"
             placeholderTextColor="#ccc"
             value={group_name}
-            onChangeText={(val) => handleChange("group_name", val)}
             editable={editMode}
+            onChangeText={(v) => handleChange("group_name", v)}
           />
 
-          {/* Campos no editables */}
-          <Text style={styles.disabledInput}>
-            Email: {userData.email ?? "No especificado"}
-          </Text>
-          <Text style={styles.disabledInput}>
-            Alergias: {userData.allergies ?? "No especificado"}
-          </Text>
-          <Text style={styles.disabledInput}>
-            Medicamentos: {userData.medicines ?? "No especificado"}
-          </Text>
+          {/* Datos no editables */}
+          <Text style={styles.disabledInput}>Email: {userData.email}</Text>
+          <Text style={styles.disabledInput}>Alergias: {userData.allergies}</Text>
+          <Text style={styles.disabledInput}>Medicamentos: {userData.medicines}</Text>
 
-          {/* Botón guardar solo si hay cambios */}
-          {editMode && hasChanges && (
-            <View style={{ marginTop: 20, alignItems: "center" }}>
+          {/* Botones en modo edición */}
+          {editMode && (
+            <View style={{ marginTop: 20, alignItems: "center", width: "100%" }}>
+              
+              {/* BOTÓN GUARDAR */}
               <MainButton
                 text="Guardar cambios"
                 onPress={guardarCambios}
-                style={styles.button}
+                style={{
+                  width: "60%",
+                  height: 50,
+                  borderRadius: 15,
+                  backgroundColor: hasChanges
+                    ? "rgba(63, 196, 114, 0.94)"
+                    : "rgba(180,180,180,0.5)",
+                }}
+                disabled={!hasChanges}
+              />
+
+              {/* BOTÓN CANCELAR */}
+              <MainButton
+                text="Cancelar"
+                onPress={() => {
+                  setNombre(userData?.nombre ?? "");
+                  setApellido(userData?.apellido ?? "");
+                  setNumber(userData?.number ?? "");
+                  setBlood(userData?.blood ?? "");
+                  setContact(userData?.contact ?? "");
+                  setGroupName(userData?.group_name ?? "");
+                  setHasChanges(false);
+                  setEditMode(false);
+                }}
+                style={{
+                  width: "40%",
+                  height: 40,
+                  borderRadius: 12,
+                  marginTop: 10,
+                  backgroundColor: "rgba(180, 180, 180, 0.7)",
+                }}
               />
             </View>
           )}
@@ -267,14 +294,8 @@ const styles = StyleSheet.create({
     color: "#ccc",
     fontSize: 16,
   },
-  button: {
-    width: "60%",
-    height: 50,
-    borderRadius: 15,
-    backgroundColor: "rgba(120,200,150,0.85)",
-  },
   editButton: {
-    backgroundColor: "green",
+    backgroundColor: "rgba(195, 176, 174, 0.7)",
     paddingVertical: 6,
     paddingHorizontal: 14,
     borderRadius: 12,
