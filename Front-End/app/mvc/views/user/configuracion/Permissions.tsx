@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
 
   item: {
     color: "#fff",
-    fontSize: 19,
+    fontSize: 15,
     fontFamily: "TenorSans",
   },
 });
