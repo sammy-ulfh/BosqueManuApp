@@ -90,17 +90,17 @@ export default function Routes({ navigation }: any) {
           </View>
         </View>
 
-        {/* BARRA INFERIOR CON BOTONES */}
+        {/* BARRA INFERIOR CON BOTONES ACTUALIZADOS */}
         <View style={styles.footer}>
           <MainButton
-            onPress={() => navigation.navigate("Configuration")}
+            onPress={() => navigation.navigate("Statistics")} // Navega a la pantalla de Historial
             style={styles.footerButton}
           >
             <Text style={styles.footerText}>Estadísticas</Text>
           </MainButton>
 
           <MainButton
-            onPress={() => navigation.navigate("Configuration")}
+            onPress={() => navigation.navigate("ActiveRoute")} // Navega a la pantalla de Tracking en vivo
             style={styles.footerButton}
           >
             <Text style={styles.footerText}>Ruta</Text>

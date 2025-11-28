@@ -22,6 +22,8 @@ import ChangePassword from "@/mvc/views/user/configuracion/ChangePassword";
 import PersonalData from "@/mvc/views/user/configuracion/PersonalData";
 import Permissions from "@/mvc/views/user/configuracion/Permissions";
 import Help from "@/mvc/views/user/configuracion/Help";
+import ActiveRouteScreen from '@/mvc/views/user/rutas/ActiveRouteScreen';
+import StatisticsScreen from '@/mvc/views/user/rutas/StatisticsScreen';
 
 const Stack = createStackNavigator();
 
@@ -150,6 +152,19 @@ export default function App() {
         component={Help}
         options={{ headerShown: false }}
       />
+
+      <Stack.Screen
+        name="Statistics"
+        component={StatisticsScreen}
+        options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="ActiveRoute"
+        component={ActiveRouteScreen}
+        options={{ headerShown: false }}
+      />
+
     </Stack.Navigator>
   );
 }
