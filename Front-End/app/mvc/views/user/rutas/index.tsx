@@ -9,12 +9,12 @@ import {
   Alert 
 } from 'react-native';
 import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
-import { useActivityClassifier } from '../../hooks/useActivityClassifier';
+import { useActivityClassifier } from '@/mvc/hooks/useActivityClassifier';
 import { ActivityIndicator } from '../../components/ActivityIndicator';
 import { SessionStatsCard } from '../../components/SessionStatsCard';
 import { SessionHistoryModal } from '../../components/SessionHistoryModal';
 import { SessionDetailModal } from '../../components/SessionDetailModal';
-import { SavedRoute } from '../../models/ActivityModel';
+import { SavedRoute } from '@/mvc/models/ActivityModel';
 
 export default function ActivityTrackerScreen() {
   const {

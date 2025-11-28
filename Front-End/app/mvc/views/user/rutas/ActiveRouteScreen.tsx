@@ -9,10 +9,10 @@ import {
   Alert 
 } from 'react-native';
 import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
-import { useActivityClassifier } from '../../../hooks/useActivityClassifier.ts';
-import { ActivityIndicator } from '../../components/ActivityIndicator.tsx';
-import { SessionStatsCard } from '../../components/SessionStatsCard.tsx';
-import { SessionDetailModal } from '../../components/SessionDetailModal.tsx';
+import { useActivityClassifier } from '@/mvc/hooks/useActivityClassifier.js';
+import { ActivityIndicator } from '../../components/ActivityIndicator.js';
+import { SessionStatsCard } from '../../components/SessionStatsCard.js';
+import { SessionDetailModal } from '../../components/SessionDetailModal.js';
 import { SavedRoute } from '../../../models/ActivityModel';
 
 export default function ActiveRouteScreen() {

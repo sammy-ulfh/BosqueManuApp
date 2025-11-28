@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { MaterialIcons, FontAwesome5, Ionicons } from '@expo/vector-icons';
-import { SessionStats } from '../models/ActivityModel';
+import { SessionStats } from '../../models/ActivityModel';
 
 interface SessionStatsCardProps {
   stats: SessionStats;

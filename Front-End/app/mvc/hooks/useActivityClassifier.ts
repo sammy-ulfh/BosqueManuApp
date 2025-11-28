@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Accelerometer } from 'expo-sensors';
+import { Platform } from 'react-native';
 import { 
   ActivityType, 
   LocationData, 
@@ -48,15 +48,14 @@ export const useActivityClassifier = () => {
   const activityLogsRef = useRef<ActivityLog[]>([]);
   const lastLocationRef = useRef<LocationData | null>(null);
   const accelSubscription = useRef<any>(null);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<number | null>(null);
 
   useEffect(() => {
     (async () => {
       const permitted = await LocationService.requestPermissions();
       setHasPermission(permitted);
-      Accelerometer.setUpdateInterval(500); 
     })();
-    return () => stopTracking(); 
+    return () => { stopTracking(); };
   }, []);
 
   const handleLocationUpdate = useCallback((newLoc: LocationData) => {
@@ -150,13 +149,30 @@ export const useActivityClassifier = () => {
     setSessionStats(statsRef.current);
 
     await LocationService.startTracking(handleLocationUpdate);
-    accelSubscription.current = Accelerometer.addListener(handleAccelUpdate);
+
+    // Start accelerometer only on native platforms. Load dynamically to avoid web errors.
+    if (Platform.OS !== 'web') {
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const { Accelerometer } = require('expo-sensors');
+        if (Accelerometer && typeof Accelerometer.addListener === 'function') {
+          Accelerometer.setUpdateInterval?.(500);
+          accelSubscription.current = Accelerometer.addListener(handleAccelUpdate);
+        }
+      } catch (err) {
+        console.warn('expo-sensors Accelerometer not available:', err);
+      }
+    }
+
     startTimer();
   };
 
   const stopTracking = () => {
     LocationService.stopTracking();
-    if (accelSubscription.current) accelSubscription.current.remove();
+    if (accelSubscription.current && typeof accelSubscription.current.remove === 'function') {
+      accelSubscription.current.remove();
+      accelSubscription.current = null;
+    }
     if (timerRef.current) clearInterval(timerRef.current);
 
     setIsActive(false);

@@ -93,14 +93,14 @@ export default function Routes({ navigation }: any) {
         {/* BARRA INFERIOR CON BOTONES ACTUALIZADOS */}
         <View style={styles.footer}>
           <MainButton
-            onPress={() => navigation.navigate("Statistics")} // Navega a la pantalla de Historial
+            onPress={() => navigation.navigate("Statistics")} 
             style={styles.footerButton}
           >
             <Text style={styles.footerText}>Estadísticas</Text>
           </MainButton>
 
           <MainButton
-            onPress={() => navigation.navigate("ActiveRoute")} // Navega a la pantalla de Tracking en vivo
+            onPress={() => navigation.navigate("ActiveRoute")} 
             style={styles.footerButton}
           >
             <Text style={styles.footerText}>Ruta</Text>

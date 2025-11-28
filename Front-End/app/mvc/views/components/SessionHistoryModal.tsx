@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Modal, TouchableOpacity, FlatList, Alert } from 'react-native';
 import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
-import { SavedRoute } from '../models/ActivityModel';
-import RouteService from '../services/RouteService';
+import { SavedRoute } from '../../models/ActivityModel';
+import RouteService from '@/mvc/services/RouteService';
 
 interface SessionHistoryModalProps {
   visible: boolean;

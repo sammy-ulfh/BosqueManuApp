@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { SavedRoute, SessionStats } from './ActivityModel';
+import { SavedRoute, SessionStats } from '../models/ActivityModel';
 
 const KEYS = {
   ROUTES: '@app_maps_routes',

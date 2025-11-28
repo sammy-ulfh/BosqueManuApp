@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import { ActivityType } from '../../models/ActivityModel.ts';
+import { ActivityType } from '../../models/ActivityModel';
 
 interface ActivityIndicatorProps {
   activity: ActivityType;

@@ -174,9 +174,9 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 20,
 
-    backgroundColor: "rgba(255, 255, 255, 0.12)", // halbtransparentes Grau
+    backgroundColor: "rgba(255, 255, 255, 0.12)", 
     borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.4)", // leichte weiße Umrandung
+    borderColor: "rgba(255, 255, 255, 0.4)", 
     borderRadius: 20,
 
     marginVertical: 12,

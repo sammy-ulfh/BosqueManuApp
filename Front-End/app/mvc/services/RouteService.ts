@@ -1,4 +1,4 @@
-import { SavedRoute, LocationData } from './ActivityModel';
+import { SavedRoute, LocationData } from '../models/ActivityModel';
 import StorageService from './StorageService';
 
 class RouteService {

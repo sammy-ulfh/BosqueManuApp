@@ -1,5 +1,5 @@
 import * as Location from 'expo-location';
-import { LocationData } from './ActivityModel';
+import { LocationData } from '../models/ActivityModel';
 
 type LocationCallback = (data: LocationData) => void;
 
@@ -28,7 +28,8 @@ class LocationService {
         const data: LocationData = {
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
-          speed: location.coords.speed,
+          speed: location.coords.speed ?? null,
+          accuracy: location.coords.accuracy ?? null,
           timestamp: location.timestamp,
         };
         callback(data);
