@@ -7,7 +7,7 @@ interface ActivityIndicatorProps {
   confidence: number;
   speed: number;       // m/s
   acceleration: number; // m/s²
-  distance: number;     // metros
+  distance: number;     // m
   history: number[];
 }
 

@@ -13,7 +13,7 @@ export interface LatLng {
 
 // datos de sensores
 export interface LocationData extends LatLng {
-  speed: number | null;    // Velocidad en m/s
+  speed: number | null; 
   accuracy: number | null;
   altitude?: number | null; 
   timestamp: number;

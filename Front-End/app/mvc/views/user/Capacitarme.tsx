@@ -20,16 +20,20 @@ export default function CapacitacionesForm({ navigation }: any) {
   const [userName, setUserName] = useState("");
   const [phone, setPhone] = useState("");
   
-  const [availableCourses, setAvailableCourses] = useState([]);
-  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [availableCourses, setAvailableCourses] = useState<any[]>([]);
+  const [selectedCourse, setSelectedCourse] = useState<any | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [loadingCourses, setLoadingCourses] = useState(false);
 
   const loadFonts = async () => {
-    await Font.loadAsync({
-      TenorSans: require("@/assets/fonts/Tenor_Sans/TenorSans-Regular.ttf"),
-      Gloock: require("@/assets/fonts/Gloock/Gloock-Regular.ttf"),
-    });
+    try {
+      await Font.loadAsync({
+        TenorSans: require("@/assets/fonts/Tenor_Sans/TenorSans-Regular.ttf"),
+        Gloock: require("@/assets/fonts/Gloock/Gloock-Regular.ttf"),
+      });
+    } catch (err) {
+      console.warn('Failed to load fonts', err);
+    }
   };
 
   const loadUserData = async () => {
@@ -65,8 +69,8 @@ export default function CapacitacionesForm({ navigation }: any) {
 
       setAvailableCourses(validCourses);
 
-    } catch (error) {
-      console.error("Error cargando capacitaciones:", error.message);
+    } catch (err) {
+      console.error("Error cargando capacitaciones:", err);
     } finally {
       setLoadingCourses(false);
     }
@@ -82,7 +86,13 @@ export default function CapacitacionesForm({ navigation }: any) {
     init();
   }, []);
 
-  if (!isLoaded) return null;
+  if (!isLoaded) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#4C4635' }}>
+        <ActivityIndicator size="large" color="#fff" />
+      </View>
+    );
+  }
 
   const validatePhone = () => /^\d{10}$/.test(phone);
 
@@ -98,6 +108,7 @@ export default function CapacitacionesForm({ navigation }: any) {
 
     try {
       const { user: authUser } = await getCurrentUser();
+      if (!authUser) throw new Error('Usuario no autenticado');
       const { data: userData } = await supabase
         .from('users')
         .select('id')
@@ -120,8 +131,8 @@ export default function CapacitacionesForm({ navigation }: any) {
 
       if (joinError) throw joinError;
 
-      const { error: rpcError } = await supabase.rpc('increment_course_registros', { 
-        course_id: selectedCourse.id 
+      const { error: rpcError } = await supabase.rpc('increment_course_registros', {
+        course_id: selectedCourse.id
       });
 
       if (rpcError) {
@@ -131,16 +142,16 @@ export default function CapacitacionesForm({ navigation }: any) {
       alert("Inscripción exitosa");
       navigation.navigate("ClientHome");
 
-    } catch (error) {
-      if (error.code === '23505') {
+    } catch (err: any) {
+      if (err && err.code === '23505') {
         alert("Ya estás inscrito en esta capacitación.");
       } else {
-        alert("Error: " + error.message);
+        alert("Error: " + (err?.message || String(err)));
       }
     }
   };
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString: string) => {
     const d = new Date(dateString);
     return d.toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute:'2-digit' });
   };

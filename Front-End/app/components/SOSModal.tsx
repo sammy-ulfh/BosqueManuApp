@@ -52,7 +52,7 @@ export default function SOSModal({ visible, onClose, imageSource, size = 190 }: 
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.45)", // semi-transparent grey overlay
+    backgroundColor: "rgba(0,0,0,0.45)", 
     justifyContent: "center",
     alignItems: "center",
   },
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     borderColor: "rgba(255,255,255,0.95)",
   },
   sosImage: {
-    // image will be positioned over the white circle (no extra border here)
+
   },
   cancelButton: {
     backgroundColor: "#ffffff",

@@ -10,7 +10,7 @@ import {
 } from "react-native";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
-const DRAWER_WIDTH = Math.min(520, SCREEN_WIDTH * 0.78); // responsive drawer width
+const DRAWER_WIDTH = Math.min(520, SCREEN_WIDTH * 0.78); 
 
 type Props = {
   visible: boolean;

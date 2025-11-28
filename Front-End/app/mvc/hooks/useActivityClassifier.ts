@@ -150,7 +150,6 @@ export const useActivityClassifier = () => {
 
     await LocationService.startTracking(handleLocationUpdate);
 
-    // Start accelerometer only on native platforms. Load dynamically to avoid web errors.
     if (Platform.OS !== 'web') {
       try {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
