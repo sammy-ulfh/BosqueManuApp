@@ -1,22 +1,13 @@
 import { Image } from "expo-image";
-import {
-  View,
-  TextInput,
-  Text,
-  StyleSheet,
-  ImageBackground,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, StyleSheet, ImageBackground } from "react-native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
-import { WebView } from 'react-native-webview';
 
 /* Components */
 import { Input } from "@/mvc/views/components/Input";
 import { MainButton } from "@/mvc/views/components/MainButton";
-import Singup from "../Singup";
 
-/* Importar imágenes */
+/* Importar imagenes */
 const biciVerde = require("@/assets/main/biciVerde.png");
 const biciAmarilla = require("@/assets/main/biciAmarilla.png");
 const biciRoja = require("@/assets/main/biciRoja.png");
@@ -24,9 +15,6 @@ const biciRoja = require("@/assets/main/biciRoja.png");
 export default function Routes({ navigation }: any) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [searchInput, setSearchInput] = useState("");
-  const latitude = -12.0464;
-  const longitude = -77.0428;
-  const url = `https://www.google.com/maps?q=${latitude},${longitude}&z=14&output=embed`;
 
   const loadFonts = async () => {
     await Font.loadAsync({
@@ -58,12 +46,7 @@ export default function Routes({ navigation }: any) {
         <View
           style={[
             styles.totalWidth,
-            {
-              height: "80%",
-              marginTop: "2%",
-              justifyContent: "center",
-              alignItems: "center"
-            },
+            { height: "80%", marginTop: "2%", justifyContent: "center", alignItems: "center" },
           ]}
         >
           {/* BUSCADOR */}
@@ -88,88 +71,54 @@ export default function Routes({ navigation }: any) {
             />
           </View>
 
-          {/* BOTONES */}
+          {/* BOTONES DE RUTAS */}
           <View style={{ width: "80%", height: "40%", justifyContent: "flex-start", alignItems: "center", marginTop: "3%" }}>
-
-            {/* RUTAS FÁCILES */}
-            <MainButton
-              onPress={() => navigation.navigate("Community")}
-              style={styles.routeButton}
-            >
-              <Image 
-                source={biciVerde} 
-                style={styles.bikeIcon} 
-                contentFit="contain"
-              />
+            <MainButton onPress={() => navigation.navigate("Community")} style={styles.routeButton}>
+              <Image source={biciVerde} style={styles.bikeIcon} contentFit="contain" />
               <Text style={styles.buttonText}>Rutas fáciles</Text>
             </MainButton>
 
-            {/* RUTAS INTERMEDIAS */}
-            <MainButton
-              onPress={() => navigation.navigate("Community")}
-              style={styles.routeButton}
-            >
-              <Image 
-                source={biciAmarilla} 
-                style={styles.bikeIcon} 
-                contentFit="contain"
-              />
+            <MainButton onPress={() => navigation.navigate("Community")} style={styles.routeButton}>
+              <Image source={biciAmarilla} style={styles.bikeIcon} contentFit="contain" />
               <Text style={styles.buttonText}>Rutas intermedias</Text>
             </MainButton>
 
-            {/* RUTAS DIFÍCILES */}
-            <MainButton
-              onPress={() => navigation.navigate("Community")}
-              style={styles.routeButton}
-            >
-              <Image 
-                source={biciRoja} 
-                style={styles.bikeIcon} 
-                contentFit="contain"
-              />
+            <MainButton onPress={() => navigation.navigate("Community")} style={styles.routeButton}>
+              <Image source={biciRoja} style={styles.bikeIcon} contentFit="contain" />
               <Text style={styles.buttonText}>Rutas difíciles</Text>
             </MainButton>
-
           </View>
         </View>
+
+        {/* BARRA INFERIOR CON BOTONES */}
+        <View style={styles.footer}>
+          <MainButton
+            onPress={() => navigation.navigate("Configuration")}
+            style={styles.footerButton}
+          >
+            <Text style={styles.footerText}>Estadísticas</Text>
+          </MainButton>
+
+          <MainButton
+            onPress={() => navigation.navigate("Configuration")}
+            style={styles.footerButton}
+          >
+            <Text style={styles.footerText}>Ruta</Text>
+          </MainButton>
+        </View>
+
       </View>
     </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  background: {
-    flex: 1,
-    resizeMode: "cover",
-    width: "100%",
-    height: "100%",
-  },
-  whiteText: {
-    color: "#ffffff",
-    fontSize: 20,
-    fontFamily: "TenorSans",
-  },
-  totalWidth: {
-    width: "100%",
-  },
-  totalHeight: {
-    height: "100%",
-  },
-  container: {
-    flex: 1,
-    justifyContent: "flex-end",
-  },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  imagen: {
-    resizeMode: "contain",
-  },
-  link: {
-    color: "blue",
-    textDecorationLine: "underline",
-  },
+  background: { flex: 1, resizeMode: "cover", width: "100%", height: "100%" },
+  totalWidth: { width: "100%" },
+  totalHeight: { height: "100%" },
+  container: { flex: 1, justifyContent: "flex-end" },
+  overlay: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(0, 0, 0, 0.5)" },
+
   mapContainer: {
     width: "80%",
     height: "40%",
@@ -180,11 +129,9 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(93, 95, 57, 0.8)",
     overflow: "hidden",
   },
-  mapImage: {
-    width: "100%",
-    height: "100%",
-  },
-    routeButton: {
+  mapImage: { width: "100%", height: "100%" },
+
+  routeButton: {
     height: "20%",
     width: "80%",
     marginBottom: "5%",
@@ -193,13 +140,24 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     paddingLeft: 20,
   },
-  bikeIcon: {
-    width: 35,
-    height: 35,
-    marginRight: 15,
+  bikeIcon: { width: 35, height: 35, marginRight: 15 },
+  buttonText: { color: "#fff", fontSize: 18 },
+
+  footer: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    paddingVertical: 10,
+    backgroundColor: "rgba(0, 0, 0, 0)",
   },
-  buttonText: {
-    color: "#fff",
-    fontSize: 18,
+  footerButton: {
+    flex: 1,
+    marginHorizontal: 5,
+    height: 50,
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(50,150,50,0.8)",
   },
+  footerText: { color: "#fff", fontSize: 16, fontWeight: "bold" },
 });
