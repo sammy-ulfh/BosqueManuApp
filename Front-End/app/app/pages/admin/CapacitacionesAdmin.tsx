@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   SafeAreaView,
   View,
@@ -6,32 +6,28 @@ import {
   StyleSheet,
   TouchableOpacity,
   FlatList,
+  ActivityIndicator,
+  RefreshControl
 } from "react-native";
 import AdminDrawer from "../../../app/components/AdminDrawer";
-
-type Registro = {
-  id: string;
-  name: string;
-  email: string;
-  date: string; // ISO or human
-};
-
-const MOCK: Registro[] = [
-  { id: "1", name: "María López", email: "maria.lopez@email.com", date: "2025-11-18" },
-  { id: "2", name: "Carlos Pérez", email: "carlos.perez@email.com", date: "2025-11-19" },
-  { id: "3", name: "Ana Gómez", email: "ana.gomez@email.com", date: "2025-11-20" },
-  { id: "4", name: "Luis Rodríguez", email: "luis.rodriguez@email.com", date: "2025-11-21" },
-];
+import { useCapacitacionesController } from "../../controllers/useCapacitacionesController";
 
 export default function CapacitacionesAdmin({ navigation }: any) {
-  const [drawerVisible, setDrawerVisible] = useState(false);
-  const [items] = useState<Registro[]>(MOCK);
+  const { 
+    drawerVisible, 
+    setDrawerVisible, 
+    items, 
+    loading, 
+    refreshing, 
+    onRefresh 
+  } = useCapacitacionesController();
 
-  const renderItem = ({ item }: { item: Registro }) => {
-    const initials = (item.name || "").split(" ").map(n => n[0]).slice(0,2).join("");
+  const renderItem = ({ item }: { item: any }) => {
+    const initials = (item.name || "?").split(" ").map((n: string) => n[0]).slice(0, 2).join("").toUpperCase();
+    
     return (
       <View style={styles.card}>
-        <View style={styles.avatar}>{/* initials */}
+        <View style={styles.avatar}>
           <Text style={styles.avatarText}>{initials}</Text>
         </View>
 
@@ -42,7 +38,7 @@ export default function CapacitacionesAdmin({ navigation }: any) {
 
         <View style={styles.cardRight}>
           <Text style={styles.date}>{item.date}</Text>
-          <TouchableOpacity style={styles.viewButton} onPress={() => { /* placeholder */ }}>
+          <TouchableOpacity style={styles.viewButton} onPress={() => { /* Lógica */ }}>
             <Text style={styles.viewButtonText}>Ver</Text>
           </TouchableOpacity>
         </View>
@@ -54,22 +50,43 @@ export default function CapacitacionesAdmin({ navigation }: any) {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Inscritos a Capacitaciones</Text>
-        <TouchableOpacity onPress={() => setDrawerVisible(true)} style={styles.hamburger} accessibilityLabel="Abrir menú">
+        <TouchableOpacity 
+          onPress={() => setDrawerVisible(true)} 
+          style={styles.hamburger} 
+          accessibilityLabel="Abrir menú"
+        >
           <Text style={styles.hamburgerText}>☰</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.subHeader}>
-        <Text style={styles.subHeaderText}>Aquí puedes ver quiénes se han inscrito a las capacitaciones.</Text>
+        <Text style={styles.subHeaderText}>
+          Usuarios inscritos en capacitaciones próximas a la fecha actual.
+        </Text>
       </View>
 
-      <FlatList
-        data={items}
-        keyExtractor={(i) => i.id}
-        renderItem={renderItem}
-        contentContainerStyle={styles.list}
-        ItemSeparatorComponent={() => <View style={{height:12}} />}
-      />
+      {loading ? (
+        <View style={styles.loaderContainer}>
+           <ActivityIndicator size="large" color="#2E7D57" />
+           <Text style={{marginTop: 10, color: '#666'}}>Cargando inscripciones...</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={items}
+          keyExtractor={(i) => i.id}
+          renderItem={renderItem}
+          contentContainerStyle={styles.list}
+          ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={["#2E7D57"]} />
+          }
+          ListEmptyComponent={
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyText}>No hay inscripciones próximas.</Text>
+            </View>
+          }
+        />
+      )}
 
       <AdminDrawer visible={drawerVisible} onClose={() => setDrawerVisible(false)} navigation={navigation} />
     </SafeAreaView>
@@ -84,15 +101,21 @@ const styles = StyleSheet.create({
   hamburgerText: { color: "#fff", fontSize: 26 },
   subHeader: { paddingHorizontal: 16, paddingVertical: 14, backgroundColor: "#F6F7F6" },
   subHeaderText: { color: "#4a4a4a" },
+  
   list: { padding: 16 },
+  loaderContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  
   card: { flexDirection: "row", alignItems: "center", backgroundColor: "#fff", borderRadius: 12, padding: 12, elevation: 2, shadowColor: "#000", shadowOpacity: 0.05, shadowRadius: 6, shadowOffset: { width: 0, height: 2 } },
   avatar: { width: 56, height: 56, borderRadius: 28, backgroundColor: "#E6F4EB", justifyContent: "center", alignItems: "center", marginRight: 12 },
-  avatarText: { color: "#2E7D57", fontWeight: "800" },
+  avatarText: { color: "#2E7D57", fontWeight: "800", fontSize: 18 },
   cardBody: { flex: 1 },
   name: { fontSize: 16, fontWeight: "700", color: "#222" },
   email: { fontSize: 13, color: "#666", marginTop: 4 },
-  cardRight: { alignItems: "flex-end" },
-  date: { fontSize: 12, color: "#888" },
-  viewButton: { marginTop: 8, backgroundColor: "#2E7D57", paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8 },
-  viewButtonText: { color: "#fff", fontWeight: "700" },
+  cardRight: { alignItems: "flex-end", minWidth: 70 },
+  date: { fontSize: 12, color: "#888", marginBottom: 5 },
+  viewButton: { marginTop: 4, backgroundColor: "#2E7D57", paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8 },
+  viewButtonText: { color: "#fff", fontWeight: "700", fontSize: 12 },
+
+  emptyContainer: { alignItems: 'center', marginTop: 50 },
+  emptyText: { color: '#888', fontStyle: 'italic' }
 });

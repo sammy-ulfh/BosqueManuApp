@@ -85,7 +85,6 @@ export default function Login({ navigation }) {
             },
           ]}
         >
-          {/* Logo */}
           <View style={[styles.totalWidth, { height: "20%" }]}>
             <Image
               source={require("../../../assets/main/logo.png")}
@@ -93,7 +92,6 @@ export default function Login({ navigation }) {
             />
           </View>
 
-          {/* Título y campos */}
           <View
             style={[
               styles.totalWidth,
@@ -172,7 +170,6 @@ export default function Login({ navigation }) {
               testID="login-button"
             />
 
-            {/* Mensajes visibles para Detox */}
             {errorMessage !== "" && (
               <Text
                 testID="login-error"
@@ -189,36 +186,6 @@ export default function Login({ navigation }) {
                 {successMessage}
               </Text>
             )}
-
-            <View
-              style={{
-                marginTop: "3%",
-                width: "80%",
-                justifyContent: "center",
-                alignItems: "flex-start",
-              }}
-            >
-              <Text style={[styles.whiteText, { fontSize: 19 }]}>
-                ¿Aún no tienes una cuenta?
-              </Text>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("Singup")}
-                testID="go-to-signup"
-              >
-                <Text
-                  style={[
-                    styles.whiteText,
-                    styles.link,
-                    {
-                      fontSize: 18,
-                      color: "white",
-                    },
-                  ]}
-                >
-                  Regístrate ahora
-                </Text>
-              </TouchableOpacity>
-            </View>
           </View>
         </View>
       </View>
