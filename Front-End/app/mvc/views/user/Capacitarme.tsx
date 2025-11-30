@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -7,155 +7,34 @@ import {
   ScrollView,
   Modal,
   FlatList,
-  ActivityIndicator
-  , ImageBackground
+  ActivityIndicator,
+  ImageBackground
 } from "react-native";
 import { Input } from "@/mvc/views/components/Input";
 import { MainButton } from "@/mvc/views/components/MainButton";
-import * as Font from "expo-font";
-import { getCurrentUser } from "@/mvc/models/auth/auth";
-import { supabase } from "@/mvc/models/supabase/supabaseClient.js"; 
+import { useCapacitacionesFormController } from "@/mvc/controllers/useCapacitacionesFormController";
 
 export default function CapacitacionesForm({ navigation }: any) {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [userName, setUserName] = useState("");
-  const [phone, setPhone] = useState("");
-  
-  const [availableCourses, setAvailableCourses] = useState<any[]>([]);
-  const [selectedCourse, setSelectedCourse] = useState<any | null>(null);
-  const [showModal, setShowModal] = useState(false);
-  const [loadingCourses, setLoadingCourses] = useState(false);
-
-  const loadFonts = async () => {
-    try {
-      await Font.loadAsync({
-        TenorSans: require("@/assets/fonts/Tenor_Sans/TenorSans-Regular.ttf"),
-        Gloock: require("@/assets/fonts/Gloock/Gloock-Regular.ttf"),
-      });
-    } catch (err) {
-      console.warn('Failed to load fonts', err);
-    }
-  };
-
-  const loadUserData = async () => {
-    const { user } = await getCurrentUser();
-    if (user) {
-      const fullName = user.user_metadata.full_name || "";
-      const [first] = fullName.split(" ");
-      setUserName(first || "");
-    }
-  };
-
-  const fetchAvailableCourses = async () => {
-    setLoadingCourses(true);
-    
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const todayISO = today.toISOString();
-
-    try {
-      const { data, error } = await supabase
-        .from('courses')
-        .select('id, date, description, registros, limite') 
-        .gte('date', todayISO)
-        .order('date', { ascending: true });
-
-      if (error) throw error;
-
-      const validCourses = (data || []).filter(course => {
-        const occupied = course.registros || 0;
-        const limit = course.limite || 0;
-        return occupied < limit;
-      });
-
-      setAvailableCourses(validCourses);
-
-    } catch (err) {
-      console.error("Error cargando capacitaciones:", err);
-    } finally {
-      setLoadingCourses(false);
-    }
-  };
-
-  useEffect(() => {
-    const init = async () => {
-      await loadFonts();
-      await loadUserData();
-      await fetchAvailableCourses();
-      setIsLoaded(true);
-    };
-    init();
-  }, []);
+  // 1. Instanciamos el controlador
+  const {
+    isLoaded,
+    loadingCourses,
+    userName, setUserName,
+    phone, setPhone,
+    availableCourses,
+    selectedCourse, setSelectedCourse,
+    showModal, setShowModal,
+    handleSubmit,
+    formatDate
+  } = useCapacitacionesFormController(navigation);
 
   if (!isLoaded) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#4C4635' }}>
+      <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#fff" />
       </View>
     );
   }
-
-  const validatePhone = () => /^\d{10}$/.test(phone);
-
-  const handleSubmit = async () => {
-    if (!validatePhone()) {
-      alert("El número telefónico debe tener 10 dígitos.");
-      return;
-    }
-    if (!selectedCourse) {
-      alert("Por favor selecciona una fecha de capacitación.");
-      return;
-    }
-
-    try {
-      const { user: authUser } = await getCurrentUser();
-      if (!authUser) throw new Error('Usuario no autenticado');
-      const { data: userData } = await supabase
-        .from('users')
-        .select('id')
-        .eq('auth_id', authUser.id)
-        .single();
-
-      if (!userData) throw new Error("Usuario no encontrado en base de datos");
-
-      await supabase
-        .from('users')
-        .update({ number: phone, nombre: userName })
-        .eq('id', userData.id);
-
-      const { error: joinError } = await supabase
-        .from('user_course')
-        .insert({
-          user_id: userData.id,
-          course_id: selectedCourse.id
-        });
-
-      if (joinError) throw joinError;
-
-      const { error: rpcError } = await supabase.rpc('increment_course_registros', {
-        course_id: selectedCourse.id
-      });
-
-      if (rpcError) {
-         throw new Error("El cupo se llenó justo ahora. Intenta con otra fecha.");
-      }
-
-      alert("Inscripción exitosa");
-      navigation.navigate("ClientHome");
-
-    } catch (err: any) {
-      if (err && err.code === '23505') {
-        alert("Ya estás inscrito en esta capacitación.");
-      } else {
-        alert("Error: " + (err?.message || String(err)));
-      }
-    }
-  };
-
-  const formatDate = (dateString: string) => {
-    const d = new Date(dateString);
-    return d.toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute:'2-digit' });
-  };
 
   return (
     <ImageBackground
@@ -163,8 +42,6 @@ export default function CapacitacionesForm({ navigation }: any) {
       style={styles.container}
       imageStyle={{ resizeMode: 'cover' }}
     >
-
-
       <ScrollView contentContainerStyle={{ alignItems: "center", width: "100%" }}>
         <Text style={styles.title}>¡Yo quiero{"\n"}capacitarme!</Text>
 
@@ -199,10 +76,11 @@ export default function CapacitacionesForm({ navigation }: any) {
             <Text style={styles.calendarIcon}>📅</Text>
           </TouchableOpacity>
 
-          <Text style={{color: 'white', fontSize: 11, marginBottom: 15, opacity: 0.8}}>
+          <Text style={styles.noteText}>
              * Solo se muestran capacitaciones con cupo disponible.
           </Text>
 
+          {/* --- MODAL DE SELECCIÓN --- */}
           <Modal
             visible={showModal}
             animationType="slide"
@@ -279,14 +157,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#4C4635", 
     paddingTop: 60 
   },
-  backButton: { 
-    position: "absolute",
-    top: 25,
-    left: 20, zIndex: 10 
-  },
-  backArrow: { 
-    fontSize: 28,
-    color: "white" 
+  loadingContainer: {
+    flex: 1, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    backgroundColor: '#4C4635'
   },
   title: { 
     fontFamily: "Gloock", 
@@ -333,15 +208,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10, 
     marginBottom: 5 
   },
-  dateInput: { 
-    flex: 1 
-  },
-  dateText: { 
-    fontFamily: "TenorSans", 
-    color: "#333" 
-  },
-  calendarIcon: { 
-    fontSize: 22 
+  dateInput: { flex: 1 },
+  dateText: { fontFamily: "TenorSans", color: "#333" },
+  calendarIcon: { fontSize: 22 },
+  noteText: {
+    color: 'white', 
+    fontSize: 11, 
+    marginBottom: 15, 
+    opacity: 0.8
   },
   infoBox: { 
     backgroundColor: "#D9D9D9", 
