@@ -175,7 +175,7 @@ export default function CapacitacionesForm({ navigation }: any) {
             value={userName}
             onChangeText={setUserName}
             style={[styles.input, styles.singleLineInput]}
-            color="gray"
+            color="black"
           />
 
           <Text style={styles.label}>Teléfono</Text>
@@ -185,6 +185,7 @@ export default function CapacitacionesForm({ navigation }: any) {
             keyboardType="number-pad"
             onChangeText={setPhone}
             style={[styles.input, styles.singleLineInput]}
+            color="black"
           />
 
           <Text style={styles.label}>Fecha de capacitación</Text>

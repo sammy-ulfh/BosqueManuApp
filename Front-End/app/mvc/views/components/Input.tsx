@@ -14,6 +14,9 @@ type Props = {
 } & Partial<TextInputProps>;
 
 export function Input({ placeholder, value, onChangeText, style, color, secure, testID }: Props) {
+  // Determine typed text color: prefer inline style.color, then `color` prop, then default to black
+  const typedColor = (style && style.color) || color || "#000";
+
   return (
     <TextInput
       placeholder={placeholder}
@@ -22,10 +25,10 @@ export function Input({ placeholder, value, onChangeText, style, color, secure, 
       style={[
         styles.input,
         style,
-        { color: (style && style.color) || ("#000"), fontSize: 15 },
+        { color: typedColor, fontSize: 15 },
       ]}
       secureTextEntry={!!secure}
-      placeholderTextColor={color}
+      placeholderTextColor={color || "rgba(255,255,255,0.6)"}
       testID={testID}
     />
   );
@@ -36,6 +39,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ffffff",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
+    fontFamily: "TenorSans",
     borderRadius: 50,
     minWidth: "80%",
     minHeight: "13%",
