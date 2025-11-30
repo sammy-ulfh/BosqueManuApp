@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Image,
   ScrollView,
+  FlatList,
   TouchableOpacity,
   Linking,
   Alert,
@@ -101,17 +102,18 @@ export default function Nineth({ navigation }: any) {
         <View style={styles.beigeSection}>
           <Text style={styles.beigeText}>Gracias a todos los que son parte</Text>
 
-          {/* Logos en cuadrícula */}
-          <View style={styles.logosGrid}>
-            {logos.map((img, index) => (
-              <Image
-                key={index}
-                source={img}
-                style={styles.logoItem}
-                resizeMode="contain"
-              />
-            ))}
-          </View>
+          {/* Logos en cuadrícula (FlatList para mejor rendimiento si la lista crece) */}
+          <FlatList
+            data={logos}
+            keyExtractor={(_, index) => index.toString()}
+            renderItem={({ item }) => (
+              <Image source={item} style={styles.logoItem} resizeMode="contain" />
+            )}
+            numColumns={3}
+            contentContainerStyle={{ justifyContent: "center" }}
+            columnWrapperStyle={{ justifyContent: "center" }}
+            showsVerticalScrollIndicator={false}
+          />
         </View>
 
         {/* SEGUNDO CUADRO AZUL */}

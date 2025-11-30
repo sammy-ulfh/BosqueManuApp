@@ -6,7 +6,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   Alert,
-  ScrollView
+  FlatList,
 } from "react-native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
@@ -113,26 +113,28 @@ export default function Info({ navigation }: any) {
 
 
             <View style={{ flex: 1, width: "100%", marginTop: 20 }}>
-              <ScrollView contentContainerStyle={{ alignItems: "center", paddingBottom: 40 }}>
-                {users.length > 0 ? (
-                  users.map((user, index) => (
-                    <View key={index} style={styles.card}>
-                      <Text style={styles.cardTitle}>
-                        {user.nombre} {user.apellido}
-                      </Text>
-                      <Text style={styles.cardText}>Email: {user.email ? user.email : "Dato no especificado"}</Text>
-                      <Text style={styles.cardText}>Número: {user.number ? user.number : "Dato no especificado"}</Text>
-                      <Text style={styles.cardText}>Tipo de sangre: {user.blood ? user.blood : "Dato no especificado"}</Text>
-                      <Text style={styles.cardText}>Nombre de grupo: {user.group_name ? user.group_name : "Dato no especificado"}</Text>
-                      <Text style={styles.cardText}>Alergias: {user.allergies ? user.allergies : "Dato no especificado"}</Text>
-                      <Text style={styles.cardText}>Medicinas: {user.medicines ? user.medicines : "Dato no especificado"}</Text>
-                      <Text style={styles.cardText}>Contacto de emergencia: {user.contact ? user.contact : "Dato no especificado"}</Text>
-                    </View>
-                  ))
-                ) : (
+              <FlatList
+                data={users}
+                keyExtractor={(item, index) => (item?.id ? String(item.id) : index.toString())}
+                contentContainerStyle={{ alignItems: "center", paddingBottom: 40 }}
+                renderItem={({ item }) => (
+                  <View style={styles.card}>
+                    <Text style={styles.cardTitle}>
+                      {item.nombre} {item.apellido}
+                    </Text>
+                    <Text style={styles.cardText}>Email: {item.email ? item.email : "Dato no especificado"}</Text>
+                    <Text style={styles.cardText}>Número: {item.number ? item.number : "Dato no especificado"}</Text>
+                    <Text style={styles.cardText}>Tipo de sangre: {item.blood ? item.blood : "Dato no especificado"}</Text>
+                    <Text style={styles.cardText}>Nombre de grupo: {item.group_name ? item.group_name : "Dato no especificado"}</Text>
+                    <Text style={styles.cardText}>Alergias: {item.allergies ? item.allergies : "Dato no especificado"}</Text>
+                    <Text style={styles.cardText}>Medicinas: {item.medicines ? item.medicines : "Dato no especificado"}</Text>
+                    <Text style={styles.cardText}>Contacto de emergencia: {item.contact ? item.contact : "Dato no especificado"}</Text>
+                  </View>
+                )}
+                ListEmptyComponent={() => (
                   <Text style={styles.whiteText}>Cargando usuarios...</Text>
                 )}
-              </ScrollView>
+              />
             </View>
           </View>
         </View>

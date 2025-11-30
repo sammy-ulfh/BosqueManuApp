@@ -3,7 +3,7 @@ import {
   Text,
   StyleSheet,
   ImageBackground,
-  ScrollView,
+  FlatList,
   TouchableOpacity
 } from "react-native";
 import * as Font from "expo-font";
@@ -157,87 +157,89 @@ export default function Singup({ navigation }: any) {
           </Text>
         </View>
 
-        <ScrollView
+        <FlatList
+          data={cardInfo}
+          keyExtractor={(item) => item.key}
           style={{
             width: "80%",
             height: "70%",
             backgroundColor: "rgba(38, 36, 36, 0.7)",
             borderRadius: 20,
           }}
-        >
-          {cardInfo.map(({ key, value: fieldValue, setter: setField, label, secure: sec }) => {
-            return (
-              <View
-                key={key}
+          contentContainerStyle={{ paddingVertical: 8 }}
+          renderItem={({ item }) => (
+            <View
+              style={{
+                width: "95%",
+                height: 80,
+                justifyContent: "flex-start",
+                alignItems: "flex-start",
+                alignSelf: "center",
+                marginTop: "1%"
+              }}
+            >
+              <Text
                 style={{
-                  width: "95%",
-                  height: 80,
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                  marginTop: "1%"
+                  height: 20,
+                  width: "100%",
+                  color: "white",
+                  paddingLeft: "8%",
+                  marginBottom: "2%",
+                  textAlign: "left",
                 }}
               >
-                <Text
-                  style={{
-                    height: 20,
-                    width: "100%",
-                    color: "white",
-                    paddingLeft: "8%",
-                    marginBottom: "2%",
-                  }}
-                >
-                  {label}
-                </Text>
-
-                <Input
-                  color="black"
-                  placeholder={label}
-                  value={fieldValue}
-                  secure={!!sec}
-                  onChangeText={(text) => setField(text)}
-                  style={{
-                    width: "95%",
-                    minHeight: 40,
-                    height: 40,
-                    backgroundColor: '#D9D9D9',
-                    color: "black",
-                    borderWidth: 0,
-                    paddingLeft: "5%",
-                  }}
-                />
-              </View>
-            );
-          })}
-
-          <View
-            style={{
-              marginTop: "3%",
-              width: "90%",
-              justifyContent: "center",
-              alignItems: "flex-start",
-              paddingLeft: "3%",
-              marginBottom: "5%"
-            }}
-          >
-            <Text style={[styles.whiteText, { fontSize: 17 }]}>
-              ¿Ya tienes una cuenta?
-            </Text>
-            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-              <Text
-                style={[
-                  styles.whiteText,
-                  styles.link,
-                  {
-                    fontSize: 15,
-                    color: "white",
-                  },
-                ]}
-              >
-                Iniciar Sesión
+                {item.label}
               </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
+
+              <Input
+                color="black"
+                placeholder={item.label}
+                value={item.value}
+                secure={!!item.secure}
+                onChangeText={(text) => item.setter(text)}
+                style={{
+                  width: "95%",
+                  minHeight: 40,
+                  height: 40,
+                  backgroundColor: '#D9D9D9',
+                  color: "black",
+                  borderWidth: 0,
+                  paddingLeft: "5%",
+                }}
+              />
+            </View>
+          )}
+          ListFooterComponent={() => (
+            <View
+              style={{
+                marginTop: "3%",
+                width: "90%",
+                justifyContent: "center",
+                alignItems: "flex-start",
+                alignSelf: "center",
+                paddingLeft: "3%",
+                marginBottom: "5%"
+              }}
+            >
+              <Text style={[styles.whiteText, { fontSize: 17, textAlign: "left" }]}>¿Ya tienes una cuenta?</Text>
+              <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                <Text
+                  style={[
+                    styles.whiteText,
+                    styles.link,
+                    {
+                      fontSize: 15,
+                      color: "white",
+                      textAlign: "left",
+                    },
+                  ]}
+                >
+                  Iniciar Sesión
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        />
 
         <View
           style={[
