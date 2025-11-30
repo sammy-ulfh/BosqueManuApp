@@ -17,11 +17,17 @@ export async function setUser({
       email,
       password
     });
+    
     if (authError) throw authError;
+
+    if (!authData?.user) {
+        throw new Error("El usuario fue creado, pero no se devolvió la sesión.");
+    }
 
     const { data, error } = await supabase.from('users').insert([
       {
         auth_id: authData.user.id,
+        rol: 1,
         nombre,
         apellido,
         email,
@@ -37,8 +43,9 @@ export async function setUser({
     if (error) throw error;
 
     return { data, error: null };
+
   } catch (error) {
+    console.error("Error en setUser:", error);
     return { data: null, error };
   }
 }
-
