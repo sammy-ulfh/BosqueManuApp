@@ -7,7 +7,10 @@ import {
   ScrollView,
   Modal,
   FlatList,
-  ActivityIndicator
+  ActivityIndicator,
+  ImageBackground,
+  Platform,
+  StatusBar,
 } from "react-native";
 import { Input } from "@/mvc/views/components/Input";
 import { MainButton } from "@/mvc/views/components/MainButton";
@@ -21,7 +24,7 @@ export default function VoluntariosForm({ navigation }) {
   const [phone, setPhone] = useState("");
   
   const [availableEvents, setAvailableEvents] = useState([]);
-  const [selectedEvent, setSelectedEvent] = useState(null);``
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [loadingEvents, setLoadingEvents] = useState(false);
 
@@ -133,99 +136,112 @@ export default function VoluntariosForm({ navigation }) {
     return d.toLocaleDateString('es-MX', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute:'2-digit' });
   };
 
+  const EXTRA_TOP_OFFSET = 40; 
+  const topPadding = Platform.OS === 'android' ? (StatusBar.currentHeight || 0) + 20 + EXTRA_TOP_OFFSET : 80 + EXTRA_TOP_OFFSET;
+
   return (
-    <View style={styles.mainContainer}>
+    <ImageBackground
+      source={require("@/assets/images/Voluntarios.png")}
+      style={[styles.mainContainer, { paddingTop: topPadding }]}
+      imageStyle={{ resizeMode: "cover", transform: [{ translateY: 30 }, { scale: 1.2 }] }}
+    >
       <Text style={styles.header}>¡Yo quiero ser voluntario!</Text>
 
       <View style={styles.formCard}>
-        <ScrollView>
-          <Text style={styles.label}>Nombre</Text>
-          <Input
-            placeholder="Tu nombre"
-            value={userName}
-            onChangeText={setUserName}
-            style={styles.input}
-          />
+        <FlatList
+          data={[]}
+          keyExtractor={() => 'form'}
+          ListHeaderComponent={() => (
+            <>
+              <Text style={styles.label}>Nombre</Text>
+              <Input
+                placeholder="Tu nombre"
+                value={userName}
+                onChangeText={setUserName}
+                style={[styles.input, { color: '#000' }]}
+              />
 
-          <Text style={styles.label}>Teléfono</Text>
-          <Input
-            placeholder="10 dígitos"
-            value={phone}
-            keyboardType="number-pad"
-            onChangeText={setPhone}
-            style={styles.input}
-          />
+              <Text style={styles.label}>Teléfono</Text>
+              <Input
+                placeholder="10 dígitos"
+                value={phone}
+                keyboardType="number-pad"
+                onChangeText={setPhone}
+                style={[styles.input, { color: '#000' }]}
+              />
 
-          <Text style={styles.label}>Fecha de voluntariado</Text>
+              <Text style={styles.label}>Fecha de voluntariado</Text>
 
-          <TouchableOpacity
-            style={styles.dateButton}
-            onPress={() => setShowModal(true)}
-          >
-            <Text style={styles.dateText}>
-              {selectedEvent ? formatDate(selectedEvent.date) : "Seleccionar fecha disponible"}
-            </Text>
-            <Text style={styles.calendarIcon}>📅</Text>
-          </TouchableOpacity>
-          
-          <Text style={{color: 'white', fontSize: 12, marginTop: 5, marginLeft: 10, fontStyle: 'italic'}}>
-             * Solo mostramos fechas con cupo disponible.
-          </Text>
+              <TouchableOpacity
+                style={styles.dateButton}
+                onPress={() => setShowModal(true)}
+              >
+                <Text style={styles.dateText}>
+                  {selectedEvent ? formatDate(selectedEvent.date) : "Seleccionar fecha disponible"}
+                </Text>
+                <Text style={styles.calendarIcon}>📅</Text>
+              </TouchableOpacity>
 
-          <Modal
-            visible={showModal}
-            animationType="slide"
-            transparent={true}
-            onRequestClose={() => setShowModal(false)}
-          >
-            <View style={styles.modalContainer}>
-              <View style={styles.modalContent}>
-                <Text style={styles.modalTitle}>Fechas Disponibles</Text>
-                
-                {loadingEvents ? (
-                  <ActivityIndicator size="large" color="#0A6A8C" />
-                ) : availableEvents.length === 0 ? (
-                  <Text style={styles.noEventsText}>No hay fechas disponibles por el momento.</Text>
-                ) : (
-                  <FlatList
-                    data={availableEvents}
-                    keyExtractor={(item) => item.id.toString()}
-                    renderItem={({ item }) => (
-                      <TouchableOpacity 
-                        style={styles.eventItem}
-                        onPress={() => {
-                          setSelectedEvent(item);
-                          setShowModal(false);
-                        }}
-                      >
-                        <Text style={styles.eventDateText}>{formatDate(item.date)}</Text>
-                        <Text style={styles.eventSlotsText}>
-                          Cupos: {14 - (item.registros || 0)} disponibles
-                        </Text>
-                      </TouchableOpacity>
+              <Text style={{color: 'white', fontSize: 12, marginTop: 5, marginLeft: 10, fontStyle: 'italic'}}>
+                * Solo mostramos fechas con cupo disponible.
+              </Text>
+
+              <Modal
+                visible={showModal}
+                animationType="slide"
+                transparent={true}
+                onRequestClose={() => setShowModal(false)}
+              >
+                <View style={styles.modalContainer}>
+                  <View style={styles.modalContent}>
+                    <Text style={styles.modalTitle}>Fechas Disponibles</Text>
+
+                    {loadingEvents ? (
+                      <ActivityIndicator size="large" color="#0A6A8C" />
+                    ) : availableEvents.length === 0 ? (
+                      <Text style={styles.noEventsText}>No hay fechas disponibles por el momento.</Text>
+                    ) : (
+                      <FlatList
+                        data={availableEvents}
+                        keyExtractor={(item) => item.id.toString()}
+                        renderItem={({ item }) => (
+                          <TouchableOpacity 
+                            style={styles.eventItem}
+                            onPress={() => {
+                              setSelectedEvent(item);
+                              setShowModal(false);
+                            }}
+                          >
+                            <Text style={styles.eventDateText}>{formatDate(item.date)}</Text>
+                            <Text style={styles.eventSlotsText}>
+                              Cupos: {14 - (item.registros || 0)} disponibles
+                            </Text>
+                          </TouchableOpacity>
+                        )}
+                      />
                     )}
-                  />
-                )}
-                
-                <TouchableOpacity 
-                  style={styles.closeButton} 
-                  onPress={() => setShowModal(false)}
-                >
-                  <Text style={styles.closeButtonText}>Cancelar</Text>
+
+                    <TouchableOpacity 
+                      style={styles.closeButton} 
+                      onPress={() => setShowModal(false)}
+                    >
+                      <Text style={styles.closeButtonText}>Cancelar</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </Modal>
+
+              <View style={styles.infoBox}>
+                <Text style={styles.infoText}>
+                  Para más información acerca de las capacitaciones haz click aquí
+                </Text>
+                <TouchableOpacity onPress={() => navigation.navigate("Capacitacion")}>
+                  <Text style={styles.infoLink}>Términos de uso | Política de privacidad</Text>
                 </TouchableOpacity>
               </View>
-            </View>
-          </Modal>
-
-          <View style={styles.infoBox}>
-            <Text style={styles.infoText}>
-              Para más información acerca de las capacitaciones haz click aquí
-            </Text>
-            <TouchableOpacity onPress={() => navigation.navigate("Capacitacion")}>
-              <Text style={styles.infoLink}>Términos de uso | Política de privacidad</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
+            </>
+          )}
+        />
       </View>
 
       <MainButton
@@ -234,7 +250,7 @@ export default function VoluntariosForm({ navigation }) {
         style={styles.finishButton}
         color="black"
       />
-    </View>
+    </ImageBackground>
   );
 }
 
@@ -243,7 +259,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#5F3714", // fondo café igual al de la imagen
     alignItems: "center",
-    paddingTop: 50,
+    paddingTop: 0,
   },
   header: {
     fontSize: 28,
@@ -260,20 +276,23 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingBottom: 50,
     minHeight: 500, 
-    marginBottom: 50,
+    marginBottom: 80,
   },
 
   label: {
     color: "white",
     fontFamily: "TenorSans",
-    marginBottom: 5,
-    marginTop: 10,
+    marginBottom: 8,
+    marginTop: 16,
   },
 
   input: {
     backgroundColor: "white",
     borderRadius: 20,
     paddingHorizontal: 15,
+    paddingVertical: 10,
+    marginBottom: 20,
+    color: "#000",
   },
 
   dateButton: {
@@ -284,10 +303,11 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 15,
     justifyContent: "space-between",
+    marginBottom: 20,
   },
   dateText: {
     fontFamily: "TenorSans",
-    
+    color: "#333",
     fontSize: 16,
   },
 
@@ -299,7 +319,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 15,
     padding: 12,
-    marginTop: 20,
+    marginTop: 40,
   },
   infoText: {
     fontSize: 14,
@@ -315,17 +335,19 @@ const styles = StyleSheet.create({
   },
   finishButton: {
     width: "80%",
-    backgroundColor: "#655f4c8d",
+    backgroundColor: "#661b1bec",
     height: 60,
     borderRadius: 25,
-    marginTop: -10,
+    marginTop: 20,
     alignSelf: "center", 
   },
   mainContainer: {
     flex: 1,
-    backgroundColor: "#5F3714", 
+    width: '100%',
+    height: '100%',
+    backgroundColor: "#5F3714",
     alignItems: "center",
-    paddingTop: 50,
+    paddingTop: 0,
   },
   header: {
     fontSize: 28,
@@ -341,18 +363,20 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingBottom: 50,
     minHeight: 500, 
-    marginBottom: 50,
+    marginBottom: 80,
   },
   label: {
     color: "white",
     fontFamily: "TenorSans",
-    marginBottom: 5,
-    marginTop: 10,
+    marginBottom: 8,
+    marginTop: 16,
   },
   input: {
     backgroundColor: "white",
     borderRadius: 20,
     paddingHorizontal: 15,
+    paddingVertical: 10,
+    marginBottom: 20,
   },
   dateButton: {
     flexDirection: "row",
@@ -375,7 +399,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 15,
     padding: 12,
-    marginTop: 20,
+    marginTop: 40,
   },
   infoText: {
     fontSize: 14,
@@ -390,10 +414,10 @@ const styles = StyleSheet.create({
   },
   finishButton: {
     width: "80%",
-    backgroundColor: "#655f4c8d",
+    backgroundColor: "#9c1414b8",
     height: 60,
     borderRadius: 25,
-    marginTop: -10,
+    marginTop: -40,
     alignSelf: "center", 
   },
   modalContainer: {
@@ -438,11 +462,13 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     marginTop: 15,
-    alignItems: "center",
-    padding: 10,
+    backgroundColor: "#0A6A8C",
+    padding: 12,
+    borderRadius: 15,
   },
-  closeButtonText: {
-    color: "red",
-    fontWeight: "bold",
-  }
+  closeText: {
+    color: "white",
+    textAlign: "center",
+    fontFamily: "TenorSans",
+  },
 });

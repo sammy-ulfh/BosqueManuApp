@@ -8,6 +8,7 @@ import {
   Modal,
   FlatList,
   ActivityIndicator
+  , ImageBackground
 } from "react-native";
 import { Input } from "@/mvc/views/components/Input";
 import { MainButton } from "@/mvc/views/components/MainButton";
@@ -157,10 +158,12 @@ export default function CapacitacionesForm({ navigation }: any) {
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Text style={styles.backArrow}>←</Text>
-      </TouchableOpacity>
+    <ImageBackground
+      source={require("@/assets/images/Donaciones.png")}
+      style={styles.container}
+      imageStyle={{ resizeMode: 'cover' }}
+    >
+
 
       <ScrollView contentContainerStyle={{ alignItems: "center", width: "100%" }}>
         <Text style={styles.title}>¡Yo quiero{"\n"}capacitarme!</Text>
@@ -171,7 +174,7 @@ export default function CapacitacionesForm({ navigation }: any) {
             placeholder="Nombre"
             value={userName}
             onChangeText={setUserName}
-            style={styles.input}
+            style={[styles.input, styles.singleLineInput]}
             color="gray"
           />
 
@@ -181,7 +184,7 @@ export default function CapacitacionesForm({ navigation }: any) {
             value={phone}
             keyboardType="number-pad"
             onChangeText={setPhone}
-            style={styles.input}
+            style={[styles.input, styles.singleLineInput]}
           />
 
           <Text style={styles.label}>Fecha de capacitación</Text>
@@ -265,7 +268,7 @@ export default function CapacitacionesForm({ navigation }: any) {
           style={styles.finishButton}
         />
       </ScrollView>
-    </View>
+    </ImageBackground>
   );
 }
 
@@ -276,12 +279,12 @@ const styles = StyleSheet.create({
     paddingTop: 60 
   },
   backButton: { 
-    position: "absolute", 
-    top: 25, 
+    position: "absolute",
+    top: 25,
     left: 20, zIndex: 10 
   },
   backArrow: { 
-    fontSize: 28, 
+    fontSize: 28,
     color: "white" 
   },
   title: { 
@@ -289,17 +292,17 @@ const styles = StyleSheet.create({
     fontSize: 32, 
     color: "white", 
     textAlign: "center", 
-    marginBottom: 20, 
-    marginTop: 20 
+    marginBottom: 10, 
+    marginTop: 5 
   },
   card: { 
     width: "85%", 
-    backgroundColor: "#2E8B57", 
-    padding: 20, 
+    backgroundColor:"#1B4D3E", 
+    padding: 18, 
     borderRadius: 20, 
     paddingBottom: 50, 
     minHeight: 500, 
-    marginBottom: 50 
+    marginBottom: 30 
   },
   label: { 
     fontFamily: "TenorSans", 
@@ -312,6 +315,13 @@ const styles = StyleSheet.create({
     borderRadius: 20, 
     paddingHorizontal: 15, 
     marginBottom: 15 
+  },
+  singleLineInput: {
+    height: 45,
+    paddingVertical: 0,
+    paddingHorizontal: 15,
+    borderRadius: 20,
+    marginBottom: 5,
   },
   dateRow: { 
     flexDirection: "row", 
@@ -356,7 +366,7 @@ const styles = StyleSheet.create({
   },
   finishButton: {
     width: "80%", 
-    backgroundColor: "#655f4c8d", 
+    backgroundColor: "#791306d7", 
     height: 60, 
     borderRadius: 25, 
     marginTop: -10, 
@@ -420,7 +430,7 @@ const styles = StyleSheet.create({
     alignItems: "center" 
   },
   closeButtonText: { 
-    color: "#d32f2f", 
+    color: "#d32f2fff", 
     fontWeight: "bold", 
     fontSize: 16 
   },

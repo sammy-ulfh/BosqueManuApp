@@ -6,7 +6,9 @@ type Props = {
   value?: string;
   onChangeText?: (text: string) => void;
   style?: any;
-  color?: string;
+  color?: string; 
+  textColor?: string;
+  placeholderColor?: string;
   secure?: boolean;
   testID?: string;
 } & Partial<TextInputProps>;
@@ -19,9 +21,8 @@ export function Input({ placeholder, value, onChangeText, style, color, secure, 
       onChangeText={onChangeText}
       style={[
         styles.input,
-        styles.whiteText,
-        { color: "white", fontSize: 15 },
         style,
+        { color: (style && style.color) || ("#000"), fontSize: 15 },
       ]}
       secureTextEntry={!!secure}
       placeholderTextColor={color}
@@ -41,9 +42,5 @@ const styles = StyleSheet.create({
     paddingLeft: "5%",
     justifyContent: "center",
   },
-  whiteText: {
-    color: "#ffffff",
-    fontSize: 20,
-    fontFamily: "TenorSans",
-  },
+  
 });

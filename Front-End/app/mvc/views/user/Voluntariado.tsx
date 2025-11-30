@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
 
   /* Card inferior */
   card: {
-    backgroundColor: "#5D3408",
+    backgroundColor: "#5d2008ff",
     position: "absolute",
     bottom: 0,
     width: "100%",
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    backgroundColor: "#442b12bf",
+    backgroundColor: "#0A6A8C",
     borderRadius: 25,
     width: "80%",
     height: 55,
