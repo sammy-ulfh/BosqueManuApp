@@ -68,7 +68,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
 
-  /* Imagen arriba */
   imageContainer: {
     width: width,
     height: 590,
@@ -78,7 +77,6 @@ const styles = StyleSheet.create({
     height: "100%",
   },
 
-  /* CARD inferior */
   card: {
     backgroundColor: "#4B4A33",
     position: "absolute",

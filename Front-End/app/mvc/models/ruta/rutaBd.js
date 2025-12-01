@@ -1,6 +1,5 @@
 import { supabase } from "../supabase/supabaseClient";
 
-// Obtener rutas por dificultad
 export const getRoutesByDifficulty = async (difficulty) => {
   const { data, error } = await supabase
     .from("routes")
@@ -15,7 +14,6 @@ export const getRoutesByDifficulty = async (difficulty) => {
   return data;
 };
 
-// Insertar una ruta nueva
 export const addRoute = async (route) => {
   const { data, error } = await supabase
     .from("routes")
@@ -29,7 +27,6 @@ export const addRoute = async (route) => {
   return data;
 };
 
-// Eliminar una ruta por ID
 export const deleteRoute = async (id) => {
   const { data, error } = await supabase
     .from("routes")

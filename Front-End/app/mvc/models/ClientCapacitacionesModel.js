@@ -2,9 +2,7 @@ import { supabase } from './supabase/supabaseClient';
 import { getCurrentUser } from './auth/auth';
 
 export const ClientCapacitacionesModel = {
-  /**
-   * Obtiene los cursos futuros que aún tienen cupo.
-   */
+
   async getAvailableCourses() {
     try {
       const today = new Date();

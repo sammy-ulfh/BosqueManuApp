@@ -3,11 +3,9 @@ import { View, Text, StyleSheet, ImageBackground } from "react-native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
 
-/* Components */
 import { Input } from "@/mvc/views/components/Input";
 import { MainButton } from "@/mvc/views/components/MainButton";
 
-/* Importar imagenes */
 const biciVerde = require("@/assets/main/biciVerde.png");
 const biciAmarilla = require("@/assets/main/biciAmarilla.png");
 const biciRoja = require("@/assets/main/biciRoja.png");

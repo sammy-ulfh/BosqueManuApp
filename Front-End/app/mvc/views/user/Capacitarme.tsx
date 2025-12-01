@@ -15,7 +15,6 @@ import { MainButton } from "@/mvc/views/components/MainButton";
 import { useCapacitacionesFormController } from "@/mvc/controllers/useCapacitacionesFormController";
 
 export default function CapacitacionesForm({ navigation }: any) {
-  // 1. Instanciamos el controlador
   const {
     isLoaded,
     loadingCourses,

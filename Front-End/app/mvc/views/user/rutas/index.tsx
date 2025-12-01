@@ -52,7 +52,6 @@ export default function ActivityTrackerScreen() {
         );
       }
     } else {
-      // INICIAR
       await startTracking();
     }
   };

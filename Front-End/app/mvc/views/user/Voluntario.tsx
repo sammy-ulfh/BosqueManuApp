@@ -33,9 +33,7 @@ export default function VoluntariosForm({ navigation }) {
   const EXTRA_TOP_OFFSET = 40;
   const topPadding = Platform.OS === 'android' ? (StatusBar.currentHeight || 0) + 20 + EXTRA_TOP_OFFSET : 80 + EXTRA_TOP_OFFSET;
 
-  // --- SOLUCIÓN AQUÍ ---
-  // Definimos el contenido del formulario como una variable JSX directa, NO como una función () => ...
-  // Al ser un elemento directo, React solo actualiza los valores y no desmonta el input.
+  
   const formContent = (
     <>
       <Text style={styles.label}>Nombre</Text>
@@ -138,9 +136,8 @@ export default function VoluntariosForm({ navigation }) {
 
       <View style={styles.formCard}>
         <FlatList
-          data={[]} // Lista vacía, solo usamos el header
+          data={[]} 
           keyExtractor={() => 'form'}
-          // --- CAMBIO AQUÍ: Pasamos la variable directamente, sin la flecha () => ---
           ListHeaderComponent={formContent} 
         />
       </View>

@@ -75,7 +75,6 @@ export default function RouteMap() {
 
   async function downloadPdfNative(url: string) {
     try {
-      // Abrir en el navegador para que el usuario pueda descargarlo/guardarlo
       await Linking.openURL(url);
     } catch (e) {
       console.error('Falló abrir enlace', e);

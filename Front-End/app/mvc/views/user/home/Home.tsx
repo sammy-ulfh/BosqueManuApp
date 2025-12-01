@@ -97,11 +97,10 @@ export default function Home({ navigation }: any) {
           </View>
         </TouchableOpacity>
 
-        {/* ESPACIO PARA QUE EL SCROLL NO CHOQUE CON LA BARRA SOS */}
+        
         <View style={{ height: 120 }} />
       </ScrollView>
 
-      {/* --- BARRA SOS FIJA --- */}
       <View style={styles.sosBar}>
         <View style={styles.sosLine} />
         <TouchableOpacity onPress={() => setSosVisible(true)} accessibilityLabel="Abrir SOS">
