@@ -73,17 +73,26 @@ export default function Routes({ navigation }: any) {
 
           {/* BOTONES DE RUTAS */}
           <View style={{ width: "80%", height: "40%", justifyContent: "flex-start", alignItems: "center", marginTop: "3%" }}>
-            <MainButton onPress={() => navigation.navigate("Community")} style={styles.routeButton}>
+            <MainButton
+              onPress={() => navigation.navigate("RoutesList", { difficulty: "easy" })}
+              style={styles.routeButton}
+            >
               <Image source={biciVerde} style={styles.bikeIcon} contentFit="contain" />
               <Text style={styles.buttonText}>Rutas fáciles</Text>
             </MainButton>
 
-            <MainButton onPress={() => navigation.navigate("Community")} style={styles.routeButton}>
+            <MainButton
+              onPress={() => navigation.navigate("RoutesList", { difficulty: "medium" })}
+              style={styles.routeButton}
+            >
               <Image source={biciAmarilla} style={styles.bikeIcon} contentFit="contain" />
               <Text style={styles.buttonText}>Rutas intermedias</Text>
             </MainButton>
 
-            <MainButton onPress={() => navigation.navigate("Community")} style={styles.routeButton}>
+            <MainButton
+              onPress={() => navigation.navigate("RoutesList", { difficulty: "hard" })}
+              style={styles.routeButton}
+            >
               <Image source={biciRoja} style={styles.bikeIcon} contentFit="contain" />
               <Text style={styles.buttonText}>Rutas difíciles</Text>
             </MainButton>

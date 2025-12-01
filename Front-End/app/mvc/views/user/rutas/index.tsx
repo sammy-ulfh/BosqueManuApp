@@ -5,7 +5,6 @@ import {
   Text, 
   TouchableOpacity, 
   SafeAreaView, 
-  ScrollView, 
   Alert 
 } from 'react-native';
 import { MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
@@ -66,7 +65,7 @@ export default function ActivityTrackerScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <View style={styles.scrollContent}>
         
         {/* Encabezado GPS */}
         <View style={styles.locationCard}>
@@ -121,7 +120,7 @@ export default function ActivityTrackerScreen() {
           </TouchableOpacity>
         )}
 
-      </ScrollView>
+      </View>
 
       <SessionHistoryModal 
         visible={historyVisible} 

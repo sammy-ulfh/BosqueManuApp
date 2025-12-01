@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   Image,
-  ScrollView,
   FlatList,
   TouchableOpacity,
   Linking,
@@ -64,83 +63,89 @@ export default function Nineth({ navigation }: any) {
     );
   };
 
-  return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {/* IMAGEN "SEÑOR" */}
-        <Image source={senor} style={styles.senorImage} resizeMode="cover" />
+  const renderHeader = () => (
+    <View style={{ width: '100%' }}>
+      {/* IMAGEN "SEÑOR" */}
+      <Image source={senor} style={styles.senorImage} resizeMode="cover" />
 
-        {/* CUADRO AZUL VERDOSO ENCIMA */}
-        <View style={styles.topCard}>
-          <Text style={styles.cardTitle}>¿Quiénes Somos?</Text>
+      {/* CUADRO AZUL VERDOSO ENCIMA */}
+      <View style={styles.topCard}>
+        <Text style={styles.cardTitle}>¿Quiénes Somos?</Text>
 
-          <Text style={styles.cardText}>
-            ¡Iremos al grano! Buscamos ayudar al bosque La Primavera, apoyar a
-            los brigadistas y a todas aquellas personas dispuestas a mejorar la
-            flora y fauna de nuestro amado bosque.
-          </Text>
+        <Text style={styles.cardText}>
+          ¡Iremos al grano! Buscamos ayudar al bosque La Primavera, apoyar a
+          los brigadistas y a todas aquellas personas dispuestas a mejorar la
+          flora y fauna de nuestro amado bosque.
+        </Text>
 
-          <Text style={styles.cardText}>
-            Nuestra meta es tener botiquines, señalamientos, capacitación para
-            primeros auxilios. Es un proyecto que necesita ayuda para que sea
-            gratuito y permanente.
-          </Text>
+        <Text style={styles.cardText}>
+          Nuestra meta es tener botiquines, señalamientos, capacitación para
+          primeros auxilios. Es un proyecto que necesita ayuda para que sea
+          gratuito y permanente.
+        </Text>
 
-          <Text style={styles.cardText}>
-            Estaremos compartiendo nuestros logros en redes sociales.
-          </Text>
+        <Text style={styles.cardText}>
+          Estaremos compartiendo nuestros logros en redes sociales.
+        </Text>
 
-          <Text style={styles.cardSubtitle}>Únete a la comunidad</Text>
+        <Text style={styles.cardSubtitle}>Únete a la comunidad</Text>
 
-          <TouchableOpacity onPress={() => navigation.navigate("Capacitacion")}>
-            <Image source={logo} style={styles.logoMain} resizeMode="contain" />
+        <TouchableOpacity onPress={() => navigation.navigate("Capacitacion")}>
+          <Image source={logo} style={styles.logoMain} resizeMode="contain" />
+        </TouchableOpacity>
+
+      </View>
+
+      {/* SECCIÓN BEIGE */}
+      <View style={styles.beigeSection}>
+        <Text style={styles.beigeText}>Gracias a todos los que son parte</Text>
+
+        {/* Logos en cuadrícula (convertidos a View para evitar FlatList anidado) */}
+        <View style={styles.logosGrid}>
+          {logos.map((item, idx) => (
+            <Image key={idx} source={item} style={styles.logoItem} resizeMode="contain" />
+          ))}
+        </View>
+      </View>
+
+      {/* SEGUNDO CUADRO AZUL */}
+      <View style={[styles.topCard, { marginTop: -20, marginBottom: -50 }]}>
+        <Text style={styles.cardTitle}>
+          Aprende más sobre los nuevos proyectos y logros
+        </Text>
+
+        <View style={styles.socialContainer}>
+          <TouchableOpacity
+            onPress={() =>
+              openExternal("https://www.instagram.com/masbosquemanu/")
+            }
+          >
+            <Image source={instagram} style={styles.instaIcon} />
           </TouchableOpacity>
 
+          <TouchableOpacity
+            onPress={() =>
+              openExternal("https://www.facebook.com/MasBosqueManu")
+            }
+          >
+            <Image source={facebook} style={styles.facebookIcon} />
+          </TouchableOpacity>
         </View>
+      </View>
+    </View>
+  );
 
-        {/* SECCIÓN BEIGE */}
-        <View style={styles.beigeSection}>
-          <Text style={styles.beigeText}>Gracias a todos los que son parte</Text>
-
-          {/* Logos en cuadrícula (FlatList para mejor rendimiento si la lista crece) */}
-          <FlatList
-            data={logos}
-            keyExtractor={(_, index) => index.toString()}
-            renderItem={({ item }) => (
-              <Image source={item} style={styles.logoItem} resizeMode="contain" />
-            )}
-            numColumns={3}
-            contentContainerStyle={{ justifyContent: "center" }}
-            columnWrapperStyle={{ justifyContent: "center" }}
-            showsVerticalScrollIndicator={false}
-          />
-        </View>
-
-        {/* SEGUNDO CUADRO AZUL */}
-        <View style={[styles.topCard, { marginTop: -20, marginBottom: -50 }]}>
-          <Text style={styles.cardTitle}>
-            Aprende más sobre los nuevos proyectos y logros
-          </Text>
-
-          <View style={styles.socialContainer}>
-            <TouchableOpacity
-              onPress={() =>
-                openExternal("https://www.instagram.com/masbosquemanu/")
-              }
-            >
-              <Image source={instagram} style={styles.instaIcon} />
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() =>
-                openExternal("https://www.facebook.com/MasBosqueManu")
-              }
-            >
-              <Image source={facebook} style={styles.facebookIcon} />
-            </TouchableOpacity>
-          </View>
-        </View>
-      </ScrollView>
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={[] as any[]}
+        keyExtractor={() => 'empty'}
+        renderItem={() => null}
+        ListHeaderComponent={renderHeader}
+        style={{ width: '100%' }}
+        contentContainerStyle={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+      />
     </View>
   );
 }
@@ -152,7 +157,6 @@ const styles = StyleSheet.create({
   },
 
   scrollContainer: {
-    alignItems: "center",
     paddingBottom: 50,
   },
 

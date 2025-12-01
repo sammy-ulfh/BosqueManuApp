@@ -13,6 +13,8 @@ import Voluntariado from "@/mvc/views/user/Voluntariado";
 import Voluntario from "@/mvc/views/user/Voluntario";
 import Configuration from "@/mvc/views/user/Configuration";
 import Routes from "@/mvc/views/user/rutas/Routes";
+import RoutesList from "@/mvc/views/user/rutas/RoutesList";
+import RouteMap from "@/mvc/views/user/rutas/RouteMap";
 import Nineth from "@/mvc/views/user/Nineth";
 import Tenth from "@/mvc/views/user/Tenth";
 import Eleventh from "@/mvc/views/user/Eleventh";
@@ -97,6 +99,16 @@ export default function App() {
         name="Routes"
         component={Routes}
         options={{ headerShown: false }}
+      />
+
+      <Stack.Screen
+        name="RoutesList"
+        component={RoutesList}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="RouteMap" component={RouteMap} 
+        options={{ headerShown: false }} 
       />
 
       <Stack.Screen
