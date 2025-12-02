@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   View,
@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   FlatList,
+  ActivityIndicator,
 } from "react-native";
 import AdminDrawer from "../../../app/components/AdminDrawer";
 
@@ -17,15 +18,47 @@ type Donativo = {
   method: string;
 };
 
-const MOCK: Donativo[] = [
-  { id: "d1", donor: "María López", amount: 500, date: "2025-11-12", method: "Tarjeta" },
-  { id: "d2", donor: "Carlos Pérez", amount: 1000, date: "2025-11-15", method: "Transferencia" },
-  { id: "d3", donor: "Ana Gómez", amount: 900, date: "2025-11-20", method: "Efectivo" },
-];
+import { supabase } from "../../../scripts/supabaseClient";
 
 export default function DonativosAdmin({ navigation }: any) {
   const [drawerVisible, setDrawerVisible] = useState(false);
-  const [items] = useState<Donativo[]>(MOCK);
+  const [items, setItems] = useState<Donativo[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    let mounted = true;
+    const fetchDonaciones = async () => {
+      setLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from("donaciones")
+          .select("id, email, amount, created_at")
+          .order("created_at", { ascending: false });
+
+        if (error) {
+          console.log("Error fetching donaciones:", error);
+          if (mounted) setItems([]);
+        } else {
+          const mapped = (data || []).map((d: any) => ({
+            id: String(d.id),
+            donor: d.email || "Donador anónimo",
+            amount: Number(d.amount) || 0,
+            date: d.created_at ? new Date(d.created_at).toLocaleDateString() : "",
+            method: "",
+          }));
+          if (mounted) setItems(mapped);
+        }
+      } catch (err) {
+        console.log("Error cargando donaciones:", err);
+        if (mounted) setItems([]);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+
+    fetchDonaciones();
+    return () => { mounted = false };
+  }, []);
 
   const renderItem = ({ item }: { item: Donativo }) => {
     return (
@@ -54,13 +87,19 @@ export default function DonativosAdmin({ navigation }: any) {
         <Text style={styles.subHeaderText}>Registros de donaciones recibidas.</Text>
       </View>
 
-      <FlatList
-        data={items}
-        keyExtractor={i => i.id}
-        renderItem={renderItem}
-        contentContainerStyle={styles.list}
-        ItemSeparatorComponent={() => <View style={{height:12}} />}
-      />
+      {loading ? (
+        <View style={{ padding: 16 }}>
+          <ActivityIndicator size="large" />
+        </View>
+      ) : (
+        <FlatList
+          data={items}
+          keyExtractor={i => i.id}
+          renderItem={renderItem}
+          contentContainerStyle={styles.list}
+          ItemSeparatorComponent={() => <View style={{height:12}} />}
+        />
+      )}
 
       <AdminDrawer visible={drawerVisible} onClose={() => setDrawerVisible(false)} navigation={navigation} />
     </SafeAreaView>

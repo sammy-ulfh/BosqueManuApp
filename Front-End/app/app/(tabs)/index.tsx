@@ -4,16 +4,21 @@ import { createStackNavigator } from "@react-navigation/stack";
 import CapacitacionesAdmin from "../pages/admin/CapacitacionesAdmin";
 import VoluntariosAdmin from "../pages/admin/VoluntariosAdmin";
 import DonativosAdmin from "../pages/admin/DonativosAdmin";
-import Login from "../pages/admin/Login.tsx";
-import Signup from "../pages/admin/Singup.tsx";
-import HomeAdmin from '../pages/admin/HomeAdmin.tsx';
-import AddCourseAdmin from '../pages/admin/AddCourseAdmin.tsx'; 
-import AddEventAdmin from '../pages/admin/AddEventAdmin.tsx'; 
+import SOSAlertsScreen from "../pages/admin/SOSAlertsScreen";
+import Login from "../pages/admin/Login";
+import Signup from "../pages/admin/Singup";
+import HomeAdmin from '../pages/admin/HomeAdmin';
+import AddCourseAdmin from '../pages/admin/AddCourseAdmin'; 
+import AddEventAdmin from '../pages/admin/AddEventAdmin'; 
+import { startSosListener } from '../services/sosListener';
 
 
 const Stack = createStackNavigator();
 
 export default function App() {
+  React.useEffect(() => {
+    startSosListener().catch(err => console.error('Error starting global SOS listener', err));
+  }, []);
   return (
       <Stack.Navigator initialRouteName="Login">
         
@@ -48,6 +53,11 @@ export default function App() {
         <Stack.Screen 
           name="DonativosAdmin" 
           component={DonativosAdmin} 
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen 
+          name="SOSAlertsAdmin" 
+          component={SOSAlertsScreen} 
           options={{ headerShown: false }} 
         />
         <Stack.Screen 

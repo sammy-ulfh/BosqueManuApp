@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import { startSosListener } from "../services/sosListener";
 import {
   View,
   Text,
@@ -28,6 +29,11 @@ export default function AdminDrawer({ visible, onClose, navigation }: Props) {
       useNativeDriver: true,
     }).start();
   }, [visible, anim]);
+
+  useEffect(() => {
+    // start global SOS listener so admin receives notifications even when not on the SOS screen
+    startSosListener().catch(err => console.error('Error starting global SOS listener', err));
+  }, []);
 
   const translateX = anim.interpolate({
     inputRange: [0, 1],
@@ -78,9 +84,10 @@ export default function AdminDrawer({ visible, onClose, navigation }: Props) {
             <Text style={styles.itemText}>Rutas usuarios</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.item} onPress={() => closeAndNavigate()}>
+          <TouchableOpacity style={styles.item} onPress={() => closeAndNavigate("SOSAlertsAdmin")}>
             <Text style={styles.itemText}>Notificaciones SOS</Text>
           </TouchableOpacity>
+
         </View>
       </Animated.View>
     </>
