@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
     SafeAreaView,
     View,
@@ -10,12 +10,25 @@ import {
     ActivityIndicator,
     RefreshControl
 } from "react-native";
+import * as Font from 'expo-font';
 
 import AdminDrawer from "../../components/AdminDrawer";
 
 import { useHomeAdminController } from "../../controllers/useHomeAdminController";
 
 export default function HomeAdmin({ navigation }) {
+    const [isLoaded, setIsLoaded] = useState(false);
+
+    const loadFonts = async () => {
+        await Font.loadAsync({
+            TenorSans: require("../../../assets/fonts/Tenor_Sans/TenorSans-Regular.ttf"),
+            Gloock: require("../../../assets/fonts/Gloock/Gloock-Regular.ttf"),
+            Raleway: require("../../../assets/fonts/Raleway/static/Raleway-Black.ttf"),
+        });
+        setIsLoaded(true);
+    };
+
+    useEffect(() => { loadFonts(); }, []);
     const { 
         drawerVisible, 
         setDrawerVisible, 
@@ -25,6 +38,14 @@ export default function HomeAdmin({ navigation }) {
         onRefresh, 
         formatCurrency 
     } = useHomeAdminController();
+
+    if (!isLoaded) {
+        return (
+            <View style={styles.loaderContainer}>
+                <ActivityIndicator size="large" color="#2E7D57" />
+            </View>
+        );
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -48,8 +69,8 @@ export default function HomeAdmin({ navigation }) {
                     </TouchableOpacity>
 
                     <View style={styles.heroContent}>
-                        <Text style={styles.heroTitle}>Panel de Administración</Text>
-                        <Text style={styles.subtitle}>Resumen rápido — Más Bosque MANU</Text>
+                        <Text style={[styles.heroTitle, { fontFamily: 'Gloock' }]}>Panel de Administración</Text>
+                        <Text style={[styles.subtitle, { fontFamily: 'TenorSans' }]}>Resumen rápido — Más Bosque MANU</Text>
                     </View>
                 </ImageBackground>
 
@@ -62,39 +83,39 @@ export default function HomeAdmin({ navigation }) {
                     <>
                         <View style={styles.summaryRow}>
                             <TouchableOpacity style={styles.summaryCard} onPress={() => navigation.navigate("Info")}>
-                                <Text style={styles.cardNumber}>{stats.users}</Text>
-                                <Text style={styles.cardLabel}>Usuarios registrados</Text>
+                                <Text style={[styles.cardNumber, { fontFamily: 'TenorSans' }]}>{stats.users}</Text>
+                                <Text style={[styles.cardLabel, { fontFamily: 'TenorSans' }]}>Usuarios registrados</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity style={styles.summaryCard} onPress={() => navigation.navigate("CapacitacionesAdmin")}>
-                                <Text style={styles.cardNumber}>{stats.courses}</Text>
-                                <Text style={styles.cardLabel}>Capacitaciones</Text>
+                                <Text style={[styles.cardNumber, { fontFamily: 'TenorSans' }]}>{stats.courses}</Text>
+                                <Text style={[styles.cardLabel, { fontFamily: 'TenorSans' }]}>Capacitaciones</Text>
                             </TouchableOpacity>
                         </View>
 
                         <View style={styles.summaryRow}>
                             <TouchableOpacity style={styles.summaryCard} onPress={() => navigation.navigate("VoluntariosAdmin")}>
-                                <Text style={styles.cardNumber}>{stats.volunteers}</Text>
-                                <Text style={styles.cardLabel}>Voluntarios inscritos</Text>
+                                <Text style={[styles.cardNumber, { fontFamily: 'TenorSans' }]}>{stats.volunteers}</Text>
+                                <Text style={[styles.cardLabel, { fontFamily: 'TenorSans' }]}>Voluntarios inscritos</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity style={styles.summaryCard} onPress={() => navigation.navigate("DonativosAdmin")}>
-                                <Text style={styles.cardNumber}>{formatCurrency(stats.money)}</Text>
-                                <Text style={styles.cardLabel}>Donativos MBM</Text>
+                                <Text style={[styles.cardNumber, { fontFamily: 'TenorSans' }]}>{formatCurrency(stats.money)}</Text>
+                                <Text style={[styles.cardLabel, { fontFamily: 'TenorSans' }]}>Donativos MBM</Text>
                             </TouchableOpacity>
                         </View>
                     </>
                 )}
 
                 <View style={styles.actionContainer}>
-                    <Text style={styles.sectionTitle}>Acciones rápidas</Text>
+                    <Text style={[styles.sectionTitle, { fontFamily: 'TenorSans' }]}>Acciones rápidas</Text>
                     
                     {/* Botón 1: Registrar Usuario */}
                     <TouchableOpacity
                         style={[styles.mainButton, { backgroundColor: '#2E7D57' }]} 
                         onPress={() => navigation.navigate("Signup")}
                     >
-                        <Text style={styles.mainButtonText}>+ Registrar Nuevo Usuario</Text>
+                        <Text style={[styles.mainButtonText, { fontFamily: 'TenorSans' }]}>+ Registrar Nuevo Usuario</Text>
                     </TouchableOpacity>
 
                     {/* Botón 2: Crear Capacitación (Azul) */}
@@ -102,7 +123,7 @@ export default function HomeAdmin({ navigation }) {
                         style={[styles.mainButton, { backgroundColor: '#0B6D8A' }]} 
                         onPress={() => navigation.navigate("AddCourseAdmin")}
                     >
-                        <Text style={styles.mainButtonText}>+ Crear Capacitación</Text>
+                        <Text style={[styles.mainButtonText, { fontFamily: 'TenorSans' }]}>+ Crear Capacitación</Text>
                     </TouchableOpacity>
 
                     {/* Botón 3: Crear Evento Voluntariado (Naranja) */}
@@ -110,7 +131,7 @@ export default function HomeAdmin({ navigation }) {
                         style={[styles.mainButton, { backgroundColor: '#E67E22' }]} 
                         onPress={() => navigation.navigate("AddEventAdmin")}
                     >
-                        <Text style={styles.mainButtonText}>+ Crear Evento Voluntariado</Text>
+                        <Text style={[styles.mainButtonText, { fontFamily: 'TenorSans' }]}>+ Crear Evento Voluntariado</Text>
                     </TouchableOpacity>
                 </View>
 

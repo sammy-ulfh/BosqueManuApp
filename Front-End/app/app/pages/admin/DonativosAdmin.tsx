@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import AdminDrawer from "../../../app/components/AdminDrawer";
+import * as Font from "expo-font";
 
 type Donativo = {
   id: string;
@@ -22,8 +23,22 @@ import { supabase } from "../../../scripts/supabaseClient";
 
 export default function DonativosAdmin({ navigation }: any) {
   const [drawerVisible, setDrawerVisible] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [items, setItems] = useState<Donativo[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+
+  const loadFonts = async () => {
+    await Font.loadAsync({
+      TenorSans: require("../../../assets/fonts/Tenor_Sans/TenorSans-Regular.ttf"),
+      Gloock: require("../../../assets/fonts/Gloock/Gloock-Regular.ttf"),
+      Raleway: require("../../../assets/fonts/Raleway/static/Raleway-Black.ttf"),
+    });
+    setIsLoaded(true);
+  };
+
+  useEffect(() => {
+    loadFonts();
+  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -64,8 +79,8 @@ export default function DonativosAdmin({ navigation }: any) {
     return (
       <View style={styles.card}>
         <View style={styles.cardBody}>
-          <Text style={styles.donor}>{item.donor}</Text>
-          <Text style={styles.meta}>{item.method} • {item.date}</Text>
+          <Text style={[styles.donor, { fontFamily: 'Gloock' }]}>{item.donor}</Text>
+          <Text style={[styles.meta, { fontFamily: 'TenorSans' }]}>{item.method} • {item.date}</Text>
         </View>
         <View style={styles.amountWrap}>
           <Text style={styles.amount}>${item.amount}</Text>
@@ -73,6 +88,14 @@ export default function DonativosAdmin({ navigation }: any) {
       </View>
     );
   };
+
+  if (!isLoaded) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#2E7D57" />
+      </View>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -121,4 +144,5 @@ const styles = StyleSheet.create({
   meta: { marginTop: 4, fontSize: 13, color: '#666' },
   amountWrap: { marginLeft: 12 },
   amount: { fontSize: 18, fontWeight: '800', color: '#2E7D57' },
+  loaderContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 });

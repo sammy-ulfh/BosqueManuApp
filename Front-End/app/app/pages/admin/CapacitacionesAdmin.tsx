@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   View,
@@ -9,10 +9,25 @@ import {
   ActivityIndicator,
   RefreshControl
 } from "react-native";
+import * as Font from "expo-font";
 import AdminDrawer from "../../../app/components/AdminDrawer";
 import { useCapacitacionesController } from "../../controllers/useCapacitacionesController";
 
 export default function CapacitacionesAdmin({ navigation }: any) {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const loadFonts = async () => {
+    await Font.loadAsync({
+      TenorSans: require("../../../assets/fonts/Tenor_Sans/TenorSans-Regular.ttf"),
+      Gloock: require("../../../assets/fonts/Gloock/Gloock-Regular.ttf"),
+      Raleway: require("../../../assets/fonts/Raleway/static/Raleway-Black.ttf"),
+    });
+    setIsLoaded(true);
+  };
+
+  useEffect(() => {
+    loadFonts();
+  }, []);
   const { 
     drawerVisible, 
     setDrawerVisible, 
@@ -33,23 +48,28 @@ export default function CapacitacionesAdmin({ navigation }: any) {
 
         <View style={styles.cardBody}>
           <Text style={styles.name}>{item.name}</Text>
-          <Text style={styles.email}>{item.email}</Text>
+            <Text style={styles.email}>{item.email}</Text>
         </View>
 
         <View style={styles.cardRight}>
           <Text style={styles.date}>{item.date}</Text>
-          <TouchableOpacity style={styles.viewButton} onPress={() => { /* Lógica */ }}>
-            <Text style={styles.viewButtonText}>Ver</Text>
-          </TouchableOpacity>
         </View>
       </View>
     );
   };
 
+  if (!isLoaded) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#2E7D57" />
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Inscritos a Capacitaciones</Text>
+        <Text style={[styles.title, { fontFamily: 'Gloock' }]}>Inscritos a Capacitaciones</Text>
         <TouchableOpacity 
           onPress={() => setDrawerVisible(true)} 
           style={styles.hamburger} 
@@ -109,12 +129,10 @@ const styles = StyleSheet.create({
   avatar: { width: 56, height: 56, borderRadius: 28, backgroundColor: "#E6F4EB", justifyContent: "center", alignItems: "center", marginRight: 12 },
   avatarText: { color: "#2E7D57", fontWeight: "800", fontSize: 18 },
   cardBody: { flex: 1 },
-  name: { fontSize: 16, fontWeight: "700", color: "#222" },
-  email: { fontSize: 13, color: "#666", marginTop: 4 },
+  name: { fontSize: 16, fontWeight: "700", color: "#222", fontFamily: 'Gloock' },
+  email: { fontSize: 13, color: "#666", marginTop: 4, fontFamily: 'TenorSans' },
   cardRight: { alignItems: "flex-end", minWidth: 70 },
   date: { fontSize: 12, color: "#888", marginBottom: 5 },
-  viewButton: { marginTop: 4, backgroundColor: "#2E7D57", paddingHorizontal: 12, paddingVertical: 6, borderRadius: 8 },
-  viewButtonText: { color: "#fff", fontWeight: "700", fontSize: 12 },
 
   emptyContainer: { alignItems: 'center', marginTop: 50 },
   emptyText: { color: '#888', fontStyle: 'italic' }

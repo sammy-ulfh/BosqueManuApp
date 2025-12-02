@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import * as Font from 'expo-font';
 import {
   View,
   Text,
@@ -24,6 +25,16 @@ export default function SOSAlertsScreen() {
   const [selected, setSelected] = useState<SOSAlertItem | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [newAlertVisible, setNewAlertVisible] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const loadFonts = async () => {
+    await Font.loadAsync({
+      TenorSans: require('../../../assets/fonts/Tenor_Sans/TenorSans-Regular.ttf'),
+      Gloock: require('../../../assets/fonts/Gloock/Gloock-Regular.ttf'),
+      Raleway: require('../../../assets/fonts/Raleway/static/Raleway-Black.ttf'),
+    });
+    setIsLoaded(true);
+  };
 
   const soundRef = useRef<Audio.Sound | null>(null);
   const isFocused = useIsFocused();
@@ -78,6 +89,8 @@ export default function SOSAlertsScreen() {
   };
 
   useEffect(() => {
+    loadFonts();
+
     // load cached alerts for today first
     let mounted = true;
     const init = async () => {
@@ -134,15 +147,23 @@ export default function SOSAlertsScreen() {
     setAlerts(prev => prev.map(a => (a.id === id ? { ...a, status: 'resolved' } : a)));
   };
 
+  if (!isLoaded) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Notificaciones SOS</Text>
+        <Text style={[styles.title, { fontFamily: 'Gloock' }]}>Notificaciones SOS</Text>
       </View>
 
       {newAlertVisible && (
         <TouchableOpacity style={styles.newBanner} onPress={() => { setNewAlertVisible(false); }}>
-          <Text style={styles.newBannerText}>¡Nueva alerta SOS recibida!</Text>
+          <Text style={[styles.newBannerText, { fontFamily: 'TenorSans' }]}>¡Nueva alerta SOS recibida!</Text>
         </TouchableOpacity>
       )}
 
@@ -178,4 +199,5 @@ const styles = StyleSheet.create({
   list: { padding: 16 },
   newBanner: { backgroundColor: '#D9534F', padding: 12, alignItems: 'center' },
   newBannerText: { color: '#fff', fontWeight: '800' },
+  loaderContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
 });

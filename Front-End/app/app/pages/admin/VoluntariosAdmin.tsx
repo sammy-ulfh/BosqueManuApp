@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   View,
@@ -11,8 +11,23 @@ import {
 } from "react-native";
 import AdminDrawer from "../../../app/components/AdminDrawer";
 import { useVoluntariosController } from "../../controllers/useVoluntariosController";
+import * as Font from "expo-font";
 
 export default function VoluntariosAdmin({ navigation }: any) {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const loadFonts = async () => {
+    await Font.loadAsync({
+      TenorSans: require("../../../assets/fonts/Tenor_Sans/TenorSans-Regular.ttf"),
+      Gloock: require("../../../assets/fonts/Gloock/Gloock-Regular.ttf"),
+      Raleway: require("../../../assets/fonts/Raleway/static/Raleway-Black.ttf"),
+    });
+    setIsLoaded(true);
+  };
+
+  useEffect(() => {
+    loadFonts();
+  }, []);
   const { 
     drawerVisible, 
     setDrawerVisible, 
@@ -38,18 +53,23 @@ export default function VoluntariosAdmin({ navigation }: any) {
 
         <View style={styles.cardRight}>
           <Text style={styles.date}>{item.joined}</Text>
-          <TouchableOpacity style={styles.viewButton} onPress={() => { /* Perfil */ }}>
-            <Text style={styles.viewButtonText}>Perfil</Text>
-          </TouchableOpacity>
         </View>
       </View>
     );
   };
 
+  if (!isLoaded) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#0B6D8A" />
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Voluntarios registrados</Text>
+        <Text style={[styles.title, { fontFamily: 'Gloock' }]}>Voluntarios registrados</Text>
         <TouchableOpacity 
           onPress={() => setDrawerVisible(true)} 
           style={styles.hamburger} 
@@ -108,12 +128,11 @@ const styles = StyleSheet.create({
   avatar: { width: 56, height: 56, borderRadius: 28, backgroundColor: "#EAF6FF", justifyContent: "center", alignItems: "center", marginRight: 12 },
   avatarText: { color: "#0B6D8A", fontWeight: "800", fontSize: 18 },
   cardBody: { flex: 1 },
-  name: { fontSize: 16, fontWeight: "700", color: "#222" },
-  email: { fontSize: 13, color: "#666", marginTop: 4 },
+  name: { fontSize: 16, fontWeight: "700", color: "#222", fontFamily: 'Gloock' },
+  email: { fontSize: 13, color: "#666", marginTop: 4, fontFamily: 'TenorSans' },
   cardRight: { alignItems: "flex-end", minWidth: 70 },
   date: { fontSize: 12, color: "#888", marginBottom: 5 },
-  viewButton: { marginTop: 8, backgroundColor: "#0B6D8A", paddingHorizontal: 10, paddingVertical: 6, borderRadius: 8 },
-  viewButtonText: { color: "#fff", fontWeight: "700", fontSize: 12 },
+  
 
   emptyContainer: { alignItems: 'center', marginTop: 50 },
   emptyText: { color: '#888', fontStyle: 'italic' }
