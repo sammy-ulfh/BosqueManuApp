@@ -1,4 +1,6 @@
 import { Image } from "expo-image";
+import * as Sentry from "@sentry/react-native";
+
 import {
   View,
   Text,
@@ -6,6 +8,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   Alert,
+  Button,
 } from "react-native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
@@ -25,28 +28,55 @@ export default function Login({ navigation }: any) {
   const [successMessage, setSuccessMessage] = useState("");
 
   const handleLogin = async () => {
-    setErrorMessage("");
-    setSuccessMessage("");
+    try {
+      setErrorMessage("");
+      setSuccessMessage("");
 
-    const { data, error } = await loginUser(mailInput, passwordInput);
+      const { data, error } = await loginUser(mailInput, passwordInput);
 
-    if (error) {
-      console.log("Error de login:", error.message);
-      setErrorMessage(error.message);
-      Alert.alert("Error de login", error.message);
-      return;
+      if (error) {
+        Sentry.captureException(error, {
+          tags: { module: "auth", screen: "Login" },
+          extra: { email: mailInput },
+        });
+
+        Alert.alert("Error de login", error.message);
+        return;
+      }
+
+      if (!data?.user) {
+        const err = new Error("Usuario no encontrado");
+        Sentry.captureException(err, {
+          tags: { module: "auth", screen: "Login" },
+        });
+
+        Alert.alert("Error de login", "Usuario no encontrado.");
+        return;
+      }
+
+      Alert.alert("Éxito", `Bienvenido ${data.user.email}`);
+      navigation.replace("ClientHome");
+
+    } catch (err) {
+      Sentry.captureException(err, {
+        tags: { module: "auth", screen: "Login", type: "unexpected" },
+      });
+
+      Alert.alert("Error inesperado", String(err));
     }
+  };
 
-    if (!data?.user) {
-      setErrorMessage("Usuario no encontrado.");
-      Alert.alert("Error de login", "Usuario no encontrado.");
-      return;
+  // Función de prueba para Sentry
+  const testSentry = () => {
+    try {
+      throw new Error("Error de prueba para Sentry");
+    } catch (err) {
+      Sentry.captureException(err, {
+        tags: { module: "test", screen: "Login" },
+        extra: { info: "Esta es una prueba de Sentry" },
+      });
+      Alert.alert("Error de prueba enviado a Sentry");
     }
-
-    console.log("Usuario logueado:", data.user);
-    setSuccessMessage(`Bienvenido ${data.user.email}`);
-    Alert.alert("Éxito", `Bienvenido ${data.user.email}`);
-    navigation.replace("ClientHome");
   };
 
   const loadFonts = async () => {
@@ -115,10 +145,7 @@ export default function Login({ navigation }: any) {
               ]}
             >
               <Text
-                style={[
-                  styles.whiteText,
-                  { fontFamily: "Gloock", fontSize: 40 },
-                ]}
+                style={[styles.whiteText, { fontFamily: "Gloock", fontSize: 40 }]}
               >
                 Bienvenido
               </Text>
@@ -172,6 +199,9 @@ export default function Login({ navigation }: any) {
               testID="login-button"
             />
 
+            {/* Botón para probar Sentry */}
+            <Button title="Probar Sentry" onPress={testSentry} color="orange" />
+
             {/* Mensajes visibles para Detox */}
             {errorMessage !== "" && (
               <Text
@@ -206,14 +236,7 @@ export default function Login({ navigation }: any) {
                 testID="go-to-signup"
               >
                 <Text
-                  style={[
-                    styles.whiteText,
-                    styles.link,
-                    {
-                      fontSize: 18,
-                      color: "white",
-                    },
-                  ]}
+                  style={[styles.whiteText, styles.link, { fontSize: 18, color: "white" }]}
                 >
                   Regístrate ahora
                 </Text>

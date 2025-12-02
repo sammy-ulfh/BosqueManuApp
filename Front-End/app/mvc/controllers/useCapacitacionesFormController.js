@@ -48,38 +48,56 @@ export function useCapacitacionesFormController(navigation) {
   const validatePhone = () => /^\d{10}$/.test(phone);
 
   const handleSubmit = async () => {
-    if (!validatePhone()) {
-      Alert.alert("Error", "El número telefónico debe tener 10 dígitos.");
-      return;
-    }
-    if (!selectedCourse) {
-      Alert.alert("Error", "Por favor selecciona una fecha de capacitación.");
-      return;
-    }
-    if (!userName.trim()) {
-        Alert.alert("Error", "Por favor ingresa tu nombre.");
+    try {
+      if (!validatePhone()) {
+        Alert.alert("Error", "El número telefónico debe tener 10 dígitos.");
         return;
-    }
-    if (!userId) {
-        Alert.alert("Error", "No se encontró tu usuario. Intenta reiniciar sesión.");
+      }
+
+      if (!selectedCourse) {
+        Alert.alert("Error", "Selecciona una fecha.");
         return;
-    }
+      }
 
-    const { success, error } = await ClientCapacitacionesModel.registerUserToCourse({
-      userId,
-      courseId: selectedCourse.id,
-      userName,
-      phone
-    });
+      if (!userId) {
+        Sentry.captureMessage("UserId no disponible en capacitaciones", {
+          level: "warning",
+          tags: { module: "capacitaciones" },
+        });
+        Alert.alert("Error", "Usuario no identificado.");
+        return;
+      }
 
-    if (success) {
-      Alert.alert("¡Inscripción exitosa!", "Te has registrado correctamente.", [
-        { text: "OK", onPress: () => navigation.navigate("ClientHome") }
+      const { success, error } =
+        await ClientCapacitacionesModel.registerUserToCourse({
+          userId,
+          courseId: selectedCourse.id,
+          userName,
+          phone,
+        });
+
+      if (!success) {
+        Sentry.captureException(error, {
+          tags: { module: "capacitaciones", action: "registerUserToCourse" },
+          extra: { userId, courseId: selectedCourse.id },
+        });
+
+        Alert.alert("Error al registrarse", error);
+        return;
+      }
+
+      Alert.alert("¡Registro exitoso!", "Tu inscripción ha sido registrada", [
+        { text: "OK", onPress: () => navigation.navigate("ClientHome") },
       ]);
-    } else {
-      Alert.alert("Error en inscripción", error);
+
+    } catch (err) {
+      Sentry.captureException(err, {
+        tags: { module: "capacitaciones", type: "unexpected_error" },
+      });
+      Alert.alert("Error inesperado", String(err));
     }
   };
+
 
   const formatDate = (dateString) => {
     const d = new Date(dateString);

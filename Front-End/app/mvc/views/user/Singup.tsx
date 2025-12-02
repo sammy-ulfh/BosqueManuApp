@@ -8,6 +8,8 @@ import {
 } from "react-native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
+import { Alert } from "react-native";
+import * as Sentry from "@sentry/react-native";
 import { MainButton } from "@/mvc/views/components/MainButton";
 import { Input } from "@/mvc/views/components/Input";
 
@@ -69,42 +71,52 @@ export default function Singup({ navigation }: any) {
   };
   // end added section
 
-  const insertUser = async () => {
-
-    // added call to password validation function
+const insertUser = async () => {
+  try {
     if (!validatePassword(password)) {
-      alert("La contraseña debe tener al menos 8 caracteres e incluir una letra mayúscula, una letra minúscula, un número y un carácter especial.");
+      Alert.alert("Contraseña inválida");
       return;
     }
-    // end added section
 
     if (password !== confirmedPassword) {
-      alert("Las contraseñas no coinciden");
+      Alert.alert("Las contraseñas no coinciden");
       return;
     }
 
-    try {
-      const { data, error } = await setUser({
-        nombre: name,
-        apellido: lastName,
-        email,
-        password,
-        number,
-        group_name: groupName,
-        blood: bloodType,
-        allergies,
-        medicines: medicine,
-        contact: emergencyContact
+    const { data, error } = await setUser({
+      nombre: name,
+      apellido: lastName,
+      email,
+      password,
+      number,
+      group_name: groupName,
+      blood: bloodType,
+      allergies,
+      medicines: medicine,
+      contact: emergencyContact
+    });
+
+    if (error) {
+      Sentry.captureException(error, {
+        tags: { module: "auth", screen: "Signup" },
+        extra: { email },
       });
 
-      if (error) throw error;
-
-      alert("¡Registro exitoso!");
-      navigation.navigate("Login");
-    } catch (err: any) {
-      alert("Error al registrar usuario: " + (err?.message ?? String(err)));
+      Alert.alert("Error al registrar usuario", (error as any)?.message ?? String(error));
+      return;
     }
-  };
+
+    alert("¡Registro exitoso!");
+    navigation.navigate("Login");
+
+  } catch (err) {
+    Sentry.captureException(err, {
+      tags: { module: "auth", screen: "Signup", type: "unexpected_error" },
+    });
+    Alert.alert("Error inesperado", (err as any)?.message ?? String(err));
+  }
+};
+
 
   const loadFonts = async () => {
     await Font.loadAsync({

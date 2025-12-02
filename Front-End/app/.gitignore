@@ -44,3 +44,7 @@ app-example
 
 #env
 .env
+
+
+dir Front-End\app\utils\env.js
+Select-String -Path Front-End\app\.gitignore -Pattern "1.env|app/utils/env.js"
