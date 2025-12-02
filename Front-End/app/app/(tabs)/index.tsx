@@ -7,6 +7,7 @@ import DonativosAdmin from "../pages/admin/DonativosAdmin";
 import SOSAlertsScreen from "../pages/admin/SOSAlertsScreen";
 import Login from "../pages/admin/Login";
 import Signup from "../pages/admin/Singup";
+import Info from "../pages/admin/Info";
 import HomeAdmin from '../pages/admin/HomeAdmin';
 import AddCourseAdmin from '../pages/admin/AddCourseAdmin'; 
 import AddEventAdmin from '../pages/admin/AddEventAdmin'; 
@@ -38,6 +39,11 @@ export default function App() {
         <Stack.Screen 
           name="HomeAdmin" 
           component={HomeAdmin} 
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen 
+          name="Info" 
+          component={Info} 
           options={{ headerShown: false }} 
         />
         <Stack.Screen 
