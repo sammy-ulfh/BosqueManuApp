@@ -1,6 +1,5 @@
 import { supabase } from '../../scripts/supabaseClient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Notifications from 'expo-notifications';
 import { Audio } from 'expo-av';
 import { Vibration, Platform } from 'react-native';
 
@@ -41,10 +40,7 @@ async function saveCache(items: RawAlert[]) {
 
 async function ensureNotificationPermissions() {
   try {
-    const { status: existing } = await Notifications.getPermissionsAsync();
-    if (existing !== 'granted') {
-      await Notifications.requestPermissionsAsync();
-    }
+    // removed expo-notifications permission checks (no remote push)
   } catch (err) {
     console.error('Error requesting notification permissions', err);
   }
@@ -52,15 +48,9 @@ async function ensureNotificationPermissions() {
 
 async function presentLocalNotification(title: string, body: string) {
   try {
-    await ensureNotificationPermissions();
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title,
-        body,
-        sound: Platform.OS === 'ios' ? 'default' : undefined,
-      },
-      trigger: null,
-    });
+    // Local OS notifications removed to avoid Expo Go remote-push warnings.
+    // Keep behavior in-app: rely on registered UI listeners + sound/vibration.
+    console.log('Local notification removed:', title, body);
   } catch (err) {
     console.error('Error showing local notification', err);
   }
@@ -94,7 +84,7 @@ export async function startSosListener(onNew?: (payload: any) => void) {
   started = true;
 
   // Load cache to ensure permissions are requested early
-  await ensureNotificationPermissions();
+  // (notifications permissions removed)
 
   // Setup realtime listener
   const handleInsert = async (payload: any) => {
@@ -122,7 +112,7 @@ export async function startSosListener(onNew?: (payload: any) => void) {
       listeners.forEach(cb => { try { cb(mapped); } catch (e) { console.error('listener error', e); } });
 
       // Show OS notification and play sound/vibrate
-      await presentLocalNotification('Nueva alerta SOS', mapped.email || 'Alerta recibida');
+      // OS notification removed; keep sound + vibration and UI listeners
       playAlertSound();
       vibrate();
     } catch (err) {
