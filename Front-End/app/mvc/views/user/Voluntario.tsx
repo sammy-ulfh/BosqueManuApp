@@ -15,7 +15,7 @@ import { Input } from "@/mvc/views/components/Input";
 import { MainButton } from "@/mvc/views/components/MainButton";
 import { useVoluntariosFormController } from "@/mvc/controllers/useVoluntariosFormController";
 
-export default function VoluntariosForm({ navigation }) {
+export default function VoluntariosForm({ navigation }: { navigation: any }) {
   const {
     isLoaded,
     loadingEvents,
@@ -26,7 +26,21 @@ export default function VoluntariosForm({ navigation }) {
     showModal, setShowModal,
     handleSubmit,
     formatDate
-  } = useVoluntariosFormController(navigation);
+  } = useVoluntariosFormController(navigation) as {
+    isLoaded: boolean;
+    loadingEvents: boolean;
+    userName: string;
+    setUserName: (v: string) => void;
+    phone: string;
+    setPhone: (v: string) => void;
+    availableEvents: any[];
+    selectedEvent: any | null;
+    setSelectedEvent: (e: any) => void;
+    showModal: boolean;
+    setShowModal: (b: boolean) => void;
+    handleSubmit: () => void;
+    formatDate: (d: any) => string;
+  };
 
   if (!isLoaded) return null;
 
@@ -84,11 +98,11 @@ export default function VoluntariosForm({ navigation }) {
               <ActivityIndicator size="large" color="#0A6A8C" />
             ) : availableEvents.length === 0 ? (
               <Text style={styles.noEventsText}>No hay fechas disponibles por el momento.</Text>
-            ) : (
+              ) : (
               <FlatList
                 data={availableEvents}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => (
+                keyExtractor={(item: any, index) => (item && item.id ? String(item.id) : String(index))}
+                renderItem={({ item }: { item: any }) => (
                   <TouchableOpacity 
                     style={styles.eventItem}
                     onPress={() => {
@@ -96,9 +110,9 @@ export default function VoluntariosForm({ navigation }) {
                       setShowModal(false);
                     }}
                   >
-                    <Text style={styles.eventDateText}>{formatDate(item.date)}</Text>
+                    <Text style={styles.eventDateText}>{formatDate(item?.date)}</Text>
                     <Text style={styles.eventSlotsText}>
-                      Cupos: {14 - (item.registros || 0)} disponibles
+                      Cupos: {14 - ((item && item.registros) || 0)} disponibles
                     </Text>
                   </TouchableOpacity>
                 )}
@@ -136,9 +150,10 @@ export default function VoluntariosForm({ navigation }) {
 
       <View style={styles.formCard}>
         <FlatList
-          data={[]} 
+          data={[] as any[]}
           keyExtractor={() => 'form'}
-          ListHeaderComponent={formContent} 
+          ListHeaderComponent={formContent}
+          renderItem={() => null}
         />
       </View>
 

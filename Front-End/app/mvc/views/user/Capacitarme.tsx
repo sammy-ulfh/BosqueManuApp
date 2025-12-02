@@ -27,6 +27,10 @@ export default function CapacitacionesForm({ navigation }: any) {
     formatDate
   } = useCapacitacionesFormController(navigation);
 
+  // Controller is implemented in plain JS; ensure proper local typing for TS checks
+  const courses: any[] = availableCourses as any[];
+  const selCourse: any | null = selectedCourse as any | null;
+
   if (!isLoaded) {
     return (
       <View style={styles.loadingContainer}>
@@ -69,7 +73,7 @@ export default function CapacitacionesForm({ navigation }: any) {
           <TouchableOpacity style={styles.dateRow} onPress={() => setShowModal(true)}>
             <View style={styles.dateInput}>
               <Text style={styles.dateText}>
-                {selectedCourse ? formatDate(selectedCourse.date) : "Seleccionar fecha"}
+                {selCourse ? formatDate(selCourse.date) : "Seleccionar fecha"}
               </Text>
             </View>
             <Text style={styles.calendarIcon}>📅</Text>
@@ -92,12 +96,12 @@ export default function CapacitacionesForm({ navigation }: any) {
                 
                 {loadingCourses ? (
                   <ActivityIndicator size="large" color="#2E8B57" />
-                ) : availableCourses.length === 0 ? (
+                ) : courses.length === 0 ? (
                   <Text style={styles.noEventsText}>No hay capacitaciones con cupo.</Text>
                 ) : (
                   <FlatList
-                    data={availableCourses}
-                    keyExtractor={(item) => item.id.toString()}
+                    data={courses}
+                    keyExtractor={(item) => (item.id ?? '').toString()}
                     renderItem={({ item }) => {
                       const limit = item.limite || 0;
                       const occupied = item.registros || 0;

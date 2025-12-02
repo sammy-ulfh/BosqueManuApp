@@ -9,6 +9,7 @@ type Props = {
   testID?: string;
   children?: React.ReactNode;
   disabled?: boolean;
+  textStyle?: any;
 };
 
 export function MainButton({ onPress, style, text, color, testID, children, disabled }: Props) {

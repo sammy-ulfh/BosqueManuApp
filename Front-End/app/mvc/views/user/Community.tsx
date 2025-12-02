@@ -52,11 +52,11 @@ export default function Community({ navigation } : any) {
         </Text>
 
         <MainButton
-          text="QUIERO DONAR"
           onPress={() => navigation.navigate("Donar")}
           style={styles.button}
-          textStyle={styles.buttonText}
-        />
+        >
+          <Text style={styles.buttonText}>QUIERO DONAR</Text>
+        </MainButton>
       </View>
 
     </View>
