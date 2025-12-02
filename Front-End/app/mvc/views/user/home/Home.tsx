@@ -114,6 +114,7 @@ export default function Home({ navigation }: any) {
       <SOSModal
         visible={sosVisible}
         onClose={() => setSosVisible(false)}
+        navigation={navigation}
         imageSource={require("@/assets/images/SOSboton.png")}
       />
 
