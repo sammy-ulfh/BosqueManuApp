@@ -40,6 +40,8 @@ export default function PersonalData({ navigation }: any) {
   const [blood, setBlood] = useState("");
   const [contact, setContact] = useState("");
   const [group_name, setGroupName] = useState("");
+  const [allergies, setAllergies] = useState("");
+  const [medicines, setMedicines] = useState("");
 
   const loadFonts = async () => {
     await Font.loadAsync({
@@ -68,12 +70,15 @@ export default function PersonalData({ navigation }: any) {
         .single();
 
       setUserData(data);
+
       setNombre(data?.nombre ?? "");
       setApellido(data?.apellido ?? "");
       setNumber(data?.number ?? "");
       setBlood(data?.blood ?? "");
       setContact(data?.contact ?? "");
       setGroupName(data?.group_name ?? "");
+      setAllergies(data?.allergies ?? "");
+      setMedicines(data?.medicines ?? "");
 
       setHasChanges(false);
       setEditMode(false);
@@ -85,9 +90,21 @@ export default function PersonalData({ navigation }: any) {
   async function guardarCambios() {
     if (!userData?.auth_id) return;
 
-    const updates = { nombre, apellido, number, blood, contact, group_name };
+    const updates = {
+      nombre,
+      apellido,
+      number,
+      blood,
+      contact,
+      group_name,
+      allergies,
+      medicines,
+    };
 
-    const { success, error } = await actualizarUsuario(userData.auth_id, updates);
+    const { success, error } = await actualizarUsuario(
+      userData.auth_id,
+      updates
+    );
 
     if (!success) {
       Alert.alert("Error", "Hubo un problema actualizando tus datos.");
@@ -120,11 +137,19 @@ export default function PersonalData({ navigation }: any) {
       case "group_name":
         setGroupName(value);
         break;
+      case "allergies":
+        setAllergies(value);
+        break;
+      case "medicines":
+        setMedicines(value);
+        break;
     }
   }
 
   if (!isLoaded || !userData)
-    return <Text style={{ marginTop: 80, textAlign: "center" }}>Cargando...</Text>;
+    return (
+      <Text style={{ marginTop: 80, textAlign: "center" }}>Cargando...</Text>
+    );
 
   return (
     <ImageBackground
@@ -146,72 +171,100 @@ export default function PersonalData({ navigation }: any) {
             )}
           </View>
 
-          {/* Inputs editables */}
+          {/* LABELS + INPUTS */}
+
+          <Text style={styles.label}>Nombre:</Text>
           <TextInput
             style={styles.input}
+            value={nombre}
             placeholder="Nombre"
             placeholderTextColor="#ccc"
-            value={nombre}
             editable={editMode}
             onChangeText={(v) => handleChange("nombre", v)}
           />
 
+          <Text style={styles.label}>Apellido:</Text>
           <TextInput
             style={styles.input}
+            value={apellido}
             placeholder="Apellido"
             placeholderTextColor="#ccc"
-            value={apellido}
             editable={editMode}
             onChangeText={(v) => handleChange("apellido", v)}
           />
 
+          <Text style={styles.label}>Teléfono:</Text>
           <TextInput
             style={styles.input}
+            value={number}
             placeholder="Teléfono"
             placeholderTextColor="#ccc"
-            value={number}
             editable={editMode}
             keyboardType="phone-pad"
             onChangeText={(v) => handleChange("number", v)}
           />
 
+          <Text style={styles.label}>Tipo de sangre:</Text>
           <TextInput
             style={styles.input}
-            placeholder="Grupo sanguíneo"
-            placeholderTextColor="#ccc"
             value={blood}
+            placeholder="Tipo de sangre"
+            placeholderTextColor="#ccc"
             editable={editMode}
             onChangeText={(v) => handleChange("blood", v)}
           />
 
+          <Text style={styles.label}>Contacto de emergencia:</Text>
           <TextInput
             style={styles.input}
+            value={contact}
             placeholder="Contacto de emergencia"
             placeholderTextColor="#ccc"
-            value={contact}
             editable={editMode}
             onChangeText={(v) => handleChange("contact", v)}
           />
 
+          <Text style={styles.label}>Nombre de grupo:</Text>
           <TextInput
             style={styles.input}
+            value={group_name}
             placeholder="Nombre de grupo"
             placeholderTextColor="#ccc"
-            value={group_name}
             editable={editMode}
             onChangeText={(v) => handleChange("group_name", v)}
           />
 
-          {/* Datos no editables */}
-          <Text style={styles.disabledInput}>Email: {userData.email}</Text>
-          <Text style={styles.disabledInput}>Alergias: {userData.allergies}</Text>
-          <Text style={styles.disabledInput}>Medicamentos: {userData.medicines}</Text>
+          <Text style={styles.label}>Alergias:</Text>
+          <TextInput
+            style={styles.input}
+            value={allergies}
+            placeholder="Alergias"
+            placeholderTextColor="#ccc"
+            editable={editMode}
+            multiline
+            onChangeText={(v) => handleChange("allergies", v)}
+          />
 
-          {/* Botones en modo edición */}
+          <Text style={styles.label}>Medicamentos:</Text>
+          <TextInput
+            style={styles.input}
+            value={medicines}
+            placeholder="Medicamentos"
+            placeholderTextColor="#ccc"
+            editable={editMode}
+            multiline
+            onChangeText={(v) => handleChange("medicines", v)}
+          />
+
+          {/* LABEL + EMAIL FIJO */}
+          <Text style={styles.label}>Email:</Text>
+          <Text style={styles.disabledInput}>{userData.email}</Text>
+
+          {/* Botones de acción */}
           {editMode && (
-            <View style={{ marginTop: 20, alignItems: "center", width: "100%" }}>
-              
-              {/* BOTÓN GUARDAR */}
+            <View
+              style={{ marginTop: 20, alignItems: "center", width: "100%" }}
+            >
               <MainButton
                 text="Guardar cambios"
                 onPress={guardarCambios}
@@ -226,7 +279,6 @@ export default function PersonalData({ navigation }: any) {
                 disabled={!hasChanges}
               />
 
-              {/* BOTÓN CANCELAR */}
               <MainButton
                 text="Cancelar"
                 onPress={() => {
@@ -236,6 +288,8 @@ export default function PersonalData({ navigation }: any) {
                   setBlood(userData?.blood ?? "");
                   setContact(userData?.contact ?? "");
                   setGroupName(userData?.group_name ?? "");
+                  setAllergies(userData?.allergies ?? "");
+                  setMedicines(userData?.medicines ?? "");
                   setHasChanges(false);
                   setEditMode(false);
                 }}
@@ -277,11 +331,18 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   title: { fontSize: 32, color: "#fff" },
+  label: {
+    color: "#fff",
+    fontSize: 16,
+    marginBottom: 5,
+    marginTop: 10,
+    opacity: 0.9,
+  },
   input: {
     width: "100%",
     padding: 15,
     borderRadius: 12,
-    marginBottom: 15,
+    marginBottom: 10,
     backgroundColor: "rgba(255,255,255,0.1)",
     color: "#fff",
   },
