@@ -18,7 +18,6 @@ import RouteMap from "@/mvc/views/user/rutas/RouteMap";
 import Nineth from "@/mvc/views/user/Nineth";
 import Tenth from "@/mvc/views/user/Tenth";
 import Eleventh from "@/mvc/views/user/Eleventh";
-import Info from "@/mvc/views/user/info/Info";
 import Security from "@/mvc/views/user/configuracion/cambiarContrasena";
 import ChangePassword from "@/mvc/views/user/configuracion/ChangePassword";
 import PersonalData from "@/mvc/views/user/configuracion/PersonalData";
@@ -126,12 +125,6 @@ export default function App() {
       <Stack.Screen
         name="Eleventh"
         component={Eleventh}
-        options={{ headerShown: false }}
-      />
-
-      <Stack.Screen
-        name="Info"
-        component={Info}
         options={{ headerShown: false }}
       />
 
