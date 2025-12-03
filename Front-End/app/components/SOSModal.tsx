@@ -113,6 +113,18 @@ export default function SOSModal({ visible, onClose, imageSource, size = 190, na
     }
   }
 
+  function confirmAndSend() {
+    Alert.alert(
+      'Confirmar',
+      'Se notificará que esta en una emergencia y vendra la ayuda en camino. ¿Estás seguro?',
+      [
+        { text: 'No', style: 'cancel' },
+        { text: 'Sí', onPress: () => handleSendSOS() },
+      ],
+      { cancelable: true }
+    );
+  }
+
   return (
     <Modal
       visible={visible}
@@ -122,9 +134,10 @@ export default function SOSModal({ visible, onClose, imageSource, size = 190, na
     >
       <View style={styles.overlay}>
           <View style={[styles.modalContainer, { width: size + 80 }]}>
-            <View style={{ width: size + 56, height: size + 56, alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{ width: size + 56, height: size + 56, alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+              <Text style={[styles.sosLabel, { position: 'absolute', top: -28, fontSize: 18 }]}>Botón de ayuda en caso de emergencia</Text>
               <View style={[styles.whiteCircle, { width: size, height: size, borderRadius: size / 2 }]} />
-              <TouchableOpacity onPress={handleSendSOS} accessible accessibilityRole="button" activeOpacity={0.8} style={{ position: 'absolute' }}>
+              <TouchableOpacity onPress={confirmAndSend} accessible accessibilityRole="button" activeOpacity={0.8} style={{ position: 'absolute' }}>
                 <Image
                   source={img}
                   style={[
@@ -135,6 +148,7 @@ export default function SOSModal({ visible, onClose, imageSource, size = 190, na
                 />
               </TouchableOpacity>
             </View>
+
 
             <TouchableOpacity accessibilityRole="button" style={[styles.cancelButton, { marginTop: 36 }]} onPress={() => { setShowBanner(false); onClose(); }}>
               <Text style={styles.cancelText}>CERRAR</Text>
@@ -206,6 +220,14 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: '700',
     fontSize: 16,
+  },
+  sosLabel: {
+    color: '#ffffff',
+    fontSize: 15,
+    fontWeight: '700',
+    fontFamily: 'TenorSans',
+    marginBottom: 8,
+    textAlign: 'center',
   },
   
 });

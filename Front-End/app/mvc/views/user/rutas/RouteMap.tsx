@@ -113,12 +113,25 @@ export default function RouteMap() {
   };
 
   const startTracking = () => {
+    // First show helmet reminder before offering the PDF download option
     Alert.alert(
-      'Descarga de PDF',
-      'Se descargará un PDF con rutas offline y primeros auxilios para usar en caso de falta de internet. ¿Deseas descargarlo ahora?',
+      'Recuerda',
+      'Si vas a conducir una bicicleta o realizar ciclismo en la ruta, usa casco y equipo de protección.',
       [
-        { text: 'No, continuar', onPress: () => startTrackingInternal(false) },
-        { text: 'Descargar y continuar', onPress: () => startTrackingInternal(true) },
+        { text: 'Cancelar', style: 'cancel' },
+        {
+          text: 'Continuar',
+          onPress: () => {
+            Alert.alert(
+              'Descarga de PDF',
+              'Se descargará un PDF con rutas offline y primeros auxilios para usar en caso de falta de internet. ¿Deseas descargarlo ahora?',
+              [
+                { text: 'No, continuar', onPress: () => startTrackingInternal(false) },
+                { text: 'Descargar y continuar', onPress: () => startTrackingInternal(true) },
+              ]
+            );
+          },
+        },
       ]
     );
   };

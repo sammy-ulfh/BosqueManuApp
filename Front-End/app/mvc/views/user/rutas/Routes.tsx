@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, ImageBackground } from "react-native";
 import * as Font from "expo-font";
 import React, { useState } from "react";
 
-import { Input } from "@/mvc/views/components/Input";
 import { MainButton } from "@/mvc/views/components/MainButton";
 
 const biciVerde = require("@/assets/main/biciVerde.png");
@@ -12,7 +11,6 @@ const biciRoja = require("@/assets/main/biciRoja.png");
 
 export default function Routes({ navigation }: any) {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [searchInput, setSearchInput] = useState("");
 
   const loadFonts = async () => {
     await Font.loadAsync({
@@ -41,27 +39,18 @@ export default function Routes({ navigation }: any) {
           { justifyContent: "center", alignItems: "center" },
         ]}
       >
-        <View
-          style={[
-            styles.totalWidth,
-            { height: "80%", marginTop: "2%", justifyContent: "center", alignItems: "center" },
-          ]}
-        >
-          {/* BUSCADOR */}
-          <View style={[styles.totalWidth, { height: "20%", justifyContent: "center", alignItems: "center" }]}>
-            <View style={{ width: "80%", height: "100%", justifyContent: "center", alignItems: "center" }}>
-              <Input
-                placeholder="Buscar ruta"
-                value={searchInput}
-                onChangeText={setSearchInput}
-                style={{ backgroundColor: "#FFFFFF", width: "80%", height: "40%", color: "black", marginTop: "-18%" }}
-                color="#000000"
-              />
-            </View>
-          </View>
+          <View
+            style={[
+              styles.totalWidth,
+              { height: "80%", marginTop: "0%", justifyContent: "center", alignItems: "center" },
+            ]}
+          >
+            {/* Page title */}
+            <Text style={styles.pageTitle}>Bosque Primavera</Text>
+          {/* buscador removido */}
 
           {/* MAPA */}
-          <View style={styles.mapContainer}>
+          <View style={[styles.mapContainer, { marginTop: "8%" }] }>
             <Image
               source={require("@/assets/images/mapa.jpg")}
               style={styles.mapImage}
@@ -70,7 +59,7 @@ export default function Routes({ navigation }: any) {
           </View>
 
           {/* BOTONES DE RUTAS */}
-          <View style={{ width: "80%", height: "40%", justifyContent: "flex-start", alignItems: "center", marginTop: "3%" }}>
+          <View style={{ width: "80%", height: "40%", justifyContent: "flex-start", alignItems: "center", marginTop: "8%" }}>
             <MainButton
               onPress={() => navigation.navigate("RoutesList", { difficulty: "easy" })}
               style={styles.routeButton}
@@ -149,6 +138,15 @@ const styles = StyleSheet.create({
   },
   bikeIcon: { width: 35, height: 35, marginRight: 15 },
   buttonText: { color: "#fff", fontSize: 18 },
+
+  pageTitle: {
+    fontSize: 28,
+    color: "#fff",
+    fontFamily: "Gloock",
+    marginBottom: 12,
+    marginTop: 25,
+    textAlign: "center",
+  },
 
   footer: {
     width: "100%",

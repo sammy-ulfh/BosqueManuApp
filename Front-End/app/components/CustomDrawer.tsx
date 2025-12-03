@@ -45,7 +45,7 @@ export default function CustomDrawer({ visible, onClose, navigation }: Props) {
 
   const overlayOpacity = anim.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, 0.48],
+    outputRange: [0, 0.72],
   });
 
   const handleNavigate = (routeName: string) => {
@@ -86,20 +86,15 @@ export default function CustomDrawer({ visible, onClose, navigation }: Props) {
             <Text style={styles.itemText}>Capacitaciones</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => handleNavigate("RetoManu")} style={styles.item}>
+          <TouchableOpacity onPress={() => handleNavigate("Nineth")} style={styles.item}>
             <Text style={styles.itemText}>Reto MANU</Text>
           </TouchableOpacity>
 
-          <View style={styles.itemSpacing} />
-
-          <TouchableOpacity onPress={() => handleNavigate("Routes")} style={styles.ovalButtonWrapper}>
-            <View style={styles.ovalButton}>
-              <Text style={styles.ovalButtonText}>Iniciar Ruta</Text>
-            </View>
+ 
+          <TouchableOpacity onPress={() => handleNavigate("Routes")} style={styles.item}>
+            <Text style={styles.itemText}>Rutas</Text>
           </TouchableOpacity>
-
-          <View style={styles.itemSpacing} />
-
+          
           <TouchableOpacity onPress={() => handleNavigate("Voluntariado")} style={styles.item}>
             <Text style={styles.itemText}>Voluntarios</Text>
           </TouchableOpacity>
@@ -108,10 +103,7 @@ export default function CustomDrawer({ visible, onClose, navigation }: Props) {
             <Text style={styles.itemText}>Donar</Text>
           </TouchableOpacity>
 
-          {/* Nuevo: Usuarios -> info.tsx */}
-          <TouchableOpacity onPress={() => handleNavigate("Info")} style={styles.item}>
-            <Text style={styles.itemText}>Usuarios</Text>
-          </TouchableOpacity>
+
 
           {/* Mi Perfil ahora va a configuration.tsx */}
           <TouchableOpacity onPress={() => handleNavigate("Configuration")} style={styles.item}>
@@ -153,12 +145,17 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   item: {
-    paddingVertical: 14,
+    paddingVertical: 16,
   },
   itemText: {
     color: "#fff",
-    fontSize: 18,
+    fontSize: 20,
     textAlign: "right",
+    fontFamily: 'TenorSans',
+    fontWeight: '600',
+    textDecorationLine: 'underline',
+    textDecorationStyle: 'solid',
+    textDecorationColor: '#fff',
   },
   itemSpacing: {
     height: 8,
@@ -178,5 +175,6 @@ const styles = StyleSheet.create({
     color: "#7a7a7a",
     fontWeight: "700",
     textAlign: "center",
+    fontFamily: 'TenorSans',
   },
 });
