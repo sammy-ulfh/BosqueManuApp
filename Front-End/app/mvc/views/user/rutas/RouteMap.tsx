@@ -4,6 +4,7 @@ import MapView, { Marker, Polyline } from "react-native-maps";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
 import * as Linking from 'expo-linking';
+import { startRouteTracking, finishRouteTracking } from '../../../models/ruta/routeTracking';
 
 export default function RouteMap() {
   const navigation = useNavigation<any>();
@@ -26,6 +27,8 @@ export default function RouteMap() {
   ];
 
   const [tracking, setTracking] = useState(false);
+  const [trackingId, setTrackingId] = useState<any>(null);
+  const [trackingLoading, setTrackingLoading] = useState(false);
   const [userLocation, setUserLocation] = useState<any>(null);
   const [distanceToEnd, setDistanceToEnd] = useState<number | null>(null);
   const locationSub = useRef<any>(null);
@@ -98,18 +101,37 @@ export default function RouteMap() {
       return;
     }
 
-    setTracking(true);
-    locationSub.current = await Location.watchPositionAsync(
-      { accuracy: Location.Accuracy.Highest, distanceInterval: 5, timeInterval: 2000 },
-      (loc) => {
-        const { latitude, longitude } = loc.coords;
-        const user = { latitude, longitude };
-        setUserLocation(user);
-        const end = routeInfo.coordinates[routeInfo.coordinates.length - 1];
-        const dist = haversine(user, end);
-        setDistanceToEnd(Math.round(dist));
+    // Start server-side tracking record first
+    try {
+      setTrackingLoading(true);
+      const { data, error } = await startRouteTracking(routeInfo?.id || routeInfo?.routeId || routeInfo?._id);
+      if (error) {
+        console.error('startRouteTracking error', error);
+        Alert.alert('Error', 'No se pudo iniciar el seguimiento en el servidor. Intenta de nuevo.');
+        setTrackingLoading(false);
+        return;
       }
-    );
+
+      // store tracking id and begin local geolocation
+      setTrackingId(data?.id ?? null);
+      setTracking(true);
+      locationSub.current = await Location.watchPositionAsync(
+        { accuracy: Location.Accuracy.Highest, distanceInterval: 5, timeInterval: 2000 },
+        (loc) => {
+          const { latitude, longitude } = loc.coords;
+          const user = { latitude, longitude };
+          setUserLocation(user);
+          const end = routeInfo.coordinates[routeInfo.coordinates.length - 1];
+          const dist = haversine(user, end);
+          setDistanceToEnd(Math.round(dist));
+        }
+      );
+    } catch (err) {
+      console.error('Error starting tracking', err);
+      Alert.alert('Error', 'Ocurrió un problema al iniciar el seguimiento.');
+    } finally {
+      setTrackingLoading(false);
+    }
   };
 
   const startTracking = () => {
@@ -143,6 +165,27 @@ export default function RouteMap() {
     }
     setTracking(false);
     setDistanceToEnd(null);
+
+    // finish server-side tracking if we have an id
+    (async () => {
+      if (!trackingId) return;
+      try {
+        setTrackingLoading(true);
+        const { data, error } = await finishRouteTracking(trackingId);
+        if (error) {
+          console.error('finishRouteTracking error', error);
+          Alert.alert('Aviso', 'No se pudo registrar el fin de ruta en el servidor.');
+        } else {
+          // optionally notify user
+          // Alert.alert('Listo', 'Seguimiento finalizado');
+        }
+      } catch (err) {
+        console.error('Error finishing tracking', err);
+      } finally {
+        setTrackingLoading(false);
+        setTrackingId(null);
+      }
+    })();
   };
 
   return (
@@ -203,12 +246,20 @@ export default function RouteMap() {
         </TouchableOpacity>
 
         {!tracking ? (
-          <TouchableOpacity style={[styles.controlButton, styles.startButton]} onPress={startTracking}>
-            <Text style={styles.controlButtonText}>Iniciar</Text>
+          <TouchableOpacity
+            style={[styles.controlButton, styles.startButton]}
+            onPress={startTracking}
+            disabled={trackingLoading}
+          >
+            <Text style={styles.controlButtonText}>{trackingLoading ? 'Iniciando...' : 'Iniciar'}</Text>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity style={[styles.controlButton, styles.stopButton]} onPress={stopTracking}>
-            <Text style={styles.controlButtonText}>Detener</Text>
+          <TouchableOpacity
+            style={[styles.controlButton, styles.stopButton]}
+            onPress={stopTracking}
+            disabled={trackingLoading}
+          >
+            <Text style={styles.controlButtonText}>{trackingLoading ? 'Finalizando...' : 'Detener'}</Text>
           </TouchableOpacity>
         )}
       </View>
