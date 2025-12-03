@@ -85,7 +85,7 @@ export default function Donar({ navigation }: any) {
       setProcessing(true);
       const amountNum = Math.round(Number(amount.replace(/,/g, ".")) * 100);
       
-      // REVISA QUE TU CELULAR ESTÉ EN LA MISMA RED WIFI QUE TU PC
+      // LOCAL O VPS API SI CORREMOS EL SERVIDOR EN LA VPS
       const LOCAL_API = "http://192.168.106.1:3001";
 
       console.log('[Donar] Conectando a:', LOCAL_API);
