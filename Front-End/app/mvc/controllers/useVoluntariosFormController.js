@@ -48,56 +48,34 @@ export function useVoluntariosFormController(navigation) {
   const validatePhone = () => /^\d{10}$/.test(phone);
 
   const handleSubmit = async () => {
-    try {
-      if (!validatePhone()) {
-        Alert.alert("Error", "El número telefónico debe tener 10 dígitos.");
-        return;
-      }
+    if (!validatePhone()) {
+      Alert.alert("Error", "El número telefónico debe tener 10 dígitos.");
+      return;
+    }
+    if (!selectedEvent) {
+      Alert.alert("Error", "Por favor selecciona una fecha disponible.");
+      return;
+    }
+    if (!userId) {
+      Alert.alert("Error", "Usuario no identificado. Reinicia la sesión.");
+      return;
+    }
 
-      if (!selectedEvent) {
-        Alert.alert("Error", "Selecciona una fecha.");
-        return;
-      }
+    const { success, error } = await ClientVoluntariosModel.registerUserToEvent({
+      userId,
+      eventId: selectedEvent.id,
+      userName,
+      phone
+    });
 
-      if (!userId) {
-        Sentry.captureMessage("UserId no disponible en voluntariado", {
-          level: "warning",
-          tags: { module: "voluntariado" },
-        });
-        Alert.alert("Error", "Usuario no identificado.");
-        return;
-      }
-
-      const { success, error } =
-        await ClientVoluntariosModel.registerUserToEvent({
-          userId,
-          eventId: selectedEvent.id,
-          userName,
-          phone,
-        });
-
-      if (!success) {
-        Sentry.captureException(error, {
-          tags: { module: "voluntariado", action: "registerUserToEvent" },
-          extra: { userId, eventId: selectedEvent.id },
-        });
-
-        Alert.alert("Error al registrarse", error);
-        return;
-      }
-
-      Alert.alert("¡Registro exitoso!", "Gracias por participar", [
-        { text: "OK", onPress: () => navigation.navigate("ClientHome") },
+    if (success) {
+      Alert.alert("¡Registro exitoso!", "Te has unido al voluntariado.", [
+        { text: "OK", onPress: () => navigation.navigate("ClientHome") }
       ]);
-
-    } catch (err) {
-      Sentry.captureException(err, {
-        tags: { module: "voluntariado", type: "unexpected_error" },
-      });
-      Alert.alert("Error inesperado", String(err));
+    } else {
+      Alert.alert("Error", error);
     }
   };
-
 
   const formatDate = (dateString) => {
     const d = new Date(dateString);
