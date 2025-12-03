@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
 
   imageContainer: {
     width: width,
-    height: 590,
+    height: 560,
   },
   image: {
     width: "100%",
@@ -78,9 +78,10 @@ const styles = StyleSheet.create({
   },
 
   card: {
-    backgroundColor: "#5d2008ff",
+    backgroundColor: "#68777aff",
     position: "absolute",
     bottom: 0,
+    top: 505,
     width: "100%",
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
   },
 
   subtitle: {
-    fontSize: 17,
+    fontSize: 22,
     fontFamily: "TenorSans",
     color: "#eaeaea",
     textAlign: "center",
@@ -113,11 +114,12 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    backgroundColor: "#0A6A8C",
-    borderRadius: 25,
+    backgroundColor: "#354a64ff",
+    borderRadius: 20,
     width: "80%",
-    height: 55,
+    height: 60,
     justifyContent: "center",
+    top: 30,
   },
 
   buttonText: {
