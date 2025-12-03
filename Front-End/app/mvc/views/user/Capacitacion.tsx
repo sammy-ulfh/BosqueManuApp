@@ -78,10 +78,10 @@ const styles = StyleSheet.create({
   },
 
   card: {
-    backgroundColor: "#575645ff",
+    backgroundColor: "#4B4A33",
     position: "absolute",
     bottom: 0,
-    top: 485,
+    top: 500,
     width: "100%",
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   },
 
   subtitle: {
-    fontSize: 22,
+    fontSize: 20,
     fontFamily: "TenorSans",
     color: "#ddd",
     textAlign: "center",
@@ -114,9 +114,8 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    backgroundColor: "#474033ff",
-    borderRadius: 20,
-    top: 25,
+    backgroundColor: "#1B4D3E",
+    borderRadius: 25,
     width: "80%",
     height: 60,
     justifyContent: "center",

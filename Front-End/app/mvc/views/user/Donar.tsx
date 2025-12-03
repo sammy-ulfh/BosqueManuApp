@@ -173,7 +173,7 @@ export default function Donar({ navigation }: any) {
   };
 
   return (
-    <ImageBackground source={require("@/assets/images/donacionesfondo.png")} style={styles.mainContainer} resizeMode="cover">
+    <ImageBackground source={require("@/assets/images/formularios.jpg")} style={styles.mainContainer} resizeMode="cover">
       <Text style={styles.header}>¡Yo quiero donar!</Text>
       <View style={styles.formCard}>
         <ScrollView>
@@ -234,12 +234,12 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     paddingTop: 100,
   },
-  header: { fontSize: 30, fontFamily: "Gloock", color: "white", textAlign: "center", marginBottom: 12 },
-  subtitle: { fontSize: 14, color: 'rgba(255,255,255,0.95)', textAlign: 'center', marginBottom: 10, fontStyle: 'italic' },
-  cardMessage: { fontSize: 16, color: '#FFFFFF', textAlign: 'center', marginBottom: 12, fontFamily: 'TenorSans', fontWeight: '600' },
+  header: { fontSize: 37, fontFamily: "Gloock", color: "white", textAlign: "center", marginBottom: 12 },
+  subtitle: { fontSize: 18, color: 'rgba(255,255,255,0.95)', textAlign: 'center', marginBottom: 10, fontStyle: 'italic' },
+  cardMessage: { fontSize: 19, color: '#FFFFFF', textAlign: 'center', marginBottom: 12, fontFamily: 'TenorSans', fontWeight: '600' },
   formCard: {
     width: "86%",
-    backgroundColor: "#9c9510a5",
+    backgroundColor: "#4c4635df",
     borderRadius: 20,
     padding: 20,
     minHeight: 420,
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
   input: { backgroundColor: "white", borderRadius: 16, paddingHorizontal: 12 },
   checkboxRow: { flexDirection: "row", alignItems: "center", marginVertical: 12 },
   checkboxText: { color: "#fff", fontSize: 14, marginLeft: 8 },
-  finishButton: { width: "80%", backgroundColor: "#ac1b0ed8", height: 60, borderRadius: 30, alignSelf: "center", marginTop: 18, marginBottom: 20 },
+  finishButton: { width: "80%", backgroundColor: "#791306d7", height: 60, borderRadius: 30, alignSelf: "center", marginTop: 18, marginBottom: 20 },
   error: { color: "#FFD2D2", fontSize: 12, marginTop: 4, marginLeft: 6 },
   modalContainer: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0,0,0,0.5)" },
   modalContent: { width: "86%", backgroundColor: "white", borderRadius: 14, padding: 16, alignItems: "center" },

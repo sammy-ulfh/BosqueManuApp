@@ -27,7 +27,6 @@ export default function CapacitacionesForm({ navigation }: any) {
     formatDate
   } = useCapacitacionesFormController(navigation);
 
-  // Controller is implemented in plain JS; ensure proper local typing for TS checks
   const courses: any[] = availableCourses as any[];
   const selCourse: any | null = selectedCourse as any | null;
 
@@ -41,7 +40,7 @@ export default function CapacitacionesForm({ navigation }: any) {
 
   return (
     <ImageBackground
-      source={require("@/assets/images/Donaciones.png")}
+      source={require("@/assets/images/formularios.jpg")}
       style={styles.container}
       imageStyle={{ resizeMode: 'cover' }}
     >
@@ -168,7 +167,7 @@ const styles = StyleSheet.create({
   },
   title: { 
     fontFamily: "Gloock", 
-    fontSize: 32, 
+    fontSize: 37, 
     color: "white", 
     textAlign: "center", 
     marginBottom: 10, 
