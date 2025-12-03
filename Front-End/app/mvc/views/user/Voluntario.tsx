@@ -45,9 +45,11 @@ export default function VoluntariosForm({ navigation }: { navigation: any }) {
   if (!isLoaded) return null;
 
   const EXTRA_TOP_OFFSET = 40;
-  const topPadding = Platform.OS === 'android' ? (StatusBar.currentHeight || 0) + 20 + EXTRA_TOP_OFFSET : 80 + EXTRA_TOP_OFFSET;
+  const topPadding =
+    Platform.OS === "android"
+      ? (StatusBar.currentHeight || 0) + 20 + EXTRA_TOP_OFFSET
+      : 80 + EXTRA_TOP_OFFSET;
 
-  
   const formContent = (
     <>
       <Text style={styles.label}>Nombre</Text>
@@ -55,7 +57,7 @@ export default function VoluntariosForm({ navigation }: { navigation: any }) {
         placeholder="Tu nombre"
         value={userName}
         onChangeText={setUserName}
-        style={[styles.input, { color: '#000' }]}
+        style={[styles.input, { color: "#000" }]}
       />
 
       <Text style={styles.label}>Teléfono</Text>
@@ -64,22 +66,19 @@ export default function VoluntariosForm({ navigation }: { navigation: any }) {
         value={phone}
         keyboardType="number-pad"
         onChangeText={setPhone}
-        style={[styles.input, { color: '#000' }]}
+        style={[styles.input, { color: "#000" }]}
       />
 
       <Text style={styles.label}>Fecha de voluntariado</Text>
 
-      <TouchableOpacity
-        style={styles.dateButton}
-        onPress={() => setShowModal(true)}
-      >
+      <TouchableOpacity style={styles.dateButton} onPress={() => setShowModal(true)}>
         <Text style={styles.dateText}>
           {selectedEvent ? formatDate(selectedEvent.date) : "Seleccionar fecha disponible"}
         </Text>
         <Text style={styles.calendarIcon}>📅</Text>
       </TouchableOpacity>
 
-      <Text style={{color: 'white', fontSize: 12, marginTop: 5, marginLeft: 10, fontStyle: 'italic'}}>
+      <Text style={styles.noteText}>
         * Solo mostramos fechas con cupo disponible.
       </Text>
 
@@ -98,12 +97,14 @@ export default function VoluntariosForm({ navigation }: { navigation: any }) {
               <ActivityIndicator size="large" color="#0A6A8C" />
             ) : availableEvents.length === 0 ? (
               <Text style={styles.noEventsText}>No hay fechas disponibles por el momento.</Text>
-              ) : (
+            ) : (
               <FlatList
                 data={availableEvents}
-                keyExtractor={(item: any, index) => (item && item.id ? String(item.id) : String(index))}
+                keyExtractor={(item: any, index) =>
+                  item && item.id ? String(item.id) : String(index)
+                }
                 renderItem={({ item }: { item: any }) => (
-                  <TouchableOpacity 
+                  <TouchableOpacity
                     style={styles.eventItem}
                     onPress={() => {
                       setSelectedEvent(item);
@@ -119,16 +120,14 @@ export default function VoluntariosForm({ navigation }: { navigation: any }) {
               />
             )}
 
-            <TouchableOpacity 
-              style={styles.closeButton} 
-              onPress={() => setShowModal(false)}
-            >
+            <TouchableOpacity style={styles.closeButton} onPress={() => setShowModal(false)}>
               <Text style={styles.closeButtonText}>Cancelar</Text>
             </TouchableOpacity>
           </View>
         </View>
       </Modal>
 
+      {/* --- Info Box --- */}
       <View style={styles.infoBox}>
         <Text style={styles.infoText}>
           Para más información acerca de las actividades haz click aquí
@@ -142,17 +141,18 @@ export default function VoluntariosForm({ navigation }: { navigation: any }) {
 
   return (
     <ImageBackground
-      source={require("@/assets/images/Voluntarios.png")}
+      source={require("@/assets/images/formularios.jpg")}
       style={[styles.mainContainer, { paddingTop: topPadding }]}
       imageStyle={{ resizeMode: "cover", transform: [{ translateY: 30 }, { scale: 1.2 }] }}
     >
-      <Text style={styles.header}>¡Yo quiero ser voluntario!</Text>
-
       <View style={styles.formCard}>
+        <Text style={styles.headerInside}>¡Yo quiero ser voluntario!</Text>
+
         <FlatList
           data={[] as any[]}
-          keyExtractor={() => 'form'}
+          keyExtractor={() => "form"}
           ListHeaderComponent={formContent}
+          ListFooterComponent={<View style={{ height: 40 }} />} 
           renderItem={() => null}
         />
       </View>
@@ -173,36 +173,41 @@ const styles = StyleSheet.create({
     backgroundColor: "#5F3714",
     alignItems: "center",
   },
-  header: {
-    fontSize: 28,
+
+  headerInside: {
+    fontSize: 30,
     fontFamily: "Gloock",
     color: "white",
     textAlign: "center",
-    marginBottom: 20,
+    marginBottom: 15,
   },
+
   formCard: {
     width: "80%",
-    backgroundColor: "#0A6A8C",
+    backgroundColor: "#5a55517d",
     borderRadius: 20,
     padding: 20,
-    paddingBottom: 5,
-    minHeight: 550, 
+    paddingBottom: 20,
+    minHeight: 550,
     marginBottom: 80,
   },
+
   label: {
     color: "white",
     fontFamily: "TenorSans",
     marginBottom: 8,
     marginTop: 16,
   },
+
   input: {
     backgroundColor: "white",
     borderRadius: 20,
     paddingHorizontal: 15,
     paddingVertical: 10,
-    marginBottom: 20,
+    marginBottom: 7,
     color: "#000",
   },
+
   dateButton: {
     flexDirection: "row",
     alignItems: "center",
@@ -213,45 +218,62 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: 20,
   },
+
   dateText: {
     fontFamily: "TenorSans",
     color: "#333",
     fontSize: 16,
   },
+
   calendarIcon: {
     fontSize: 20,
   },
+
+  noteText: {
+    color: "white",
+    fontSize: 12,
+    marginTop: -7,
+    marginLeft: 10,
+    fontStyle: "italic",
+  },
+
   infoBox: {
     backgroundColor: "white",
     borderRadius: 15,
     padding: 12,
     marginTop: 40,
+    marginBottom: 20,
   },
+
   infoText: {
     fontSize: 14,
     color: "#333",
     fontFamily: "TenorSans",
   },
+
   infoLink: {
     fontSize: 12,
-    marginTop: 10,
+    marginTop: 5,
     color: "#333",
     textDecorationLine: "underline",
   },
+
   finishButton: {
     width: "80%",
     backgroundColor: "#661b1bec",
     height: 60,
     borderRadius: 25,
     marginTop: -50,
-    alignSelf: "center", 
+    alignSelf: "center",
   },
+
   modalContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(0,0,0,0.5)",
   },
+
   modalContent: {
     width: "85%",
     backgroundColor: "white",
@@ -259,6 +281,7 @@ const styles = StyleSheet.create({
     padding: 20,
     maxHeight: "60%",
   },
+
   modalTitle: {
     fontSize: 20,
     fontFamily: "Gloock",
@@ -266,32 +289,38 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#0A6A8C",
   },
+
   eventItem: {
     padding: 15,
     borderBottomWidth: 1,
     borderBottomColor: "#eee",
   },
+
   eventDateText: {
     fontSize: 16,
     fontFamily: "TenorSans",
     color: "#333",
   },
+
   eventSlotsText: {
     fontSize: 12,
     color: "green",
     marginTop: 4,
   },
+
   noEventsText: {
-    textAlign: 'center',
+    textAlign: "center",
     marginVertical: 20,
-    color: '#666'
+    color: "#666",
   },
+
   closeButton: {
     marginTop: 15,
-    backgroundColor: "#0A6A8C",
+    backgroundColor: "#364950ff",
     padding: 12,
     borderRadius: 15,
   },
+
   closeButtonText: {
     color: "white",
     textAlign: "center",
