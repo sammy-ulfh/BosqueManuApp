@@ -86,7 +86,7 @@ export default function Donar({ navigation }: any) {
       const amountNum = Math.round(Number(amount.replace(/,/g, ".")) * 100);
       
       // LOCAL O VPS API SI CORREMOS EL SERVIDOR EN LA VPS
-      const LOCAL_API = "http://192.168.106.1:3001";
+      const LOCAL_API = "http://144.126.142.241:3001";
 
       console.log('[Donar] Conectando a:', LOCAL_API);
       
