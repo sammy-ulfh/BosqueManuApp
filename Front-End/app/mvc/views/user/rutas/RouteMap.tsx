@@ -101,7 +101,6 @@ export default function RouteMap() {
       return;
     }
 
-    // Start server-side tracking record first
     try {
       setTrackingLoading(true);
       const { data, error } = await startRouteTracking(routeInfo?.id || routeInfo?.routeId || routeInfo?._id);
@@ -112,7 +111,6 @@ export default function RouteMap() {
         return;
       }
 
-      // store tracking id and begin local geolocation
       setTrackingId(data?.id ?? null);
       setTracking(true);
       locationSub.current = await Location.watchPositionAsync(
@@ -135,7 +133,6 @@ export default function RouteMap() {
   };
 
   const startTracking = () => {
-    // First show helmet reminder before offering the PDF download option
     Alert.alert(
       'Recuerda',
       'Si vas a conducir una bicicleta o realizar ciclismo en la ruta, usa casco y equipo de protección.',
@@ -166,7 +163,6 @@ export default function RouteMap() {
     setTracking(false);
     setDistanceToEnd(null);
 
-    // finish server-side tracking if we have an id
     (async () => {
       if (!trackingId) return;
       try {
@@ -176,8 +172,7 @@ export default function RouteMap() {
           console.error('finishRouteTracking error', error);
           Alert.alert('Aviso', 'No se pudo registrar el fin de ruta en el servidor.');
         } else {
-          // optionally notify user
-          // Alert.alert('Listo', 'Seguimiento finalizado');
+        
         }
       } catch (err) {
         console.error('Error finishing tracking', err);

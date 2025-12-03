@@ -98,7 +98,6 @@ export default function SOSModal({ visible, onClose, imageSource, size = 190, na
         console.error(error?.message || error);
       } else {
         console.log('SOS enviado a la base de datos');
-        // Mostrar banner local dentro del modal
         setShowBanner(true);
       }
 
