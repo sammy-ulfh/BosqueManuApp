@@ -11,6 +11,7 @@ import Info from "../pages/admin/Info";
 import HomeAdmin from '../pages/admin/HomeAdmin';
 import AddCourseAdmin from '../pages/admin/AddCourseAdmin'; 
 import AddEventAdmin from '../pages/admin/AddEventAdmin'; 
+import RutasAdmin from '../pages/admin/RutasAdmin';
 import { startSosListener } from '../services/sosListener';
 
 
@@ -69,6 +70,11 @@ export default function App() {
         <Stack.Screen 
           name="AddEventAdmin" 
           component={AddEventAdmin} 
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen 
+          name="RutasAdmin" 
+          component={RutasAdmin} 
           options={{ headerShown: false }} 
         />
         <Stack.Screen 

@@ -80,6 +80,10 @@ export default function AdminDrawer({ visible, onClose, navigation }: Props) {
             <Text style={styles.itemText}>Donativos MBM</Text>
           </TouchableOpacity>
 
+          <TouchableOpacity style={styles.item} onPress={() => closeAndNavigate("RutasAdmin") }>
+            <Text style={styles.itemText}>Rutas usuarios</Text>
+          </TouchableOpacity>
+
   
 
           <TouchableOpacity style={styles.item} onPress={() => closeAndNavigate("SOSAlertsAdmin")}>
